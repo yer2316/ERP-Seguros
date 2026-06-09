@@ -298,25 +298,560 @@
     <!-- ===== RAMOS ===== -->
     <div class="page" id="page-ramos">
       <div class="page-header">
-        <div><h2>🏷️ Ramos</h2><p>Ramos comerciales y técnicos habilitados</p></div>
-        <button class="btn btn-primary" onclick="openModal('modal-ramo')">+ Nuevo Ramo</button>
-      </div>
-      <div class="full-card">
-        <div class="search-bar">
-          <input type="text" placeholder="Buscar ramo...">
-          <button class="btn btn-outline">Filtrar</button>
+        <div>
+          <h2>🏷️ Módulo 1 — Ramos</h2>
+          <p>Base del ERP · 31 entidades · 9 grupos funcionales · Núcleo, Operativa, Endosos, Vigencias, Contabilidad, Impuestos, Facturación, Agencias</p>
         </div>
-        <table>
-          <thead><tr><th>ID</th><th>Código SSN</th><th>Descripción</th><th>Tipo</th><th>Sucursales</th><th>Estado</th><th>Acciones</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td>100</td><td>Automóviles</td><td>Patrimonial</td><td>5</td><td><span class="badge badge-success">Activo</span></td><td><button class="btn btn-outline btn-sm">Ver</button></td></tr>
-            <tr><td>2</td><td>200</td><td>Vida Individual</td><td>Personas</td><td>5</td><td><span class="badge badge-success">Activo</span></td><td><button class="btn btn-outline btn-sm">Ver</button></td></tr>
-            <tr><td>3</td><td>300</td><td>Incendio y Aliados</td><td>Patrimonial</td><td>3</td><td><span class="badge badge-success">Activo</span></td><td><button class="btn btn-outline btn-sm">Ver</button></td></tr>
-            <tr><td>4</td><td>400</td><td>Accidentes Personales</td><td>Personas</td><td>2</td><td><span class="badge badge-success">Activo</span></td><td><button class="btn btn-outline btn-sm">Ver</button></td></tr>
-            <tr><td>5</td><td>500</td><td>Transporte de Mercaderías</td><td>Patrimonial</td><td>2</td><td><span class="badge badge-warning">En revisión</span></td><td><button class="btn btn-outline btn-sm">Ver</button></td></tr>
-          </tbody>
-        </table>
+        <button class="btn btn-primary" onclick="openModal('modal-nuevo-ramo')">+ Nuevo Ramo Comercial</button>
       </div>
+
+      <div style="display:grid;grid-template-columns:260px 1fr;gap:20px;align-items:start">
+
+        <!-- LISTA DE RAMOS COMERCIALES -->
+        <div>
+          <div class="card" style="padding:0;overflow:hidden;margin-bottom:14px">
+            <div style="padding:10px 14px;background:var(--light);border-bottom:1px solid var(--border);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Ramos Comerciales</div>
+            <div id="ramo-list">
+              <div class="ramo-item active" onclick="selectRamo(this,'AUTO')" style="padding:11px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;border-left:3px solid var(--accent)">
+                <div style="font-weight:600;font-size:13px">Automóviles</div>
+                <div style="font-size:11px;color:var(--muted)">SSN: 100 · Patrimonial</div>
+              </div>
+              <div class="ramo-item" onclick="selectRamo(this,'VIDA')" style="padding:11px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;border-left:3px solid transparent">
+                <div style="font-weight:600;font-size:13px">Vida Individual</div>
+                <div style="font-size:11px;color:var(--muted)">SSN: 200 · Personas</div>
+              </div>
+              <div class="ramo-item" onclick="selectRamo(this,'INC')" style="padding:11px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;border-left:3px solid transparent">
+                <div style="font-weight:600;font-size:13px">Incendio y Aliados</div>
+                <div style="font-size:11px;color:var(--muted)">SSN: 300 · Patrimonial</div>
+              </div>
+              <div class="ramo-item" onclick="selectRamo(this,'AP')" style="padding:11px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;border-left:3px solid transparent">
+                <div style="font-weight:600;font-size:13px">Accidentes Personales</div>
+                <div style="font-size:11px;color:var(--muted)">SSN: 400 · Personas</div>
+              </div>
+              <div class="ramo-item" onclick="selectRamo(this,'TRANSP')" style="padding:11px 14px;cursor:pointer;transition:background .15s;border-left:3px solid transparent">
+                <div style="font-weight:600;font-size:13px">Transporte de Mercaderías</div>
+                <div style="font-size:11px;color:var(--muted)">SSN: 500 · Patrimonial</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Catálogos globales (no dependen del ramo seleccionado) -->
+          <div class="card" style="padding:0;overflow:hidden">
+            <div style="padding:10px 14px;background:var(--light);border-bottom:1px solid var(--border);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Catálogos Globales</div>
+            <div style="padding:4px 0">
+              <div onclick="showRamoTab('tab-r-sucursales')" style="padding:9px 14px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px;color:var(--muted)" onmouseover="this.style.background='var(--light)'" onmouseout="this.style.background=''">🏢 Sucursales <span style="font-size:10px;background:#eee;border-radius:10px;padding:1px 7px;margin-left:auto">5</span></div>
+              <div onclick="showRamoTab('tab-r-tipos-op')" style="padding:9px 14px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px;color:var(--muted)" onmouseover="this.style.background='var(--light)'" onmouseout="this.style.background=''">⚙️ Tipos de Operación <span style="font-size:10px;background:#eee;border-radius:10px;padding:1px 7px;margin-left:auto">8</span></div>
+              <div onclick="showRamoTab('tab-r-endosos-cat')" style="padding:9px 14px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px;color:var(--muted)" onmouseover="this.style.background='var(--light)'" onmouseout="this.style.background=''">🔄 Tipos de Endoso <span style="font-size:10px;background:#eee;border-radius:10px;padding:1px 7px;margin-left:auto">10</span></div>
+              <div onclick="showRamoTab('tab-r-vigencias-cat')" style="padding:9px 14px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px;color:var(--muted)" onmouseover="this.style.background='var(--light)'" onmouseout="this.style.background=''">📅 Tipos de Vigencia <span style="font-size:10px;background:#eee;border-radius:10px;padding:1px 7px;margin-left:auto">6</span></div>
+              <div onclick="showRamoTab('tab-r-impuestos-cat')" style="padding:9px 14px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px;color:var(--muted)" onmouseover="this.style.background='var(--light)'" onmouseout="this.style.background=''">💰 Impuestos <span style="font-size:10px;background:#eee;border-radius:10px;padding:1px 7px;margin-left:auto">7</span></div>
+              <div onclick="showRamoTab('tab-r-facturacion-cat')" style="padding:9px 14px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px;color:var(--muted)" onmouseover="this.style.background='var(--light)'" onmouseout="this.style.background=''">🧾 Tipos de Facturación <span style="font-size:10px;background:#eee;border-radius:10px;padding:1px 7px;margin-left:auto">4</span></div>
+              <div onclick="showRamoTab('tab-r-agencias-cat')" style="padding:9px 14px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px;color:var(--muted)" onmouseover="this.style.background='var(--light)'" onmouseout="this.style.background=''">🏪 Agencias <span style="font-size:10px;background:#eee;border-radius:10px;padding:1px 7px;margin-left:auto">12</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL DERECHO: DETALLE DEL RAMO -->
+        <div>
+
+          <!-- Header del ramo seleccionado -->
+          <div class="card" style="margin-bottom:14px" id="ramo-header">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-size:18px;font-weight:700">Automóviles</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:3px">
+                  <strong>SSN: 100</strong> · Tipo: <strong>Patrimonial</strong> · ID interno: <strong>1</strong>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <span class="badge badge-success">Activo</span>
+                <button class="btn btn-outline btn-sm">✏️ Editar</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TABS DEL RAMO -->
+          <div class="card" style="padding:0;overflow:hidden">
+            <div style="display:flex;border-bottom:2px solid var(--border);overflow-x:auto;background:var(--light)" id="ramo-tabs">
+              <button class="ramo-tab active" onclick="showRamoTab('tab-r-nucleo')"     style="padding:9px 14px;border:none;background:none;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;border-bottom:2px solid var(--accent);margin-bottom:-2px;color:var(--accent)">🧩 Núcleo</button>
+              <button class="ramo-tab" onclick="showRamoTab('tab-r-sucursales')"        style="padding:9px 14px;border:none;background:none;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--muted)">🏢 Sucursales</button>
+              <button class="ramo-tab" onclick="showRamoTab('tab-r-operaciones')"       style="padding:9px 14px;border:none;background:none;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--muted)">⚙️ Operaciones</button>
+              <button class="ramo-tab" onclick="showRamoTab('tab-r-endosos')"           style="padding:9px 14px;border:none;background:none;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--muted)">🔄 Endosos</button>
+              <button class="ramo-tab" onclick="showRamoTab('tab-r-vigencias')"         style="padding:9px 14px;border:none;background:none;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--muted)">📅 Vigencias</button>
+              <button class="ramo-tab" onclick="showRamoTab('tab-r-contabilidad')"      style="padding:9px 14px;border:none;background:none;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--muted)">📒 Contabilidad</button>
+              <button class="ramo-tab" onclick="showRamoTab('tab-r-impuestos')"         style="padding:9px 14px;border:none;background:none;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--muted)">💰 Impuestos</button>
+              <button class="ramo-tab" onclick="showRamoTab('tab-r-facturacion')"       style="padding:9px 14px;border:none;background:none;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--muted)">🧾 Facturación</button>
+              <button class="ramo-tab" onclick="showRamoTab('tab-r-agencias')"          style="padding:9px 14px;border:none;background:none;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--muted)">🏪 Agencias</button>
+            </div>
+
+            <!-- ═══ TAB: NÚCLEO ═══ -->
+            <div id="tab-r-nucleo" class="ramo-panel" style="padding:20px;display:block">
+
+              <!-- RAMOS_COM básico -->
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div><span style="font-size:13px;font-weight:600">Ramo Comercial</span> <span style="font-size:11px;color:var(--muted)">RAMOS_COM + TIPOS_RAMOS_COM</span></div>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;font-size:12px">
+                <div style="background:var(--light);border-radius:6px;padding:10px;border:1px solid var(--border)"><div style="color:var(--muted)">ID</div><strong>1</strong></div>
+                <div style="background:var(--light);border-radius:6px;padding:10px;border:1px solid var(--border)"><div style="color:var(--muted)">Código SSN</div><strong>100</strong></div>
+                <div style="background:var(--light);border-radius:6px;padding:10px;border:1px solid var(--border)"><div style="color:var(--muted)">Tipo de Ramo</div><strong>Patrimonial</strong></div>
+                <div style="background:var(--light);border-radius:6px;padding:10px;border:1px solid var(--border)"><div style="color:var(--muted)">Descripción</div><strong>Automóviles</strong></div>
+              </div>
+
+              <!-- Ramos Técnicos vinculados (N:M via RAMOS) -->
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div><span style="font-size:13px;font-weight:600">Ramos Técnicos vinculados</span> <span style="font-size:11px;color:var(--muted)">RAMOS_TEC + RAMOS (N:M)</span></div>
+                <button class="btn btn-outline btn-sm" onclick="openModal('modal-vincular-tec')">+ Vincular Ramo Técnico</button>
+              </div>
+              <table style="margin-bottom:20px">
+                <thead><tr><th>ID</th><th>Descripción Ramo Técnico</th><th>Sucursal</th><th>Usuario responsable</th><th></th></tr></thead>
+                <tbody>
+                  <tr><td>101</td><td>Automóviles — Daños Propios</td><td>Casa Central</td><td>actuary01</td><td><button class="btn btn-outline btn-sm">Ver</button></td></tr>
+                  <tr><td>102</td><td>Automóviles — Responsabilidad Civil</td><td>Casa Central</td><td>actuary01</td><td><button class="btn btn-outline btn-sm">Ver</button></td></tr>
+                  <tr><td>103</td><td>Automóviles — Robo y Hurto</td><td>Sucursal Norte</td><td>actuary02</td><td><button class="btn btn-outline btn-sm">Ver</button></td></tr>
+                </tbody>
+              </table>
+
+              <!-- Subramos -->
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div><span style="font-size:13px;font-weight:600">Subramos</span> <span style="font-size:11px;color:var(--muted)">SUBRAMOS + RAMO_SUBRAMO_ASOC</span></div>
+                <button class="btn btn-outline btn-sm" onclick="openModal('modal-nuevo-subramo')">+ Nuevo Subramo</button>
+              </div>
+              <table>
+                <thead><tr><th>ID</th><th>Descripción Subramo</th><th>Cód. Contable</th><th>Denominación Contable</th><th>Vigencia</th></tr></thead>
+                <tbody>
+                  <tr><td>10</td><td>Automóviles — Flotas</td><td>A100-FL</td><td>Flota de Vehículos Comerciales</td><td>01/01/2024</td></tr>
+                  <tr><td>11</td><td>Automóviles — Individuales</td><td>A100-IND</td><td>Vehículos Particulares</td><td>01/01/2024</td></tr>
+                  <tr><td>12</td><td>Automóviles — Taxi / Remis</td><td>A100-TX</td><td>Vehículos de Transporte de Pasajeros</td><td>01/03/2024</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- ═══ TAB: SUCURSALES ═══ -->
+            <div id="tab-r-sucursales" class="ramo-panel" style="padding:20px;display:none">
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+                <!-- Habilitación del ramo por sucursal -->
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                    <div><span style="font-size:13px;font-weight:600">Habilitación por Sucursal</span><br><span style="font-size:11px;color:var(--muted)">RAMOS_CON_SUC · último N° póliza</span></div>
+                    <button class="btn btn-outline btn-sm" onclick="openModal('modal-hab-sucursal')">+ Habilitar</button>
+                  </div>
+                  <table>
+                    <thead><tr><th>Sucursal</th><th>Último N° Póliza</th><th>Estado</th></tr></thead>
+                    <tbody>
+                      <tr><td>Casa Central</td><td>00001284</td><td><span class="badge badge-success">Habilitada</span></td></tr>
+                      <tr><td>Sucursal Norte</td><td>00000342</td><td><span class="badge badge-success">Habilitada</span></td></tr>
+                      <tr><td>Sucursal Sur</td><td>00000187</td><td><span class="badge badge-success">Habilitada</span></td></tr>
+                      <tr><td>Sucursal Oeste</td><td>—</td><td><span class="badge badge-warning">No habilitada</span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Estructura siniestros por sucursal -->
+                <div>
+                  <div style="margin-bottom:10px">
+                    <span style="font-size:13px;font-weight:600">Estructura de Siniestros</span><br>
+                    <span style="font-size:11px;color:var(--muted)">RAMOS_STR · ejercicio + último N° siniestro</span>
+                  </div>
+                  <table>
+                    <thead><tr><th>Sucursal</th><th>Ejercicio</th><th>Último N° Siniestro</th></tr></thead>
+                    <tbody>
+                      <tr><td>Casa Central</td><td>2026</td><td>00000892</td></tr>
+                      <tr><td>Sucursal Norte</td><td>2026</td><td>00000234</td></tr>
+                      <tr><td>Sucursal Sur</td><td>2026</td><td>00000098</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Catálogo de Sucursales -->
+              <div style="margin-top:24px">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                  <div><span style="font-size:13px;font-weight:600">Catálogo de Sucursales</span> <span style="font-size:11px;color:var(--muted)">SUCURSALES + TIPOS_SUCURSAL_RAES</span></div>
+                  <button class="btn btn-primary btn-sm" onclick="openModal('modal-nueva-sucursal')">+ Nueva Sucursal</button>
+                </div>
+                <table>
+                  <thead><tr><th>ID</th><th>Descripción</th><th>Tipo RAES</th><th>Ramos habilitados</th></tr></thead>
+                  <tbody>
+                    <tr><td>1</td><td>Casa Central</td><td>Sede Principal</td><td>5</td></tr>
+                    <tr><td>2</td><td>Sucursal Norte</td><td>Sucursal Regional</td><td>3</td></tr>
+                    <tr><td>3</td><td>Sucursal Sur</td><td>Sucursal Regional</td><td>3</td></tr>
+                    <tr><td>4</td><td>Sucursal Oeste</td><td>Sucursal Regional</td><td>0</td></tr>
+                    <tr><td>5</td><td>Digital / Online</td><td>Canal Digital</td><td>2</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- ═══ TAB: OPERACIONES ═══ -->
+            <div id="tab-r-operaciones" class="ramo-panel" style="padding:20px;display:none">
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+                <!-- Operaciones habilitadas para este ramo -->
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                    <div><span style="font-size:13px;font-weight:600">Operaciones habilitadas</span><br><span style="font-size:11px;color:var(--muted)">TIPO_OPERACION_X_RAMO</span></div>
+                    <button class="btn btn-outline btn-sm">+ Habilitar Op.</button>
+                  </div>
+                  <table>
+                    <thead><tr><th>Operación</th><th>Obligatoria</th><th>Dependiente</th><th>Plantilla</th><th>Vigente</th></tr></thead>
+                    <tbody>
+                      <tr><td>Emisión</td><td>✅ Sí</td><td>❌</td><td>tpl_emision_auto.pdf</td><td>✅</td></tr>
+                      <tr><td>Endoso</td><td>❌ No</td><td>✅ Sí</td><td>tpl_endoso_auto.pdf</td><td>✅</td></tr>
+                      <tr><td>Renovación</td><td>❌ No</td><td>✅ Sí</td><td>tpl_renovacion.pdf</td><td>✅</td></tr>
+                      <tr><td>Anulación</td><td>❌ No</td><td>✅ Sí</td><td>tpl_anulacion.pdf</td><td>✅</td></tr>
+                      <tr><td>Rehabilitación</td><td>❌ No</td><td>✅ Sí</td><td>—</td><td>✅</td></tr>
+                      <tr><td>Suspensión</td><td>❌ No</td><td>✅ Sí</td><td>—</td><td>✅</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Tipos de negocio habilitados -->
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                    <div><span style="font-size:13px;font-weight:600">Tipos de Negocio</span><br><span style="font-size:11px;color:var(--muted)">TIPO_NEGOCIO_X_RAMO</span></div>
+                    <button class="btn btn-outline btn-sm">+ Habilitar</button>
+                  </div>
+                  <table>
+                    <thead><tr><th>Tipo de Negocio</th><th>Vigente</th></tr></thead>
+                    <tbody>
+                      <tr><td>Directo</td><td><span class="badge badge-success">✅ Sí</span></td></tr>
+                      <tr><td>Coaseguro Cedido</td><td><span class="badge badge-success">✅ Sí</span></td></tr>
+                      <tr><td>Coaseguro Aceptado</td><td><span class="badge badge-warning">❌ No</span></td></tr>
+                      <tr><td>Reaseguro Aceptado</td><td><span class="badge badge-warning">❌ No</span></td></tr>
+                      <tr><td>Fronting</td><td><span class="badge badge-warning">❌ No</span></td></tr>
+                    </tbody>
+                  </table>
+
+                  <div style="margin-top:20px">
+                    <div style="font-size:13px;font-weight:600;margin-bottom:10px">Conceptos Económicos del Ramo <span style="font-size:11px;color:var(--muted)">CONCEPTO_RAMO_COM</span></div>
+                    <table>
+                      <thead><tr><th>Concepto</th><th>%</th><th>Importe fijo</th></tr></thead>
+                      <tbody>
+                        <tr><td>Derecho de emisión</td><td>—</td><td>$ 850</td></tr>
+                        <tr><td>Recargo administrativo</td><td>2.5%</td><td>—</td></tr>
+                        <tr><td>Premio mínimo</td><td>—</td><td>$ 5.000</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Catálogo global de Tipos de Operación -->
+              <div style="margin-top:24px">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                  <div><span style="font-size:13px;font-weight:600">Catálogo global — Tipos de Operación</span> <span style="font-size:11px;color:var(--muted)">TIPO_OPERACION</span></div>
+                  <button class="btn btn-primary btn-sm">+ Nueva Operación</button>
+                </div>
+                <table>
+                  <thead><tr><th>ID</th><th>Descripción</th><th>Obligatoria</th><th>Dependiente</th><th>Plantilla</th><th>Vigente</th></tr></thead>
+                  <tbody>
+                    <tr><td>1</td><td>Emisión de Póliza</td><td>S</td><td>N</td><td>tpl_emision.pdf</td><td><span class="badge badge-success">S</span></td></tr>
+                    <tr><td>2</td><td>Endoso de Modificación</td><td>N</td><td>S</td><td>tpl_endoso.pdf</td><td><span class="badge badge-success">S</span></td></tr>
+                    <tr><td>3</td><td>Renovación</td><td>N</td><td>S</td><td>tpl_renovacion.pdf</td><td><span class="badge badge-success">S</span></td></tr>
+                    <tr><td>4</td><td>Anulación</td><td>N</td><td>S</td><td>tpl_anulacion.pdf</td><td><span class="badge badge-success">S</span></td></tr>
+                    <tr><td>5</td><td>Rehabilitación</td><td>N</td><td>S</td><td>—</td><td><span class="badge badge-success">S</span></td></tr>
+                    <tr><td>6</td><td>Suspensión</td><td>N</td><td>S</td><td>—</td><td><span class="badge badge-success">S</span></td></tr>
+                    <tr><td>7</td><td>Inspección previa</td><td>N</td><td>N</td><td>—</td><td><span class="badge badge-success">S</span></td></tr>
+                    <tr><td>8</td><td>Cesión de derechos</td><td>N</td><td>S</td><td>tpl_cesion.pdf</td><td><span class="badge badge-success">S</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- ═══ TAB: ENDOSOS ═══ -->
+            <div id="tab-r-endosos" class="ramo-panel" style="padding:20px;display:none">
+
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div><span style="font-size:13px;font-weight:600">Endosos habilitados para Automóviles</span><br><span style="font-size:11px;color:var(--muted)">RAMOS_X_TIPO_ENDOSO · tipo + subtipo</span></div>
+                <button class="btn btn-outline btn-sm" onclick="openModal('modal-hab-endoso')">+ Habilitar Endoso</button>
+              </div>
+              <table style="margin-bottom:24px">
+                <thead><tr><th>Tipo Endoso</th><th>Subtipo</th><th>Habilitado</th></tr></thead>
+                <tbody>
+                  <tr><td>Modificación de datos</td><td>Cambio de domicilio</td><td><span class="badge badge-success">✅</span></td></tr>
+                  <tr><td>Modificación de datos</td><td>Cambio de beneficiario</td><td><span class="badge badge-success">✅</span></td></tr>
+                  <tr><td>Modificación de datos</td><td>Cambio de vehículo</td><td><span class="badge badge-success">✅</span></td></tr>
+                  <tr><td>Aumento de suma asegurada</td><td>Ampliación de cobertura</td><td><span class="badge badge-success">✅</span></td></tr>
+                  <tr><td>Incorporación de ítem</td><td>Adicionar cobertura granizo</td><td><span class="badge badge-success">✅</span></td></tr>
+                  <tr><td>Cancelación total</td><td>Por solicitud del asegurado</td><td><span class="badge badge-success">✅</span></td></tr>
+                  <tr><td>Cancelación total</td><td>Por falta de pago</td><td><span class="badge badge-success">✅</span></td></tr>
+                  <tr><td>Suspensión</td><td>Suspensión de cobertura</td><td><span class="badge badge-success">✅</span></td></tr>
+                  <tr><td>Renovación</td><td>Renovación anual</td><td><span class="badge badge-success">✅</span></td></tr>
+                  <tr><td>Cesión de derechos</td><td>Prendatario</td><td><span class="badge badge-warning">❌ No hab.</span></td></tr>
+                </tbody>
+              </table>
+
+              <!-- Catálogo global de Tipos de Endoso -->
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                    <div><span style="font-size:13px;font-weight:600">Catálogo — Tipos de Endoso</span> <span style="font-size:11px;color:var(--muted)">TIPO_ENDOSO</span></div>
+                    <button class="btn btn-primary btn-sm">+ Nuevo Tipo</button>
+                  </div>
+                  <table>
+                    <thead><tr><th>ID</th><th>Descripción</th></tr></thead>
+                    <tbody>
+                      <tr><td>1</td><td>Modificación de datos</td></tr>
+                      <tr><td>2</td><td>Incorporación de ítem</td></tr>
+                      <tr><td>3</td><td>Aumento de suma / cobertura</td></tr>
+                      <tr><td>4</td><td>Disminución de suma / cobertura</td></tr>
+                      <tr><td>5</td><td>Cancelación total</td></tr>
+                      <tr><td>6</td><td>Cancelación parcial</td></tr>
+                      <tr><td>7</td><td>Suspensión</td></tr>
+                      <tr><td>8</td><td>Rehabilitación</td></tr>
+                      <tr><td>9</td><td>Cesión de derechos</td></tr>
+                      <tr><td>10</td><td>Renovación</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                    <div><span style="font-size:13px;font-weight:600">Subtipos de Endoso</span> <span style="font-size:11px;color:var(--muted)">SUBTIPO_ENDOSO</span></div>
+                    <button class="btn btn-primary btn-sm">+ Nuevo Subtipo</button>
+                  </div>
+                  <table>
+                    <thead><tr><th>ID</th><th>Tipo</th><th>Descripción Subtipo</th></tr></thead>
+                    <tbody>
+                      <tr><td>101</td><td>Mod. datos</td><td>Cambio de domicilio</td></tr>
+                      <tr><td>102</td><td>Mod. datos</td><td>Cambio de beneficiario</td></tr>
+                      <tr><td>103</td><td>Mod. datos</td><td>Cambio de vehículo</td></tr>
+                      <tr><td>104</td><td>Mod. datos</td><td>Cambio de placa/patente</td></tr>
+                      <tr><td>501</td><td>Cancelación total</td><td>Por solicitud</td></tr>
+                      <tr><td>502</td><td>Cancelación total</td><td>Por falta de pago</td></tr>
+                      <tr><td>503</td><td>Cancelación total</td><td>Por siniestro total</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- ═══ TAB: VIGENCIAS ═══ -->
+            <div id="tab-r-vigencias" class="ramo-panel" style="padding:20px;display:none">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                    <div><span style="font-size:13px;font-weight:600">Vigencias habilitadas para Automóviles</span><br><span style="font-size:11px;color:var(--muted)">TIPO_VIGENCIA_X_RAMO</span></div>
+                    <button class="btn btn-outline btn-sm">+ Habilitar</button>
+                  </div>
+                  <table>
+                    <thead><tr><th>Tipo de Vigencia</th><th>Habilitada</th></tr></thead>
+                    <tbody>
+                      <tr><td>Anual (12 meses)</td><td><span class="badge badge-success">✅ Sí</span></td></tr>
+                      <tr><td>Semestral (6 meses)</td><td><span class="badge badge-success">✅ Sí</span></td></tr>
+                      <tr><td>Trimestral (3 meses)</td><td><span class="badge badge-warning">❌ No</span></td></tr>
+                      <tr><td>Mensual</td><td><span class="badge badge-warning">❌ No</span></td></tr>
+                      <tr><td>Por viaje</td><td><span class="badge badge-warning">❌ No</span></td></tr>
+                      <tr><td>Indefinida</td><td><span class="badge badge-warning">❌ No</span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                    <div><span style="font-size:13px;font-weight:600">Catálogo global — Tipos de Vigencia</span><br><span style="font-size:11px;color:var(--muted)">TIPO_VIGENCIA</span></div>
+                    <button class="btn btn-primary btn-sm">+ Nueva Vigencia</button>
+                  </div>
+                  <table>
+                    <thead><tr><th>ID</th><th>Descripción</th></tr></thead>
+                    <tbody>
+                      <tr><td>1</td><td>Anual (12 meses)</td></tr>
+                      <tr><td>2</td><td>Semestral (6 meses)</td></tr>
+                      <tr><td>3</td><td>Trimestral (3 meses)</td></tr>
+                      <tr><td>4</td><td>Mensual</td></tr>
+                      <tr><td>5</td><td>Por viaje</td></tr>
+                      <tr><td>6</td><td>Indefinida</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- ═══ TAB: CONTABILIDAD ═══ -->
+            <div id="tab-r-contabilidad" class="ramo-panel" style="padding:20px;display:none">
+
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div><span style="font-size:13px;font-weight:600">Mapeo Contable</span> <span style="font-size:11px;color:var(--muted)">RAMOS_CONTABLE + RAMOS_CONTABLE_X_RAMO_TEC</span></div>
+                <button class="btn btn-outline btn-sm" onclick="openModal('modal-nuevo-contable')">+ Nuevo Mapeo</button>
+              </div>
+              <table style="margin-bottom:24px">
+                <thead><tr><th>Ramo Técnico</th><th>Subramo</th><th>Cód. Contable</th><th>Denominación Contable</th><th>Vigencia</th></tr></thead>
+                <tbody>
+                  <tr><td>Daños Propios (101)</td><td>Individuales</td><td>A100-DP-IND</td><td>Automóviles Daños Propios — Particulares</td><td>01/01/2026</td></tr>
+                  <tr><td>Daños Propios (101)</td><td>Flotas</td><td>A100-DP-FL</td><td>Automóviles Daños Propios — Flotas</td><td>01/01/2026</td></tr>
+                  <tr><td>RC (102)</td><td>Individuales</td><td>A100-RC-IND</td><td>Automóviles RC — Particulares</td><td>01/01/2026</td></tr>
+                  <tr><td>RC (102)</td><td>Flotas</td><td>A100-RC-FL</td><td>Automóviles RC — Flotas</td><td>01/01/2026</td></tr>
+                  <tr><td>Robo y Hurto (103)</td><td>Individuales</td><td>A100-RH-IND</td><td>Automóviles Robo y Hurto</td><td>01/01/2026</td></tr>
+                </tbody>
+              </table>
+
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                  <div><span style="font-size:13px;font-weight:600">Catálogo de Ramos Contables</span> <span style="font-size:11px;color:var(--muted)">RAMOS_CONTABLE</span></div>
+                  <button class="btn btn-primary btn-sm">+ Nuevo Ramo Contable</button>
+                </div>
+                <table>
+                  <thead><tr><th>Cód. Contable</th><th>Denominación</th><th>Vigencia</th></tr></thead>
+                  <tbody>
+                    <tr><td>A100-DP-IND</td><td>Automóviles Daños Propios — Particulares</td><td>01/01/2026</td></tr>
+                    <tr><td>A100-DP-FL</td><td>Automóviles Daños Propios — Flotas</td><td>01/01/2026</td></tr>
+                    <tr><td>A100-RC-IND</td><td>Automóviles RC — Particulares</td><td>01/01/2026</td></tr>
+                    <tr><td>A100-RC-FL</td><td>Automóviles RC — Flotas</td><td>01/01/2026</td></tr>
+                    <tr><td>V200-IND</td><td>Vida Individual</td><td>01/01/2026</td></tr>
+                    <tr><td>I300-COM</td><td>Incendio Comercial</td><td>01/01/2026</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- ═══ TAB: IMPUESTOS ═══ -->
+            <div id="tab-r-impuestos" class="ramo-panel" style="padding:20px;display:none">
+
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div><span style="font-size:13px;font-weight:600">Impuestos habilitados para Automóviles</span><br><span style="font-size:11px;color:var(--muted)">IMPUESTO_X_PROVINCIA · tasa por ramo</span></div>
+                <button class="btn btn-outline btn-sm" onclick="openModal('modal-hab-impuesto')">+ Asociar Impuesto</button>
+              </div>
+              <table style="margin-bottom:24px">
+                <thead><tr><th>Impuesto</th><th>Cód. Concepto</th><th>Base de Cálculo</th><th>Retención %</th><th>Mínimo</th></tr></thead>
+                <tbody>
+                  <tr><td>IVA 21%</td><td>IVA-21</td><td>PRIMA_NETA</td><td>21.00%</td><td>—</td></tr>
+                  <tr><td>IVA 10.5% (Monotrib.)</td><td>IVA-105</td><td>PRIMA_NETA</td><td>10.50%</td><td>—</td></tr>
+                  <tr><td>Sellado CABA</td><td>SEL-CABA</td><td>PREMIO</td><td>2.50%</td><td>$ 100</td></tr>
+                  <tr><td>Sellado PBA</td><td>SEL-PBA</td><td>PREMIO</td><td>1.80%</td><td>$ 80</td></tr>
+                  <tr><td>Imp. Premios</td><td>IMP-PREM</td><td>PREMIO</td><td>0.60%</td><td>—</td></tr>
+                </tbody>
+              </table>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                    <div><span style="font-size:13px;font-weight:600">Catálogo de Impuestos</span> <span style="font-size:11px;color:var(--muted)">IMPUESTOS</span></div>
+                    <button class="btn btn-primary btn-sm">+ Nuevo</button>
+                  </div>
+                  <table>
+                    <thead><tr><th>ID</th><th>Descripción</th><th>Cód.</th><th>Retención %</th></tr></thead>
+                    <tbody>
+                      <tr><td>1</td><td>IVA 21%</td><td>IVA-21</td><td>21.00%</td></tr>
+                      <tr><td>2</td><td>IVA 10.5%</td><td>IVA-105</td><td>10.50%</td></tr>
+                      <tr><td>3</td><td>IVA Exento</td><td>IVA-EX</td><td>0.00%</td></tr>
+                      <tr><td>4</td><td>Sellado CABA</td><td>SEL-CABA</td><td>2.50%</td></tr>
+                      <tr><td>5</td><td>Sellado PBA</td><td>SEL-PBA</td><td>1.80%</td></tr>
+                      <tr><td>6</td><td>Imp. Premios</td><td>IMP-PREM</td><td>0.60%</td></tr>
+                      <tr><td>7</td><td>Ret. Ganancias</td><td>RET-IIGG</td><td>Variable</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div>
+                  <div style="margin-bottom:10px">
+                    <span style="font-size:13px;font-weight:600">Condición Fiscal × Impuesto</span><br>
+                    <span style="font-size:11px;color:var(--muted)">CONDICION_FISCAL + CONDICION_X_IMPUT</span>
+                  </div>
+                  <table>
+                    <thead><tr><th>Condición Fiscal</th><th>IVA aplica</th><th>Sellado</th><th>Ret. Gg.</th></tr></thead>
+                    <tbody>
+                      <tr><td>Responsable Inscripto</td><td>IVA 21%</td><td>✅</td><td>✅</td></tr>
+                      <tr><td>Monotributista</td><td>IVA 10.5%</td><td>✅</td><td>❌</td></tr>
+                      <tr><td>Consumidor Final</td><td>IVA 21%</td><td>✅</td><td>❌</td></tr>
+                      <tr><td>Exento</td><td>IVA Exento</td><td>✅</td><td>❌</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- ═══ TAB: FACTURACIÓN ═══ -->
+            <div id="tab-r-facturacion" class="ramo-panel" style="padding:20px;display:none">
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                    <div><span style="font-size:13px;font-weight:600">Configuración de Pagadores</span><br><span style="font-size:11px;color:var(--muted)">TIPO_PAGADOR_X_RAMO</span></div>
+                    <button class="btn btn-outline btn-sm">+ Configurar</button>
+                  </div>
+                  <table>
+                    <thead><tr><th>Tipo Facturación</th><th>Sucursal</th><th>Tipo Negocio</th></tr></thead>
+                    <tbody>
+                      <tr><td>Prima Directa</td><td>Casa Central</td><td>Directo</td></tr>
+                      <tr><td>Prima Directa</td><td>Sucursal Norte</td><td>Directo</td></tr>
+                      <tr><td>Coaseguro Cedido</td><td>Casa Central</td><td>Coaseg. Cedido</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                    <div><span style="font-size:13px;font-weight:600">Catálogo — Tipos de Facturación</span><br><span style="font-size:11px;color:var(--muted)">TIPO_FACTURACION</span></div>
+                    <button class="btn btn-primary btn-sm">+ Nuevo</button>
+                  </div>
+                  <table>
+                    <thead><tr><th>ID</th><th>Descripción</th><th>Ciclo</th><th>Vto.</th><th>Vigente</th></tr></thead>
+                    <tbody>
+                      <tr><td>1</td><td>Prima Directa</td><td>AL_VENCIMIENTO</td><td>30 días</td><td><span class="badge badge-success">S</span></td></tr>
+                      <tr><td>2</td><td>Coaseguro Aceptado</td><td>MENSUAL</td><td>15 días</td><td><span class="badge badge-success">S</span></td></tr>
+                      <tr><td>3</td><td>Reaseguro</td><td>MENSUAL</td><td>30 días</td><td><span class="badge badge-success">S</span></td></tr>
+                      <tr><td>4</td><td>Cuota Plan de Pago</td><td>MENSUAL</td><td>Fijo mes</td><td><span class="badge badge-success">S</span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div style="margin-top:24px">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                  <div><span style="font-size:13px;font-weight:600">Remisiones de Facturación</span> <span style="font-size:11px;color:var(--muted)">REMISION_FACTURACION</span></div>
+                  <button class="btn btn-primary btn-sm">+ Nueva Remisión</button>
+                </div>
+                <table>
+                  <thead><tr><th>ID</th><th>Descripción</th><th>Turno</th><th>Número</th><th>Vigente</th></tr></thead>
+                  <tbody>
+                    <tr><td>1</td><td>Remisión Mensual Productores</td><td>MAÑANA</td><td>REM-2026-06</td><td><span class="badge badge-success">S</span></td></tr>
+                    <tr><td>2</td><td>Remisión Quincenal Directo</td><td>TARDE</td><td>REM-2026-05</td><td><span class="badge badge-success">S</span></td></tr>
+                    <tr><td>3</td><td>Remisión Coaseguro</td><td>NOCHE</td><td>REM-CO-2026-05</td><td><span class="badge badge-warning">N</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- ═══ TAB: AGENCIAS ═══ -->
+            <div id="tab-r-agencias" class="ramo-panel" style="padding:20px;display:none">
+
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div><span style="font-size:13px;font-weight:600">Agencias habilitadas para Automóviles</span><br><span style="font-size:11px;color:var(--muted)">AGENCIAS_X_RAMO · por sucursal</span></div>
+                <button class="btn btn-outline btn-sm" onclick="openModal('modal-hab-agencia')">+ Habilitar Agencia</button>
+              </div>
+              <table style="margin-bottom:24px">
+                <thead><tr><th>Agencia</th><th>Sucursal</th><th>Feature ID</th><th>Estado</th></tr></thead>
+                <tbody>
+                  <tr><td>Agencia Norte S.A.</td><td>Casa Central</td><td>FEAT-AUTO-001</td><td><span class="badge badge-success">Habilitada</span></td></tr>
+                  <tr><td>Broker Sur SRL</td><td>Sucursal Sur</td><td>FEAT-AUTO-001</td><td><span class="badge badge-success">Habilitada</span></td></tr>
+                  <tr><td>Digital Seguros SA</td><td>Digital / Online</td><td>FEAT-AUTO-WEB</td><td><span class="badge badge-success">Habilitada</span></td></tr>
+                  <tr><td>Consorcio Productores BA</td><td>Sucursal Norte</td><td>FEAT-AUTO-001</td><td><span class="badge badge-warning">Pendiente</span></td></tr>
+                </tbody>
+              </table>
+
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div><span style="font-size:13px;font-weight:600">Catálogo global — Agencias</span> <span style="font-size:11px;color:var(--muted)">AGENCIAS</span></div>
+                <button class="btn btn-primary btn-sm">+ Nueva Agencia</button>
+              </div>
+              <table>
+                <thead><tr><th>ID</th><th>Descripción</th><th>Ramos operados</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>Agencia Norte S.A.</td><td>Auto, Incendio, AP</td></tr>
+                  <tr><td>2</td><td>Broker Sur SRL</td><td>Auto, Vida</td></tr>
+                  <tr><td>3</td><td>Digital Seguros SA</td><td>Auto, AP</td></tr>
+                  <tr><td>4</td><td>Consorcio Productores BA</td><td>Auto, Vida, Incendio, AP, Transporte</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- ═══ PANELES DE CATÁLOGOS GLOBALES (desde sidebar) ═══ -->
+            <div id="tab-r-tipos-op"        class="ramo-panel" style="padding:20px;display:none"><p style="color:var(--muted);font-size:13px">↖ Selecciona un ramo y abre la pestaña <strong>⚙️ Operaciones</strong> para ver el catálogo global de Tipos de Operación.</p></div>
+            <div id="tab-r-endosos-cat"     class="ramo-panel" style="padding:20px;display:none"><p style="color:var(--muted);font-size:13px">↖ Selecciona un ramo y abre la pestaña <strong>🔄 Endosos</strong> para ver el catálogo de Tipos y Subtipos de Endoso.</p></div>
+            <div id="tab-r-vigencias-cat"   class="ramo-panel" style="padding:20px;display:none"><p style="color:var(--muted);font-size:13px">↖ Selecciona un ramo y abre la pestaña <strong>📅 Vigencias</strong> para ver el catálogo global.</p></div>
+            <div id="tab-r-impuestos-cat"   class="ramo-panel" style="padding:20px;display:none"><p style="color:var(--muted);font-size:13px">↖ Selecciona un ramo y abre la pestaña <strong>💰 Impuestos</strong> para ver el catálogo global.</p></div>
+            <div id="tab-r-facturacion-cat" class="ramo-panel" style="padding:20px;display:none"><p style="color:var(--muted);font-size:13px">↖ Selecciona un ramo y abre la pestaña <strong>🧾 Facturación</strong> para ver los tipos de facturación.</p></div>
+            <div id="tab-r-agencias-cat"    class="ramo-panel" style="padding:20px;display:none"><p style="color:var(--muted);font-size:13px">↖ Selecciona un ramo y abre la pestaña <strong>🏪 Agencias</strong> para ver el catálogo global.</p></div>
+
+          </div><!-- /card tabs -->
+        </div><!-- /panel derecho -->
+      </div><!-- /grid -->
     </div>
 
     <!-- ===== PRODUCTOS ===== -->
@@ -1119,6 +1654,156 @@
   </div>
 </div>
 
+<!-- ═══ MODALES MÓDULO 1 — RAMOS ═══ -->
+
+<!-- Modal: Nuevo Ramo Comercial -->
+<div class="modal-overlay" id="modal-nuevo-ramo">
+  <div class="modal">
+    <h3>🏷️ Nuevo Ramo Comercial</h3>
+    <div class="form-grid">
+      <div class="form-group form-full"><label>Descripción del Ramo</label><input type="text" placeholder="ej. Automóviles, Vida, Incendio"></div>
+      <div class="form-group"><label>Código SSN</label><input type="text" placeholder="ej. 100, 200, 300"></div>
+      <div class="form-group"><label>Tipo de Ramo</label><select><option>Patrimonial</option><option>Personas</option><option>Transporte</option><option>Vida</option><option>Caución</option></select></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-nuevo-ramo')">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-nuevo-ramo');alert('✅ Ramo Comercial creado.\nAhora configurá sucursales, endosos e impuestos.')">Crear</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Vincular Ramo Técnico -->
+<div class="modal-overlay" id="modal-vincular-tec">
+  <div class="modal">
+    <h3>🔗 Vincular Ramo Técnico</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">El ramo técnico es la desagregación interna actuarial y contable del ramo comercial (N:M via tabla RAMOS).</p>
+    <div class="form-grid">
+      <div class="form-group form-full"><label>Descripción del Ramo Técnico</label><input type="text" placeholder="ej. Automóviles — Robo y Hurto"></div>
+      <div class="form-group"><label>Sucursal responsable</label><select><option>Casa Central</option><option>Sucursal Norte</option><option>Sucursal Sur</option></select></div>
+      <div class="form-group"><label>Usuario responsable</label><input type="text" placeholder="actuary01"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-vincular-tec')">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-vincular-tec');alert('✅ Ramo Técnico creado y vinculado al ramo comercial.')">Vincular</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nuevo Subramo -->
+<div class="modal-overlay" id="modal-nuevo-subramo">
+  <div class="modal">
+    <h3>📂 Nuevo Subramo</h3>
+    <div class="form-grid">
+      <div class="form-group form-full"><label>Descripción del Subramo</label><input type="text" placeholder="ej. Automóviles — Flotas"></div>
+      <div class="form-group"><label>Código Contable</label><input type="text" placeholder="A100-FL"></div>
+      <div class="form-group"><label>Denominación Contable</label><input type="text" placeholder="Flota de Vehículos Comerciales"></div>
+      <div class="form-group"><label>Vigencia</label><input type="date"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-nuevo-subramo')">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-nuevo-subramo');alert('✅ Subramo creado y asociado al ramo comercial.')">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Habilitar Sucursal -->
+<div class="modal-overlay" id="modal-hab-sucursal">
+  <div class="modal">
+    <h3>🏢 Habilitar Ramo en Sucursal</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Registra en RAMOS_CON_SUC y RAMOS_STR para habilitar operaciones y numeración independiente.</p>
+    <div class="form-grid">
+      <div class="form-group form-full"><label>Sucursal</label><select><option>Sucursal Oeste</option><option>Digital / Online</option></select></div>
+      <div class="form-group"><label>Último N° Póliza inicial</label><input type="number" value="0"></div>
+      <div class="form-group"><label>Ejercicio contable</label><input type="number" value="2026"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-hab-sucursal')">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-hab-sucursal');alert('✅ Ramo habilitado en la sucursal seleccionada.')">Habilitar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nueva Sucursal -->
+<div class="modal-overlay" id="modal-nueva-sucursal">
+  <div class="modal">
+    <h3>🏢 Nueva Sucursal</h3>
+    <div class="form-grid">
+      <div class="form-group form-full"><label>Nombre de la Sucursal</label><input type="text" placeholder="ej. Sucursal Centro"></div>
+      <div class="form-group form-full"><label>Tipo RAES</label><select><option>Sede Principal</option><option>Sucursal Regional</option><option>Canal Digital</option><option>Corresponsal</option></select></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-nueva-sucursal')">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-nueva-sucursal');alert('✅ Sucursal creada. Ahora habilitá los ramos correspondientes.')">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Habilitar Endoso -->
+<div class="modal-overlay" id="modal-hab-endoso">
+  <div class="modal">
+    <h3>🔄 Habilitar Endoso para el Ramo</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Registra en RAMOS_X_TIPO_ENDOSO la combinación tipo + subtipo habilitada para este ramo comercial.</p>
+    <div class="form-grid">
+      <div class="form-group form-full"><label>Tipo de Endoso</label><select><option>Modificación de datos</option><option>Incorporación de ítem</option><option>Aumento de suma/cobertura</option><option>Disminución de suma/cobertura</option><option>Cancelación total</option><option>Cancelación parcial</option><option>Suspensión</option><option>Rehabilitación</option><option>Cesión de derechos</option><option>Renovación</option></select></div>
+      <div class="form-group form-full"><label>Subtipo de Endoso</label><select><option>Cesión a prendatario</option><option>Cesión a leasing</option><option>Otra cesión</option></select></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-hab-endoso')">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-hab-endoso');alert('✅ Endoso habilitado para el ramo.')">Habilitar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nuevo Mapeo Contable -->
+<div class="modal-overlay" id="modal-nuevo-contable">
+  <div class="modal">
+    <h3>📒 Nuevo Mapeo Contable</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Registra en RAMOS_CONTABLE_X_RAMO_TEC la combinación ramo técnico + subramo → código contable.</p>
+    <div class="form-grid">
+      <div class="form-group"><label>Ramo Técnico</label><select><option>Daños Propios (101)</option><option>RC (102)</option><option>Robo y Hurto (103)</option></select></div>
+      <div class="form-group"><label>Subramo</label><select><option>Individuales (11)</option><option>Flotas (10)</option><option>Taxi/Remis (12)</option></select></div>
+      <div class="form-group"><label>Código Contable</label><input type="text" placeholder="A100-XX-YY"></div>
+      <div class="form-group"><label>Denominación Contable</label><input type="text" placeholder="Descripción contable"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-nuevo-contable')">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-nuevo-contable');alert('✅ Mapeo contable registrado.')">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Asociar Impuesto -->
+<div class="modal-overlay" id="modal-hab-impuesto">
+  <div class="modal">
+    <h3>💰 Asociar Impuesto al Ramo</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Registra en IMPUESTO_X_PROVINCIA el impuesto aplicable a este ramo.</p>
+    <div class="form-grid">
+      <div class="form-group form-full"><label>Impuesto</label><select><option>IVA 21% (IVA-21)</option><option>IVA 10.5% (IVA-105)</option><option>Sellado CABA (SEL-CABA)</option><option>Sellado PBA (SEL-PBA)</option><option>Imp. Premios (IMP-PREM)</option><option>Ret. Ganancias (RET-IIGG)</option></select></div>
+      <div class="form-group"><label>Condición Fiscal</label><select><option>Todas</option><option>Responsable Inscripto</option><option>Monotributista</option><option>Consumidor Final</option><option>Exento</option></select></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-hab-impuesto')">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-hab-impuesto');alert('✅ Impuesto asociado al ramo.')">Asociar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Habilitar Agencia -->
+<div class="modal-overlay" id="modal-hab-agencia">
+  <div class="modal">
+    <h3>🏪 Habilitar Agencia para el Ramo</h3>
+    <div class="form-grid">
+      <div class="form-group form-full"><label>Agencia</label><select><option>Agencia Norte S.A.</option><option>Broker Sur SRL</option><option>Digital Seguros SA</option><option>Consorcio Productores BA</option></select></div>
+      <div class="form-group"><label>Sucursal</label><select><option>Casa Central</option><option>Sucursal Norte</option><option>Sucursal Sur</option><option>Digital / Online</option></select></div>
+      <div class="form-group"><label>Feature ID</label><input type="text" placeholder="FEAT-AUTO-001"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-hab-agencia')">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-hab-agencia');alert('✅ Agencia habilitada para operar este ramo en la sucursal seleccionada.')">Habilitar</button>
+    </div>
+  </div>
+</div>
+
 <!-- Modal: Nuevo Producto -->
 <div class="modal-overlay" id="modal-nuevo-producto">
   <div class="modal">
@@ -1341,6 +2026,48 @@
 
   function openModal(id)  { document.getElementById(id).classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  // TABS DE RAMO
+  const ramoTabIds = ['tab-r-nucleo','tab-r-sucursales','tab-r-operaciones','tab-r-endosos','tab-r-vigencias','tab-r-contabilidad','tab-r-impuestos','tab-r-facturacion','tab-r-agencias','tab-r-tipos-op','tab-r-endosos-cat','tab-r-vigencias-cat','tab-r-impuestos-cat','tab-r-facturacion-cat','tab-r-agencias-cat'];
+  function showRamoTab(tabId) {
+    ramoTabIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+    document.querySelectorAll('.ramo-tab').forEach(t => {
+      t.style.borderBottomColor = 'transparent';
+      t.style.color = 'var(--muted)';
+      t.style.background = 'none';
+    });
+    const panel = document.getElementById(tabId);
+    if (panel) panel.style.display = 'block';
+    const mainTabs = ['tab-r-nucleo','tab-r-sucursales','tab-r-operaciones','tab-r-endosos','tab-r-vigencias','tab-r-contabilidad','tab-r-impuestos','tab-r-facturacion','tab-r-agencias'];
+    const idx = mainTabs.indexOf(tabId);
+    if (idx >= 0) {
+      const tabs = document.querySelectorAll('.ramo-tab');
+      if (tabs[idx]) {
+        tabs[idx].style.borderBottomColor = 'var(--accent)';
+        tabs[idx].style.color = 'var(--accent)';
+        tabs[idx].style.background = '#fff';
+      }
+    }
+  }
+
+  // SELECCIÓN DE RAMO EN LA LISTA
+  function selectRamo(el, code) {
+    document.querySelectorAll('.ramo-item').forEach(p => {
+      p.style.borderLeftColor = 'transparent';
+      p.style.background = '';
+    });
+    el.style.borderLeftColor = 'var(--accent)';
+    el.style.background = '#eff6ff';
+    showRamoTab('tab-r-nucleo');
+  }
+
+  // Inicializar tabs de ramo
+  document.addEventListener('DOMContentLoaded', () => {
+    showRamoTab('tab-r-nucleo');
+  });
 
   // TABS DE PRODUCTO
   function showTab(tabId) {
