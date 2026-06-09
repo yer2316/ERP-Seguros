@@ -2852,20 +2852,291 @@
     <!-- ===== AGENTES ===== -->
     <div class="page" id="page-agentes">
       <div class="page-header">
-        <div><h2>🤝 Agentes / Productores</h2><p>PAS, organizaciones y corredores habilitados</p></div>
-        <button class="btn btn-primary">+ Nuevo Agente</button>
+        <div>
+          <h2>🤝 Módulo 4 — Agentes / Productores</h2>
+          <p>PAS, organizaciones, corredores · 13 entidades · 4 grupos funcionales (A→D)</p>
+        </div>
+        <button class="btn btn-primary">+ Nuevo</button>
       </div>
-      <div class="full-card">
-        <table>
-          <thead><tr><th>Matrícula SSN</th><th>Nombre</th><th>Tipo</th><th>Organización</th><th>Ramos Habilitados</th><th>Comisión Base</th><th>Estado</th></tr></thead>
-          <tbody>
-            <tr><td>PAS-00234</td><td>Fernández, Roberto</td><td>PAS Individual</td><td>—</td><td>Auto, Vida, Incendio</td><td>12%</td><td><span class="badge badge-success">Habilitado</span></td></tr>
-            <tr><td>PAS-00891</td><td>Agencia Norte S.A.</td><td>Organización</td><td>—</td><td>Todos</td><td>15%</td><td><span class="badge badge-success">Habilitado</span></td></tr>
-            <tr><td>PAS-01102</td><td>Gómez, Sofía</td><td>PAS Dependiente</td><td>Agencia Norte S.A.</td><td>Auto, Incendio</td><td>8%</td><td><span class="badge badge-success">Habilitado</span></td></tr>
-            <tr><td>PAS-00456</td><td>Torres, Miguel</td><td>PAS Individual</td><td>—</td><td>Vida</td><td>10%</td><td><span class="badge badge-warning">Matrícula vencida</span></td></tr>
-          </tbody>
-        </table>
-      </div>
+
+      <div style="display:grid;grid-template-columns:230px 1fr;gap:16px;align-items:start">
+
+        <!-- ══ MENÚ IZQUIERDO ══ -->
+        <div class="card" style="padding:0;overflow:hidden;position:sticky;top:70px">
+          <div style="padding:10px 14px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase">Catálogos del Módulo</div>
+
+          <div class="rc-group-hdr">🧩 A · REGISTRO DEL AGENTE</div>
+          <div class="rc-item active" id="agt-mi-tipo-agente"    onclick="showAgtCatalog('agt-tipo-agente')">Tipo de Agente</div>
+          <div class="rc-item"        id="agt-mi-agentes"        onclick="showAgtCatalog('agt-agentes')">Agentes</div>
+
+          <div class="rc-group-hdr">📋 B · MATRÍCULA SSN</div>
+          <div class="rc-item"        id="agt-mi-matriculas"     onclick="showAgtCatalog('agt-matriculas')">Matrículas SSN</div>
+          <div class="rc-item"        id="agt-mi-mat-ramos"      onclick="showAgtCatalog('agt-mat-ramos')">Matrícula × Ramos</div>
+          <div class="rc-item"        id="agt-mi-inhabilitac"    onclick="showAgtCatalog('agt-inhabilitac')">Inhabilitaciones</div>
+
+          <div class="rc-group-hdr">🏢 C · HABILITACIONES OPERATIVAS</div>
+          <div class="rc-item"        id="agt-mi-monedas"        onclick="showAgtCatalog('agt-monedas')">Monedas Habilitadas</div>
+          <div class="rc-item"        id="agt-mi-sucursales"     onclick="showAgtCatalog('agt-sucursales')">Sucursales del Agente</div>
+
+          <div class="rc-group-hdr">💰 D · ESTRUCTURA DE COMISIONES</div>
+          <div class="rc-item"        id="agt-mi-com-ramo"       onclick="showAgtCatalog('agt-com-ramo')">Comisión × Ramo <span style="font-size:9px;background:#dbeafe;color:#1d4ed8;padding:1px 5px;border-radius:8px;margin-left:2px">Niv.1</span></div>
+          <div class="rc-item"        id="agt-mi-com-producto"   onclick="showAgtCatalog('agt-com-producto')">Comisión × Producto <span style="font-size:9px;background:#fef9c3;color:#854d0e;padding:1px 5px;border-radius:8px;margin-left:2px">Niv.2</span></div>
+          <div class="rc-item"        id="agt-mi-com-plan"       onclick="showAgtCatalog('agt-com-plan')">Comisión × Plan <span style="font-size:9px;background:#f3e8ff;color:#7e22ce;padding:1px 5px;border-radius:8px;margin-left:2px">Niv.3</span></div>
+          <div class="rc-item"        id="agt-mi-escala"         onclick="showAgtCatalog('agt-escala')">Escala de Producción</div>
+          <div class="rc-item"        id="agt-mi-escala-tramos"  onclick="showAgtCatalog('agt-escala-tramos')">Tramos de Escala</div>
+          <div class="rc-item"        id="agt-mi-subcomision"    onclick="showAgtCatalog('agt-subcomision')">Subcomisión Director</div>
+        </div>
+
+        <!-- ══ PANELES DERECHO ══ -->
+        <div>
+
+          <!-- A1 ── TIPO DE AGENTE ── -->
+          <div id="agt-tipo-agente" class="agt-panel" style="display:block">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Tipo de Agente</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">TIPO_AGENTE — PAS, Organización, Dependiente, Corredor Reaseguro, Agente Institorio</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Descripción</th><th>Req. Matrícula</th><th>Puede tener Dep.</th><th>Es Organización</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>PAS</td><td>PAS Individual</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>ORG</td><td>Organización de Productores</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>DEP</td><td>Productor Dependiente</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>REASEG</td><td>Corredor de Reaseguro</td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>INST</td><td>Agente Institorio</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- A2 ── AGENTES ── -->
+          <div id="agt-agentes" class="agt-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Agentes</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">AGENTES — pivotea sobre PERSONAS (Módulo 2), estructura jerárquica autoreferenciada</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <div style="display:flex;gap:8px;margin-bottom:12px">
+                <input type="text" placeholder="Buscar por código, nombre o matrícula…" style="flex:1;padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px">
+                <select style="padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px"><option>Todos los tipos</option><option>PAS</option><option>ORG</option><option>DEP</option></select>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Persona (Mód.2)</th><th>Tipo</th><th>Organización</th><th>Director</th><th>Permite Emis.</th><th>Activo</th><th>Inicio</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>AG-00234</td><td>Fernández, Roberto Luis</td><td><span class="badge badge-info">PAS</span></td><td>—</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td>2022-05-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>AG-00891</td><td>Agencia Norte S.A.</td><td><span class="badge badge-gray">ORG</span></td><td>—</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td>2020-01-10</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>AG-01102</td><td>Gómez, Sofía Paola</td><td><span class="badge badge-warning">DEP</span></td><td>Agencia Norte S.A.</td><td>Fernández, Roberto</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td>2023-03-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>AG-00456</td><td>Torres, Miguel Ángel</td><td><span class="badge badge-info">PAS</span></td><td>—</td><td>—</td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-success">Sí</span></td><td>2021-08-15</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>AG-00777</td><td>Re-Broker Internacional</td><td><span class="badge badge-gray">REASEG</span></td><td>—</td><td>—</td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-success">Sí</span></td><td>2019-06-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- B1 ── MATRÍCULAS SSN ── -->
+          <div id="agt-matriculas" class="agt-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Matrículas SSN</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">AGENTE_MATRICULAS — historial de matrículas, renovaciones y categorías</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Agente</th><th>N° Matrícula</th><th>Categoría</th><th>Otorgamiento</th><th>Vencimiento</th><th>Estado</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Fernández, Roberto</td><td>PAS-00234</td><td>A</td><td>2022-05-01</td><td>2025-05-01</td><td><span class="badge badge-success">VIGENTE</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Fernández, Roberto</td><td>PAS-00234-R1</td><td>A</td><td>2019-05-01</td><td>2022-04-30</td><td><span class="badge badge-gray">VENCIDA</span></td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">👁️</button></td></tr>
+                <tr><td>3</td><td>Agencia Norte S.A.</td><td>PAS-00891</td><td>B</td><td>2020-01-10</td><td>2026-01-10</td><td><span class="badge badge-success">VIGENTE</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Gómez, Sofía</td><td>PAS-01102</td><td>C</td><td>2023-03-01</td><td>2026-03-01</td><td><span class="badge badge-success">VIGENTE</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>Torres, Miguel</td><td>PAS-00456</td><td>A</td><td>2021-08-15</td><td>2024-08-15</td><td><span class="badge badge-danger">VENCIDA</span></td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- B2 ── MATRÍCULA × RAMOS ── -->
+          <div id="agt-mat-ramos" class="agt-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Matrícula × Ramos</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">AGENTE_MATRICULA_RAMOS — ramos habilitados por matrícula con vigencia propia</p></div>
+                <button class="btn btn-primary btn-sm">+ Habilitar</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Matrícula</th><th>Agente</th><th>Ramo Comercial</th><th>Habilitado</th><th>Desde</th><th>Hasta</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>PAS-00234</td><td>Fernández, Roberto</td><td>Automóviles</td><td><span class="badge badge-success">Sí</span></td><td>2022-05-01</td><td>2025-05-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>PAS-00234</td><td>Fernández, Roberto</td><td>Vida Individual</td><td><span class="badge badge-success">Sí</span></td><td>2022-05-01</td><td>2025-05-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>PAS-00234</td><td>Fernández, Roberto</td><td>Incendio y Aliados</td><td><span class="badge badge-success">Sí</span></td><td>2022-05-01</td><td>2025-05-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>PAS-00891</td><td>Agencia Norte S.A.</td><td>Automóviles</td><td><span class="badge badge-success">Sí</span></td><td>2020-01-10</td><td>2026-01-10</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>PAS-00891</td><td>Agencia Norte S.A.</td><td>Vida Individual</td><td><span class="badge badge-success">Sí</span></td><td>2020-01-10</td><td>2026-01-10</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>6</td><td>PAS-01102</td><td>Gómez, Sofía</td><td>Automóviles</td><td><span class="badge badge-success">Sí</span></td><td>2023-03-01</td><td>2026-03-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>7</td><td>PAS-00456</td><td>Torres, Miguel</td><td>Vida Individual</td><td><span class="badge badge-danger">No</span></td><td>2021-08-15</td><td>2024-08-15</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- B3 ── INHABILITACIONES ── -->
+          <div id="agt-inhabilitac" class="agt-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Inhabilitaciones</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">AGENTE_INHABILITACIONES — sanciones y suspensiones SSN, control de compliance</p></div>
+                <button class="btn btn-primary btn-sm">+ Registrar</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Agente</th><th>Tipo Sanción</th><th>Motivo</th><th>Desde</th><th>Hasta</th><th>Resolución SSN</th><th>Estado</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Torres, Miguel</td><td><span class="badge badge-danger">SUSPENSIÓN</span></td><td>Matrícula no renovada en término</td><td>2024-08-16</td><td>—</td><td>RES-SSN-2024-4521</td><td><span class="badge badge-danger">ACTIVA</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Fernández, Roberto</td><td><span class="badge badge-warning">APERCIBIMIENTO</span></td><td>Retraso en entrega de documentación</td><td>2023-09-01</td><td>2023-09-30</td><td>RES-SSN-2023-1102</td><td><span class="badge badge-success">CUMPLIDA</span></td><td><button class="btn btn-outline btn-sm">👁️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- C1 ── MONEDAS HABILITADAS ── -->
+          <div id="agt-monedas" class="agt-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Monedas Habilitadas</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">AGENTE_MONEDAS — habilitación independiente por moneda ISO 4217</p></div>
+                <button class="btn btn-primary btn-sm">+ Habilitar</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Agente</th><th>Moneda</th><th>Habilitado</th><th>Desde</th><th>Hasta</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Fernández, Roberto</td><td>ARS</td><td><span class="badge badge-success">Sí</span></td><td>2022-05-01</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Fernández, Roberto</td><td>USD</td><td><span class="badge badge-success">Sí</span></td><td>2023-01-01</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Agencia Norte S.A.</td><td>ARS</td><td><span class="badge badge-success">Sí</span></td><td>2020-01-10</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Agencia Norte S.A.</td><td>USD</td><td><span class="badge badge-success">Sí</span></td><td>2020-01-10</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>Gómez, Sofía</td><td>ARS</td><td><span class="badge badge-success">Sí</span></td><td>2023-03-01</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>6</td><td>Torres, Miguel</td><td>ARS</td><td><span class="badge badge-danger">No</span></td><td>2021-08-15</td><td>2024-08-15</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- C2 ── SUCURSALES DEL AGENTE ── -->
+          <div id="agt-sucursales" class="agt-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Sucursales del Agente</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">AGENTE_SUCURSALES — sucursales donde opera, principal de liquidación</p></div>
+                <button class="btn btn-primary btn-sm">+ Asignar</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Agente</th><th>Sucursal</th><th>Principal</th><th>Activo</th><th>Desde</th><th>Hasta</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Fernández, Roberto</td><td>Casa Matriz</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td>2022-05-01</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Fernández, Roberto</td><td>Sucursal Maracaibo</td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-success">Sí</span></td><td>2023-06-01</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Agencia Norte S.A.</td><td>Casa Matriz</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td>2020-01-10</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Gómez, Sofía</td><td>Casa Matriz</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td>2023-03-01</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- D1 ── COMISIÓN × RAMO (Niv.1) ── -->
+          <div id="agt-com-ramo" class="agt-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div>
+                  <h3 style="margin:0;font-size:15px">Comisión × Ramo <span style="font-size:11px;background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:10px;margin-left:6px">Nivel 1 · Base</span></h3>
+                  <p style="margin:3px 0 0;font-size:12px;color:var(--muted)">COMISION_X_RAMO — se aplica si no existe nivel 2 ni 3 más específico</p>
+                </div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Agente</th><th>Ramo Com.</th><th>Ramo Téc.</th><th>Moneda</th><th>Comisión %</th><th>Extra %</th><th>Desde</th><th>Hasta</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Fernández, Roberto</td><td>Automóviles</td><td>(todos)</td><td>ARS</td><td>10.00%</td><td>2.00%</td><td>2025-01-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Fernández, Roberto</td><td>Automóviles</td><td>(todos)</td><td>USD</td><td>8.00%</td><td>1.50%</td><td>2025-01-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Fernández, Roberto</td><td>Vida Individual</td><td>(todos)</td><td>ARS</td><td>18.00%</td><td>4.00%</td><td>2025-01-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Agencia Norte S.A.</td><td>Automóviles</td><td>(todos)</td><td>ARS</td><td>15.00%</td><td>3.00%</td><td>2025-01-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>Gómez, Sofía</td><td>Automóviles</td><td>AUTO-01</td><td>ARS</td><td>7.00%</td><td>1.00%</td><td>2023-03-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- D2 ── COMISIÓN × PRODUCTO (Niv.2) ── -->
+          <div id="agt-com-producto" class="agt-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div>
+                  <h3 style="margin:0;font-size:15px">Comisión × Producto <span style="font-size:11px;background:#fef9c3;color:#854d0e;padding:2px 8px;border-radius:10px;margin-left:6px">Nivel 2 · Producto</span></h3>
+                  <p style="margin:3px 0 0;font-size:12px;color:var(--muted)">COMISION_X_PRODUCTO — sobreescribe Nivel 1 para ese producto específico</p>
+                </div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Agente</th><th>Producto</th><th>Moneda</th><th>Comisión %</th><th>Extra %</th><th>Desde</th><th>Hasta</th><th>Activo</th><th>Obs.</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Fernández, Roberto</td><td>Auto Full</td><td>ARS</td><td>12.00%</td><td>3.00%</td><td>2025-01-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td>Acuerdo especial 2025</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Fernández, Roberto</td><td>Auto Full</td><td>USD</td><td>10.00%</td><td>2.00%</td><td>2025-01-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td>Acuerdo especial USD</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Agencia Norte S.A.</td><td>Vida Individual</td><td>ARS</td><td>20.00%</td><td>5.00%</td><td>2024-07-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td>Acuerdo volumen Vida</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- D3 ── COMISIÓN × PLAN (Niv.3) ── -->
+          <div id="agt-com-plan" class="agt-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div>
+                  <h3 style="margin:0;font-size:15px">Comisión × Plan <span style="font-size:11px;background:#f3e8ff;color:#7e22ce;padding:2px 8px;border-radius:10px;margin-left:6px">Nivel 3 · Máxima Precedencia</span></h3>
+                  <p style="margin:3px 0 0;font-size:12px;color:var(--muted)">COMISION_X_PLAN — sobreescribe niveles 1 y 2, máxima granularidad por plan comercial</p>
+                </div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Agente</th><th>Plan</th><th>Moneda</th><th>Comisión %</th><th>Extra %</th><th>Desde</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Fernández, Roberto</td><td>Auto Full — Premium</td><td>ARS</td><td>15.00%</td><td>5.00%</td><td>2025-01-01</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Fernández, Roberto</td><td>Auto Full — Básico</td><td>ARS</td><td>10.00%</td><td>1.00%</td><td>2025-01-01</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Agencia Norte S.A.</td><td>Auto Full — Premium</td><td>ARS</td><td>18.00%</td><td>6.00%</td><td>2025-01-01</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+              <div style="margin-top:14px;padding:10px 14px;background:#f0fdf4;border-radius:8px;border:1px solid #86efac;font-size:12px;color:#166534">
+                ⚡ <strong>Lógica de precedencia:</strong> el sistema busca primero Nivel 3 (plan) → si no existe, Nivel 2 (producto) → si no existe, Nivel 1 (ramo). Siempre aplica el más específico.
+              </div>
+            </div>
+          </div>
+
+          <!-- D4 ── ESCALA DE PRODUCCIÓN ── -->
+          <div id="agt-escala" class="agt-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Escala de Producción</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">ESCALA_PRODUCCION — cabecera: período, ramo y moneda de medición</p></div>
+                <button class="btn btn-primary btn-sm">+ Nueva Escala</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Agente</th><th>Nombre</th><th>Ramo</th><th>Moneda</th><th>Período</th><th>Desde</th><th>Hasta</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Fernández, Roberto</td><td>Escala Anual Auto 2025</td><td>Automóviles</td><td>ARS</td><td>ANUAL</td><td>2025-01-01</td><td>2025-12-31</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Agencia Norte S.A.</td><td>Escala Trim. Vida 2025</td><td>Vida Individual</td><td>ARS</td><td>TRIMESTRAL</td><td>2025-01-01</td><td>2025-12-31</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Fernández, Roberto</td><td>Escala USD Auto 2025</td><td>Automóviles</td><td>USD</td><td>SEMESTRAL</td><td>2025-01-01</td><td>2025-12-31</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- D5 ── TRAMOS DE ESCALA ── -->
+          <div id="agt-escala-tramos" class="agt-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Tramos de Escala</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">ESCALA_PRODUCCION_TRAMOS — rangos de prima acumulada y bonus por tramo</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo Tramo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Escala</th><th>Prima Desde</th><th>Prima Hasta</th><th>Comisión %</th><th>Bonus %</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Escala Anual Auto 2025</td><td>$0</td><td>$500.000</td><td>10.00%</td><td>0.00%</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Escala Anual Auto 2025</td><td>$500.001</td><td>$1.500.000</td><td>10.00%</td><td>1.50%</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Escala Anual Auto 2025</td><td>$1.500.001</td><td>$3.000.000</td><td>10.00%</td><td>3.00%</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Escala Anual Auto 2025</td><td>$3.000.001</td><td>$999.999.999</td><td>10.00%</td><td>5.00%</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>Escala Trim. Vida 2025</td><td>$0</td><td>$200.000</td><td>18.00%</td><td>0.00%</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>6</td><td>Escala Trim. Vida 2025</td><td>$200.001</td><td>$600.000</td><td>18.00%</td><td>2.00%</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- D6 ── SUBCOMISIÓN DIRECTOR ── -->
+          <div id="agt-subcomision" class="agt-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Subcomisión Director</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">SUBCOMISION_CONFIG — % que cobra el director sobre producción de cada dependiente, por ramo y moneda</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Director</th><th>Dependiente</th><th>Ramo</th><th>Moneda</th><th>Subcomisión %</th><th>Desde</th><th>Hasta</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Fernández, Roberto</td><td>Gómez, Sofía</td><td>Automóviles</td><td>ARS</td><td>3.00%</td><td>2023-03-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Fernández, Roberto</td><td>Gómez, Sofía</td><td>Incendio</td><td>ARS</td><td>2.50%</td><td>2023-03-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Agencia Norte S.A.</td><td>Gómez, Sofía</td><td>(todos)</td><td>ARS</td><td>1.00%</td><td>2023-03-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+              <div style="margin-top:14px;padding:10px 14px;background:#fefce8;border-radius:8px;border:1px solid #fde047;font-size:12px;color:#713f12">
+                💡 La subcomisión se liquida junto con la comisión propia del director en cada cierre de período.
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /paneles derecho -->
+      </div><!-- /grid -->
     </div>
 
     <!-- ===== COTIZADOR ===== -->
@@ -3542,6 +3813,17 @@
 
   function openModal(id)  { document.getElementById(id).classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  // CATÁLOGO MENU — Módulo 4 Agentes/Productores
+  const agtPanelIds = ['agt-tipo-agente','agt-agentes','agt-matriculas','agt-mat-ramos','agt-inhabilitac','agt-monedas','agt-sucursales','agt-com-ramo','agt-com-producto','agt-com-plan','agt-escala','agt-escala-tramos','agt-subcomision'];
+  function showAgtCatalog(panelId) {
+    agtPanelIds.forEach(id => { const el = document.getElementById(id); if(el) el.style.display='none'; });
+    document.querySelectorAll('[id^="agt-mi-"]').forEach(i => i.classList.remove('active'));
+    const panel = document.getElementById(panelId);
+    if (panel) panel.style.display = 'block';
+    const mi = document.getElementById('agt-mi-' + panelId.replace('agt-',''));
+    if (mi) mi.classList.add('active');
+  }
 
   // CATÁLOGO MENU — Módulo 3 Productos
   const prdPanelIds = ['prd-productos','prd-versiones','prd-coberturas','prd-prod-cob','prd-exclusiones','prd-cob-excl','prd-tarifas','prd-tarifa-rangos','prd-tipo-objeto','prd-obj-atrib','prd-prod-objeto','prd-planes','prd-formas-pago','prd-comisiones','prd-canales','prd-coaseguro','prd-reaseguro','prd-clausulas','prd-claus-vars','prd-claus-adj','prd-cl-ramo-com','prd-cl-ramo-tec','prd-cl-producto','prd-cl-plan','prd-anexos','prd-anex-vars','prd-anex-adj','prd-anx-ramo-com','prd-anx-ramo-tec','prd-anx-producto','prd-anx-plan','prd-docs-prod'];
