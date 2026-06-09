@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERP de Seguros — Demo</title>
+<style>
+  :root {
+    --primary: #1a3a5c;
+    --accent:  #2eaadc;
+    --success: #27ae60;
+    --warning: #f39c12;
+    --danger:  #e74c3c;
+    --light:   #f4f7fb;
+    --border:  #dde3ec;
+    --text:    #2c3e50;
+    --muted:   #7f8c8d;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: var(--light); color: var(--text); display: flex; height: 100vh; overflow: hidden; }
+
+  /* SIDEBAR */
+  #sidebar {
+    width: 240px; background: var(--primary); color: #fff; display: flex; flex-direction: column;
+    flex-shrink: 0; overflow-y: auto;
+  }
+  #sidebar .logo { padding: 24px 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  #sidebar .logo h1 { font-size: 16px; font-weight: 700; letter-spacing: .5px; }
+  #sidebar .logo p  { font-size: 11px; opacity: .6; margin-top: 2px; }
+  #sidebar nav { padding: 12px 0; flex: 1; }
+  #sidebar nav a {
+    display: flex; align-items: center; gap: 10px; padding: 10px 20px;
+    color: rgba(255,255,255,.75); text-decoration: none; font-size: 13px; cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  #sidebar nav a:hover, #sidebar nav a.active {
+    background: rgba(255,255,255,.12); color: #fff;
+  }
+  #sidebar nav a .icon { font-size: 16px; width: 20px; text-align: center; }
+  #sidebar nav .section-label {
+    padding: 14px 20px 4px; font-size: 10px; letter-spacing: 1px;
+    text-transform: uppercase; opacity: .4; font-weight: 600;
+  }
+
+  /* MAIN */
+  #main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  #topbar {
+    background: #fff; border-bottom: 1px solid var(--border); padding: 0 28px;
+    height: 56px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+  }
+  #topbar h2 { font-size: 17px; font-weight: 600; }
+  #topbar .user { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+  #topbar .user .avatar {
+    width: 34px; height: 34px; border-radius: 50%; background: var(--accent);
+    display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 14px;
+  }
+
+  #content { flex: 1; overflow-y: auto; padding: 28px; }
+
+  /* PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* DASHBOARD CARDS */
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+  .stat-card {
+    background: #fff; border-radius: 10px; padding: 20px;
+    border: 1px solid var(--border); display: flex; align-items: center; gap: 16px;
+  }
+  .stat-card .ico {
+    width: 48px; height: 48px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;
+  }
+  .stat-card .info .val { font-size: 26px; font-weight: 700; line-height: 1; }
+  .stat-card .info .lbl { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .card { background: #fff; border-radius: 10px; border: 1px solid var(--border); padding: 20px; }
+  .card h3 { font-size: 14px; font-weight: 600; margin-bottom: 16px; color: var(--text); }
+
+  /* TABLES */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { background: var(--light); padding: 9px 12px; text-align: left; font-weight: 600; font-size: 12px; color: var(--muted); border-bottom: 1px solid var(--border); }
+  tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--light); }
+
+  /* BADGES */
+  .badge {
+    display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600;
+  }
+  .badge-success { background: #d4f5e2; color: #1a7a45; }
+  .badge-warning { background: #fef3cd; color: #856404; }
+  .badge-danger  { background: #fde8e8; color: #a02020; }
+  .badge-info    { background: #dbeafe; color: #1d4ed8; }
+  .badge-gray    { background: #eee; color: #555; }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 7px;
+    font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: opacity .15s;
+  }
+  .btn:hover { opacity: .85; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-outline { background: #fff; border: 1px solid var(--border); color: var(--text); }
+  .btn-success { background: var(--success); color: #fff; }
+  .btn-danger  { background: var(--danger); color: #fff; }
+  .btn-sm { padding: 5px 11px; font-size: 12px; }
+
+  /* PAGE HEADER */
+  .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .page-header h2 { font-size: 20px; font-weight: 700; }
+  .page-header p  { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  /* FULL CARD */
+  .full-card { background: #fff; border-radius: 10px; border: 1px solid var(--border); padding: 20px; }
+
+  /* SEARCH BAR */
+  .search-bar { display: flex; gap: 10px; margin-bottom: 16px; }
+  .search-bar input {
+    flex: 1; border: 1px solid var(--border); border-radius: 7px; padding: 8px 14px; font-size: 13px;
+  }
+  .search-bar input:focus { outline: none; border-color: var(--accent); }
+
+  /* FORM */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group label { font-size: 12px; font-weight: 600; color: var(--muted); }
+  .form-group input, .form-group select {
+    border: 1px solid var(--border); border-radius: 7px; padding: 8px 12px; font-size: 13px;
+  }
+  .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--accent); }
+  .form-full { grid-column: 1 / -1; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 100;
+    display: none; align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: #fff; border-radius: 12px; width: 560px; max-height: 90vh;
+    overflow-y: auto; padding: 28px; box-shadow: 0 20px 60px rgba(0,0,0,.15);
+  }
+  .modal h3 { font-size: 16px; font-weight: 700; margin-bottom: 20px; }
+  .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+
+  /* COTIZADOR STEPS */
+  .steps { display: flex; gap: 0; margin-bottom: 28px; }
+  .step {
+    flex: 1; padding: 12px 16px; background: var(--light); border: 1px solid var(--border);
+    font-size: 12px; font-weight: 600; text-align: center; color: var(--muted);
+  }
+  .step:first-child { border-radius: 8px 0 0 8px; }
+  .step:last-child  { border-radius: 0 8px 8px 0; }
+  .step.active   { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .step.done     { background: var(--success); color: #fff; border-color: var(--success); }
+
+  /* FLUJO POLIZA */
+  .flow {
+    display: flex; align-items: center; gap: 0; margin: 20px 0; flex-wrap: wrap;
+  }
+  .flow-step {
+    background: var(--light); border: 1px solid var(--border); border-radius: 6px;
+    padding: 10px 16px; font-size: 12px; font-weight: 600; text-align: center; min-width: 100px;
+  }
+  .flow-step.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .flow-step.done   { background: var(--success); color: #fff; border-color: var(--success); }
+  .flow-arrow { padding: 0 6px; color: var(--muted); font-size: 18px; }
+
+  /* KPI ROW */
+  .kpi-row { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+  .kpi {
+    background: #fff; border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px 20px; min-width: 140px;
+  }
+  .kpi .val { font-size: 22px; font-weight: 700; }
+  .kpi .lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* PROGRESS BAR */
+  .progress { background: var(--border); border-radius: 4px; height: 6px; }
+  .progress-fill { height: 100%; border-radius: 4px; background: var(--accent); }
+
+  /* CHART PLACEHOLDER */
+  .chart-placeholder {
+    height: 160px; background: linear-gradient(135deg, #eef4fc 0%, #dbeafe 100%);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 13px; font-style: italic; border: 1px dashed var(--border);
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="logo">
+    <h1>🛡️ ERP Seguros</h1>
+    <p>Sistema de Gestión</p>
+  </div>
+  <nav>
+    <a class="active" onclick="go('dashboard')" data-page="dashboard"><span class="icon">📊</span> Dashboard</a>
+
+    <div class="section-label">Configuración</div>
+    <a onclick="go('ramos')"    data-page="ramos"><span class="icon">🏷️</span> Ramos</a>
+    <a onclick="go('productos')" data-page="productos"><span class="icon">📦</span> Productos</a>
+
+    <div class="section-label">Personas</div>
+    <a onclick="go('clientes')"  data-page="clientes"><span class="icon">👥</span> Clientes</a>
+    <a onclick="go('agentes')"   data-page="agentes"><span class="icon">🤝</span> Agentes</a>
+
+    <div class="section-label">Operación</div>
+    <a onclick="go('cotizador')"   data-page="cotizador"><span class="icon">💬</span> Cotizador</a>
+    <a onclick="go('preemision')"  data-page="preemision"><span class="icon">⚡</span> Pre-Emisión</a>
+    <a onclick="go('polizas')"     data-page="polizas"><span class="icon">📄</span> Pólizas</a>
+    <a onclick="go('movimientos')" data-page="movimientos"><span class="icon">🔄</span> Movimientos</a>
+  </nav>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+  <div id="topbar">
+    <h2 id="topbar-title">Dashboard</h2>
+    <div class="user">
+      <span>Yerison Silva</span>
+      <div class="avatar">Y</div>
+    </div>
+  </div>
+
+  <div id="content">
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="ico" style="background:#dbeafe">📄</div>
+          <div class="info"><div class="val">1,284</div><div class="lbl">Pólizas Vigentes</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="ico" style="background:#d4f5e2">💬</div>
+          <div class="info"><div class="val">47</div><div class="lbl">Cotizaciones Abiertas</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="ico" style="background:#fef3cd">⚡</div>
+          <div class="info"><div class="val">12</div><div class="lbl">En Pre-Emisión</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="ico" style="background:#fde8e8">🔄</div>
+          <div class="info"><div class="val">8</div><div class="lbl">Endosos Pendientes</div></div>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="card">
+          <h3>📈 Prima Mensual (ARS)</h3>
+          <div class="chart-placeholder">Gráfico de barras — Prima emitida por mes</div>
+          <div style="margin-top:14px; display:flex; justify-content:space-between; font-size:12px; color:var(--muted)">
+            <span>Junio 2026</span><span style="font-weight:700;color:var(--text)">$ 48.350.000</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>🏷️ Distribución por Ramo</h3>
+          <div style="margin-top:8px; display:flex; flex-direction:column; gap:12px">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Automóviles</span><span>42%</span></div>
+              <div class="progress"><div class="progress-fill" style="width:42%;background:#2eaadc"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Vida</span><span>28%</span></div>
+              <div class="progress"><div class="progress-fill" style="width:28%;background:#27ae60"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Incendio</span><span>18%</span></div>
+              <div class="progress"><div class="progress-fill" style="width:18%;background:#f39c12"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Otros</span><span>12%</span></div>
+              <div class="progress"><div class="progress-fill" style="width:12%;background:#9b59b6"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px" class="card">
+        <h3>📋 Últimas Pólizas Emitidas</h3>
+        <table>
+          <thead><tr><th>N° Póliza</th><th>Tomador</th><th>Ramo</th><th>Prima</th><th>Vigencia</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>0001-00001284</td><td>García, Juan</td><td>Automóviles</td><td>$ 85.400</td><td>01/06/2026 – 01/06/2027</td><td><span class="badge badge-success">VIGENTE</span></td></tr>
+            <tr><td>0003-00000521</td><td>López S.A.</td><td>Vida</td><td>$ 42.000</td><td>15/05/2026 – 15/05/2027</td><td><span class="badge badge-success">VIGENTE</span></td></tr>
+            <tr><td>0001-00001283</td><td>Rodríguez, María</td><td>Automóviles</td><td>$ 97.200</td><td>01/06/2026 – 01/06/2027</td><td><span class="badge badge-warning">PENDIENTE COBRO</span></td></tr>
+            <tr><td>0005-00000088</td><td>Martínez, Carlos</td><td>Incendio</td><td>$ 31.500</td><td>10/05/2026 – 10/05/2027</td><td><span class="badge badge-danger">SUSPENDIDA</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== RAMOS ===== -->
+    <div class="page" id="page-ramos">
+      <div class="page-header">
+        <div><h2>🏷️ Ramos</h2><p>Ramos comerciales y técnicos habilitados</p></div>
+        <button class="btn btn-primary" onclick="openModal('modal-ramo')">+ Nuevo Ramo</button>
+      </div>
+      <div class="full-card">
+        <div class="search-bar">
+          <input type="text" placeholder="Buscar ramo...">
+          <button class="btn btn-outline">Filtrar</button>
+        </div>
+        <table>
+          <thead><tr><th>ID</th><th>Código SSN</th><th>Descripción</th><th>Tipo</th><th>Sucursales</th><th>Estado</th><th>Acciones</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>100</td><td>Automóviles</td><td>Patrimonial</td><td>5</td><td><span class="badge badge-success">Activo</span></td><td><button class="btn btn-outline btn-sm">Ver</button></td></tr>
+            <tr><td>2</td><td>200</td><td>Vida Individual</td><td>Personas</td><td>5</td><td><span class="badge badge-success">Activo</span></td><td><button class="btn btn-outline btn-sm">Ver</button></td></tr>
+            <tr><td>3</td><td>300</td><td>Incendio y Aliados</td><td>Patrimonial</td><td>3</td><td><span class="badge badge-success">Activo</span></td><td><button class="btn btn-outline btn-sm">Ver</button></td></tr>
+            <tr><td>4</td><td>400</td><td>Accidentes Personales</td><td>Personas</td><td>2</td><td><span class="badge badge-success">Activo</span></td><td><button class="btn btn-outline btn-sm">Ver</button></td></tr>
+            <tr><td>5</td><td>500</td><td>Transporte de Mercaderías</td><td>Patrimonial</td><td>2</td><td><span class="badge badge-warning">En revisión</span></td><td><button class="btn btn-outline btn-sm">Ver</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== PRODUCTOS ===== -->
+    <div class="page" id="page-productos">
+      <div class="page-header">
+        <div><h2>📦 Productos</h2><p>Catálogo de productos con coberturas, tarifas y planes</p></div>
+        <button class="btn btn-primary">+ Nuevo Producto</button>
+      </div>
+      <div class="full-card">
+        <table>
+          <thead><tr><th>Código</th><th>Nombre</th><th>Ramo</th><th>Versión</th><th>Planes</th><th>Coberturas</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>AUTO-FULL</td><td>Auto Full</td><td>Automóviles</td><td>v3.2</td><td>3</td><td>12</td><td><span class="badge badge-success">Vigente</span></td></tr>
+            <tr><td>AUTO-BASIC</td><td>Auto Básico (RC)</td><td>Automóviles</td><td>v2.1</td><td>1</td><td>5</td><td><span class="badge badge-success">Vigente</span></td></tr>
+            <tr><td>VIDA-IND</td><td>Vida Individual</td><td>Vida</td><td>v1.5</td><td>2</td><td>8</td><td><span class="badge badge-success">Vigente</span></td></tr>
+            <tr><td>INC-COM</td><td>Incendio Comercial</td><td>Incendio</td><td>v2.0</td><td>2</td><td>10</td><td><span class="badge badge-success">Vigente</span></td></tr>
+            <tr><td>AP-GRP</td><td>Accidentes Colectivo</td><td>Acc. Personales</td><td>v1.0</td><td>1</td><td>6</td><td><span class="badge badge-warning">Revisión</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== CLIENTES ===== -->
+    <div class="page" id="page-clientes">
+      <div class="page-header">
+        <div><h2>👥 Clientes</h2><p>Registro unificado de personas — físicas, jurídicas y autónomas</p></div>
+        <button class="btn btn-primary" onclick="openModal('modal-cliente')">+ Nuevo Cliente</button>
+      </div>
+      <div class="full-card">
+        <div class="search-bar">
+          <input type="text" placeholder="Buscar por nombre, CUIT, DNI...">
+          <button class="btn btn-outline">Filtrar</button>
+        </div>
+        <table>
+          <thead><tr><th>ID</th><th>Tipo</th><th>Nombre / Razón Social</th><th>CUIT/DNI</th><th>Email</th><th>Condición IVA</th><th>Roles</th></tr></thead>
+          <tbody>
+            <tr><td>1001</td><td><span class="badge badge-info">FÍSICA</span></td><td>García, Juan Manuel</td><td>20-34567890-1</td><td>jgarcia@email.com</td><td>Consumidor Final</td><td>Tomador, Asegurado</td></tr>
+            <tr><td>1002</td><td><span class="badge badge-gray">JURÍDICA</span></td><td>López S.A.</td><td>30-65432100-9</td><td>admin@lopez.com.ar</td><td>Responsable Inscripto</td><td>Tomador</td></tr>
+            <tr><td>1003</td><td><span class="badge badge-info">FÍSICA</span></td><td>Rodríguez, María Elena</td><td>27-22334455-4</td><td>mrodriguez@gmail.com</td><td>Consumidor Final</td><td>Asegurado, Beneficiario</td></tr>
+            <tr><td>1004</td><td><span class="badge badge-info">FÍSICA</span></td><td>Martínez, Carlos Alberto</td><td>20-11223344-6</td><td>cmartinez@yahoo.com</td><td>Monotributista</td><td>Tomador, Asegurado</td></tr>
+            <tr><td>1005</td><td><span class="badge badge-gray">JURÍDICA</span></td><td>Constructora Norte S.R.L.</td><td>30-98765432-1</td><td>info@constructoranorte.com</td><td>Responsable Inscripto</td><td>Tomador</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== AGENTES ===== -->
+    <div class="page" id="page-agentes">
+      <div class="page-header">
+        <div><h2>🤝 Agentes / Productores</h2><p>PAS, organizaciones y corredores habilitados</p></div>
+        <button class="btn btn-primary">+ Nuevo Agente</button>
+      </div>
+      <div class="full-card">
+        <table>
+          <thead><tr><th>Matrícula SSN</th><th>Nombre</th><th>Tipo</th><th>Organización</th><th>Ramos Habilitados</th><th>Comisión Base</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>PAS-00234</td><td>Fernández, Roberto</td><td>PAS Individual</td><td>—</td><td>Auto, Vida, Incendio</td><td>12%</td><td><span class="badge badge-success">Habilitado</span></td></tr>
+            <tr><td>PAS-00891</td><td>Agencia Norte S.A.</td><td>Organización</td><td>—</td><td>Todos</td><td>15%</td><td><span class="badge badge-success">Habilitado</span></td></tr>
+            <tr><td>PAS-01102</td><td>Gómez, Sofía</td><td>PAS Dependiente</td><td>Agencia Norte S.A.</td><td>Auto, Incendio</td><td>8%</td><td><span class="badge badge-success">Habilitado</span></td></tr>
+            <tr><td>PAS-00456</td><td>Torres, Miguel</td><td>PAS Individual</td><td>—</td><td>Vida</td><td>10%</td><td><span class="badge badge-warning">Matrícula vencida</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== COTIZADOR ===== -->
+    <div class="page" id="page-cotizador">
+      <div class="page-header">
+        <div><h2>💬 Cotizador</h2><p>Nueva cotización — Automóviles</p></div>
+        <button class="btn btn-outline" onclick="go('cotizador')">+ Nueva Cotización</button>
+      </div>
+
+      <div class="steps">
+        <div class="step done">1. Ramo y Producto</div>
+        <div class="step done">2. Datos del Riesgo</div>
+        <div class="step active">3. Coberturas y Precio</div>
+        <div class="step">4. Forma de Pago</div>
+        <div class="step">5. Enviar al Cliente</div>
+      </div>
+
+      <div class="row2">
+        <div class="card">
+          <h3>🚗 Vehículo Asegurado</h3>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;margin-top:8px">
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Marca / Modelo</span><strong>Toyota Corolla 2022</strong></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Año</span><strong>2022</strong></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Patente</span><strong>AB123CD</strong></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Suma asegurada</span><strong>$ 12.500.000</strong></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Zona</span><strong>Buenos Aires — Zona 1</strong></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Productor</span><strong>Fernández, Roberto (PAS-00234)</strong></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>💰 Detalle del Precio</h3>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;margin-top:8px">
+            <div style="display:flex;justify-content:space-between"><span>Prima neta</span><span>$ 71.200</span></div>
+            <div style="display:flex;justify-content:space-between"><span>Recargo financiero (3 cuotas)</span><span>$ 4.272</span></div>
+            <div style="display:flex;justify-content:space-between"><span>IVA 21%</span><span>$ 14.952</span></div>
+            <div style="display:flex;justify-content:space-between"><span>Sellado provincial (CABA)</span><span>$ 1.780</span></div>
+            <div style="border-top:1px solid var(--border);padding-top:8px;margin-top:4px;display:flex;justify-content:space-between;font-weight:700;font-size:15px"><span>PREMIO TOTAL</span><span style="color:var(--accent)">$ 92.204</span></div>
+          </div>
+          <div style="margin-top:16px;display:flex;gap:10px">
+            <button class="btn btn-success" style="flex:1" onclick="alert('✅ Cotización enviada al cliente por email!')">📧 Enviar al Cliente</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px" class="card">
+        <h3>📋 Coberturas Seleccionadas</h3>
+        <table>
+          <thead><tr><th>Cobertura</th><th>Suma Asegurada</th><th>Franquicia</th><th>Prima</th><th>Incluida</th></tr></thead>
+          <tbody>
+            <tr><td>Responsabilidad Civil Obligatoria</td><td>$ 50.000.000</td><td>—</td><td>$ 18.400</td><td>✅ Obligatoria</td></tr>
+            <tr><td>Daños Propios</td><td>$ 12.500.000</td><td>10%</td><td>$ 35.200</td><td>✅ Incluida</td></tr>
+            <tr><td>Robo y Hurto Total</td><td>$ 12.500.000</td><td>—</td><td>$ 12.800</td><td>✅ Incluida</td></tr>
+            <tr><td>Granizo</td><td>$ 12.500.000</td><td>—</td><td>$ 4.800</td><td>✅ Incluida</td></tr>
+            <tr><td>Asistencia en Viaje</td><td>—</td><td>—</td><td>$ 0</td><td>✅ Incluida</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:16px" class="card">
+        <h3>📊 Cotizaciones Recientes</h3>
+        <table>
+          <thead><tr><th>N° Cotización</th><th>Cliente</th><th>Producto</th><th>Premio</th><th>Estado</th><th>Vence</th></tr></thead>
+          <tbody>
+            <tr><td>COT-2026-0047</td><td>García, Juan</td><td>Auto Full</td><td>$ 92.204</td><td><span class="badge badge-warning">ENVIADA</span></td><td>16/06/2026</td></tr>
+            <tr><td>COT-2026-0046</td><td>López S.A.</td><td>Incendio Comercial</td><td>$ 145.000</td><td><span class="badge badge-success">ACEPTADA</span></td><td>15/06/2026</td></tr>
+            <tr><td>COT-2026-0045</td><td>Martínez, Carlos</td><td>Vida Individual</td><td>$ 42.000</td><td><span class="badge badge-danger">RECHAZADA</span></td><td>14/06/2026</td></tr>
+            <tr><td>COT-2026-0044</td><td>Constructora Norte</td><td>Incendio Comercial</td><td>$ 230.000</td><td><span class="badge badge-success">CONVERTIDA</span></td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== PRE-EMISIÓN ===== -->
+    <div class="page" id="page-preemision">
+      <div class="page-header">
+        <div><h2>⚡ Pre-Emisión</h2><p>Cobro online · Generación de documentos · Despacho electrónico</p></div>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi"><div class="val">12</div><div class="lbl">En proceso</div></div>
+        <div class="kpi"><div class="val" style="color:var(--success)">8</div><div class="lbl">Cobro aprobado</div></div>
+        <div class="kpi"><div class="val" style="color:var(--warning)">3</div><div class="lbl">Pendientes cobro</div></div>
+        <div class="kpi"><div class="val" style="color:var(--danger)">1</div><div class="lbl">Débito fallido</div></div>
+      </div>
+
+      <div class="full-card">
+        <h3 style="font-size:14px;font-weight:600;margin-bottom:16px">Flujo de una Pre-Emisión</h3>
+        <div class="flow">
+          <div class="flow-step done">📋 Cotización<br>Aceptada</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step done">💳 Cobro<br>Online</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step done">📄 Generación<br>PDFs</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step done">📧 Despacho<br>Electrónico</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step active">⚙️ Worker Go<br>Emitiendo...</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">✅ Póliza<br>Emitida</div>
+        </div>
+
+        <table style="margin-top:16px">
+          <thead><tr><th>N° Pre-Emisión</th><th>Cotización</th><th>Cliente</th><th>Producto</th><th>Premio</th><th>Medio de Pago</th><th>Estado</th><th>Acción</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>PE-2026-0012</td><td>COT-2026-0046</td><td>López S.A.</td><td>Incendio Comercial</td><td>$ 145.000</td><td>Tarjeta Crédito</td>
+              <td><span class="badge badge-warning">EMISION_ENCOLADA</span></td>
+              <td><button class="btn btn-outline btn-sm" onclick="alert('🔄 Forzando emisión manual...\n\n✅ Póliza 0005-00000089 emitida exitosamente!')">Forzar</button></td>
+            </tr>
+            <tr>
+              <td>PE-2026-0011</td><td>COT-2026-0044</td><td>Constructora Norte</td><td>Incendio Comercial</td><td>$ 230.000</td><td>Transferencia</td>
+              <td><span class="badge badge-success">EMITIDA</span></td>
+              <td><button class="btn btn-outline btn-sm">Ver Póliza</button></td>
+            </tr>
+            <tr>
+              <td>PE-2026-0010</td><td>COT-2026-0041</td><td>García, Juan</td><td>Auto Full</td><td>$ 85.400</td><td>Débito CBU</td>
+              <td><span class="badge badge-danger">DEBITO_FALLIDO</span></td>
+              <td><button class="btn btn-outline btn-sm" onclick="alert('📧 Notificación enviada al cliente para reintentar cobro.')">Reintentar</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== PÓLIZAS ===== -->
+    <div class="page" id="page-polizas">
+      <div class="page-header">
+        <div><h2>📄 Pólizas</h2><p>Core del ERP — Contratos de seguro vigentes</p></div>
+        <button class="btn btn-primary" onclick="openModal('modal-poliza-manual')">+ Emisión Manual</button>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi"><div class="val" style="color:var(--success)">1.232</div><div class="lbl">Vigentes</div></div>
+        <div class="kpi"><div class="val" style="color:var(--warning)">28</div><div class="lbl">Pendiente Cobro</div></div>
+        <div class="kpi"><div class="val" style="color:var(--danger)">14</div><div class="lbl">Suspendidas</div></div>
+        <div class="kpi"><div class="val" style="color:var(--muted)">10</div><div class="lbl">Vencidas</div></div>
+      </div>
+
+      <div class="full-card">
+        <div class="search-bar">
+          <input type="text" placeholder="Buscar por N° póliza, tomador, patente...">
+          <select style="border:1px solid var(--border);border-radius:7px;padding:8px 12px;font-size:13px">
+            <option>Todos los ramos</option><option>Automóviles</option><option>Vida</option><option>Incendio</option>
+          </select>
+          <button class="btn btn-outline">Filtrar</button>
+        </div>
+        <table>
+          <thead><tr><th>N° Póliza</th><th>Tomador</th><th>Ramo</th><th>Producto</th><th>Agente</th><th>Prima Neta</th><th>Vigencia</th><th>Estado</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><strong>0001-00001284</strong></td><td>García, Juan</td><td>Automóviles</td><td>Auto Full</td><td>Fernández R.</td><td>$ 71.200</td><td>01/06/26–01/06/27</td><td><span class="badge badge-success">VIGENTE</span></td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-ver-poliza')">Ver</button></td></tr>
+            <tr><td><strong>0003-00000521</strong></td><td>López S.A.</td><td>Vida</td><td>Vida Individual</td><td>Agencia Norte</td><td>$ 35.000</td><td>15/05/26–15/05/27</td><td><span class="badge badge-success">VIGENTE</span></td><td><button class="btn btn-outline btn-sm">Ver</button></td></tr>
+            <tr><td><strong>0001-00001283</strong></td><td>Rodríguez, María</td><td>Automóviles</td><td>Auto Full</td><td>Fernández R.</td><td>$ 80.000</td><td>01/06/26–01/06/27</td><td><span class="badge badge-warning">PENDIENTE COBRO</span></td><td><button class="btn btn-outline btn-sm">Ver</button></td></tr>
+            <tr><td><strong>0005-00000088</strong></td><td>Martínez, Carlos</td><td>Incendio</td><td>Incendio Comercial</td><td>Gómez S.</td><td>$ 26.000</td><td>10/05/26–10/05/27</td><td><span class="badge badge-danger">SUSPENDIDA</span></td><td><button class="btn btn-outline btn-sm">Ver</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== MOVIMIENTOS ===== -->
+    <div class="page" id="page-movimientos">
+      <div class="page-header">
+        <div><h2>🔄 Movimientos de Póliza</h2><p>Endosos post-emisión — modificaciones, cancelaciones, renovaciones</p></div>
+        <button class="btn btn-primary" onclick="openModal('modal-endoso')">+ Nuevo Endoso</button>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi"><div class="val" style="color:var(--warning)">8</div><div class="lbl">Pendientes aprobación</div></div>
+        <div class="kpi"><div class="val" style="color:var(--success)">142</div><div class="lbl">Emitidos este mes</div></div>
+        <div class="kpi"><div class="val" style="color:var(--danger)">3</div><div class="lbl">Con devolución</div></div>
+      </div>
+
+      <div class="full-card">
+        <table>
+          <thead><tr><th>N° Endoso</th><th>Póliza</th><th>Tipo</th><th>Descripción</th><th>Impacto Prima</th><th>Solicitado</th><th>Estado</th><th>Acción</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>END-00234</td><td>0001-00001284</td>
+              <td><span class="badge badge-info">MOD_DATOS</span></td>
+              <td>Cambio de domicilio</td><td>— Sin impacto</td><td>08/06/2026</td>
+              <td><span class="badge badge-warning">PENDIENTE</span></td>
+              <td><button class="btn btn-success btn-sm" onclick="alert('✅ Endoso END-00234 aprobado y emitido.\n📧 Documentos enviados al asegurado.')">Aprobar</button></td>
+            </tr>
+            <tr>
+              <td>END-00233</td><td>0001-00001283</td>
+              <td><span class="badge badge-success">AUM_PRIMA</span></td>
+              <td>Incorporación cobertura granizo</td><td>+$ 4.800</td><td>07/06/2026</td>
+              <td><span class="badge badge-success">EMITIDO</span></td>
+              <td><button class="btn btn-outline btn-sm">Ver PDF</button></td>
+            </tr>
+            <tr>
+              <td>END-00232</td><td>0005-00000088</td>
+              <td><span class="badge badge-danger">CAN_TOTAL</span></td>
+              <td>Cancelación por falta de pago</td><td>-$ 18.000 (dev.)</td><td>06/06/2026</td>
+              <td><span class="badge badge-success">EMITIDO</span></td>
+              <td><button class="btn btn-outline btn-sm">Ver PDF</button></td>
+            </tr>
+            <tr>
+              <td>END-00231</td><td>0003-00000521</td>
+              <td><span class="badge badge-info">RENOVATION</span></td>
+              <td>Renovación anual — ajuste inflación 85%</td><td>+$ 29.750</td><td>05/06/2026</td>
+              <td><span class="badge badge-success">EMITIDO</span></td>
+              <td><button class="btn btn-outline btn-sm">Ver PDF</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ===== MODALES ===== -->
+
+<!-- Modal: Nuevo Ramo -->
+<div class="modal-overlay" id="modal-ramo">
+  <div class="modal">
+    <h3>🏷️ Nuevo Ramo Comercial</h3>
+    <div class="form-grid">
+      <div class="form-group"><label>Código SSN</label><input type="text" placeholder="ej. 600"></div>
+      <div class="form-group"><label>Tipo de Ramo</label><select><option>Patrimonial</option><option>Personas</option><option>Transporte</option></select></div>
+      <div class="form-group form-full"><label>Descripción</label><input type="text" placeholder="Nombre del ramo comercial"></div>
+      <div class="form-group"><label>Ramo Técnico Principal</label><input type="text" placeholder="Código ramo técnico SSN"></div>
+      <div class="form-group"><label>Sucursal Habilitada</label><select><option>Casa Central</option><option>Sucursal Norte</option><option>Todas</option></select></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-ramo')">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-ramo');alert('✅ Ramo creado exitosamente.')">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nuevo Cliente -->
+<div class="modal-overlay" id="modal-cliente">
+  <div class="modal">
+    <h3>👤 Nuevo Cliente</h3>
+    <div class="form-grid">
+      <div class="form-group"><label>Tipo de Persona</label><select><option>FÍSICA</option><option>JURÍDICA</option><option>AUTÓNOMO</option></select></div>
+      <div class="form-group"><label>Tipo Documento</label><select><option>DNI</option><option>CUIT</option><option>CUIL</option></select></div>
+      <div class="form-group"><label>N° Documento</label><input type="text" placeholder="20-12345678-9"></div>
+      <div class="form-group"><label>Nombre / Razón Social</label><input type="text" placeholder="Apellido, Nombre"></div>
+      <div class="form-group"><label>Email</label><input type="email" placeholder="email@ejemplo.com"></div>
+      <div class="form-group"><label>Teléfono</label><input type="text" placeholder="+54 11 1234-5678"></div>
+      <div class="form-group"><label>Condición IVA</label><select><option>Consumidor Final</option><option>Responsable Inscripto</option><option>Monotributista</option><option>Exento</option></select></div>
+      <div class="form-group"><label>Provincia</label><select><option>Buenos Aires</option><option>CABA</option><option>Córdoba</option><option>Santa Fe</option></select></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-cliente')">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-cliente');alert('✅ Cliente registrado exitosamente.\nID asignado: 1006')">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Emisión Manual de Póliza -->
+<div class="modal-overlay" id="modal-poliza-manual">
+  <div class="modal">
+    <h3>📄 Emisión Manual de Póliza</h3>
+    <p style="font-size:12px;color:var(--danger);margin-bottom:16px">⚠️ La emisión manual requiere justificación. La cobertura estará activa sin cobro previo confirmado.</p>
+    <div class="form-grid">
+      <div class="form-group"><label>Ramo</label><select><option>Automóviles</option><option>Vida</option><option>Incendio</option></select></div>
+      <div class="form-group"><label>Producto</label><select><option>Auto Full</option><option>Auto Básico</option></select></div>
+      <div class="form-group"><label>Tomador (ID)</label><input type="text" placeholder="ID del cliente"></div>
+      <div class="form-group"><label>Agente (Matrícula)</label><input type="text" placeholder="PAS-XXXXX"></div>
+      <div class="form-group"><label>Vigencia Desde</label><input type="date"></div>
+      <div class="form-group"><label>Vigencia Hasta</label><input type="date"></div>
+      <div class="form-group form-full"><label>Razón de emisión manual</label><input type="text" placeholder="Motivo obligatorio..."></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-poliza-manual')">Cancelar</button>
+      <button class="btn btn-success" onclick="closeModal('modal-poliza-manual');alert('✅ Póliza emitida manualmente.\nN°: 0001-00001285\n📧 Documentos enviados al asegurado.')">Emitir</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Ver Póliza -->
+<div class="modal-overlay" id="modal-ver-poliza">
+  <div class="modal" style="width:620px">
+    <h3>📄 Póliza 0001-00001284</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px;margin-bottom:16px">
+      <div><span style="color:var(--muted)">Tomador:</span><strong> García, Juan Manuel</strong></div>
+      <div><span style="color:var(--muted)">Estado:</span> <span class="badge badge-success">VIGENTE</span></div>
+      <div><span style="color:var(--muted)">Producto:</span><strong> Auto Full v3.2</strong></div>
+      <div><span style="color:var(--muted)">Agente:</span><strong> Fernández, Roberto</strong></div>
+      <div><span style="color:var(--muted)">Vigencia:</span><strong> 01/06/2026 – 01/06/2027</strong></div>
+      <div><span style="color:var(--muted)">Prima Neta:</span><strong> $ 71.200</strong></div>
+      <div><span style="color:var(--muted)">Premio Total:</span><strong> $ 92.204</strong></div>
+      <div><span style="color:var(--muted)">Canal:</span><strong> Pre-Emisión (PE-2026-0010)</strong></div>
+    </div>
+    <h4 style="font-size:13px;font-weight:600;margin-bottom:8px">Cuotas</h4>
+    <table>
+      <thead><tr><th>Cuota</th><th>Vencimiento</th><th>Monto</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>1/3</td><td>01/06/2026</td><td>$ 30.734</td><td><span class="badge badge-success">Pagada</span></td></tr>
+        <tr><td>2/3</td><td>01/07/2026</td><td>$ 30.734</td><td><span class="badge badge-warning">Pendiente</span></td></tr>
+        <tr><td>3/3</td><td>01/08/2026</td><td>$ 30.736</td><td><span class="badge badge-gray">Futura</span></td></tr>
+      </tbody>
+    </table>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-ver-poliza')">Cerrar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-ver-poliza');openModal('modal-endoso')">+ Endoso</button>
+      <button class="btn btn-outline" onclick="alert('📄 Descargando PDF de la póliza...')">📄 Descargar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nuevo Endoso -->
+<div class="modal-overlay" id="modal-endoso">
+  <div class="modal">
+    <h3>🔄 Nuevo Endoso</h3>
+    <div class="form-grid">
+      <div class="form-group form-full"><label>N° de Póliza</label><input type="text" placeholder="0001-00001284"></div>
+      <div class="form-group form-full"><label>Tipo de Endoso</label>
+        <select>
+          <option>MOD_DATOS — Modificación de datos</option>
+          <option>AUM_PRIMA — Aumento de suma/cobertura</option>
+          <option>DIS_PRIMA — Disminución de suma/cobertura</option>
+          <option>INC_ITEM — Incorporación de ítem</option>
+          <option>CAN_TOTAL — Cancelación total</option>
+          <option>SUSPENSION — Suspensión de cobertura</option>
+          <option>RENOVACION — Renovación</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Vigencia Desde</label><input type="date"></div>
+      <div class="form-group"><label>Vigencia Hasta</label><input type="date"></div>
+      <div class="form-group form-full"><label>Descripción del cambio</label><input type="text" placeholder="Detalle del motivo del endoso..."></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-endoso')">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-endoso');alert('✅ Endoso END-00235 creado.\nEstado: PENDIENTE DE APROBACIÓN\n📧 Notificación enviada al supervisor.')">Solicitar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const titles = {
+    dashboard: 'Dashboard', ramos: 'Ramos', productos: 'Productos',
+    clientes: 'Clientes', agentes: 'Agentes / Productores',
+    cotizador: 'Cotizador', preemision: 'Pre-Emisión',
+    polizas: 'Pólizas', movimientos: 'Movimientos de Póliza'
+  };
+
+  function go(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('#sidebar nav a').forEach(a => a.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    document.querySelector(`[data-page="${page}"]`).classList.add('active');
+    document.getElementById('topbar-title').textContent = titles[page] || page;
+  }
+
+  function openModal(id)  { document.getElementById(id).classList.add('open'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  // Cerrar modal al hacer click fuera
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
+  });
+</script>
+</body>
+</html>
