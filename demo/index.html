@@ -322,21 +322,456 @@
     <!-- ===== PRODUCTOS ===== -->
     <div class="page" id="page-productos">
       <div class="page-header">
-        <div><h2>📦 Productos</h2><p>Catálogo de productos con coberturas, tarifas y planes</p></div>
-        <button class="btn btn-primary">+ Nuevo Producto</button>
+        <div><h2>📦 Módulo 3 — Productos</h2><p>Definición técnica y comercial · 9 grupos funcionales (A→I)</p></div>
+        <button class="btn btn-primary" onclick="openModal('modal-nuevo-producto')">+ Nuevo Producto</button>
       </div>
-      <div class="full-card">
-        <table>
-          <thead><tr><th>Código</th><th>Nombre</th><th>Ramo</th><th>Versión</th><th>Planes</th><th>Coberturas</th><th>Estado</th></tr></thead>
-          <tbody>
-            <tr><td>AUTO-FULL</td><td>Auto Full</td><td>Automóviles</td><td>v3.2</td><td>3</td><td>12</td><td><span class="badge badge-success">Vigente</span></td></tr>
-            <tr><td>AUTO-BASIC</td><td>Auto Básico (RC)</td><td>Automóviles</td><td>v2.1</td><td>1</td><td>5</td><td><span class="badge badge-success">Vigente</span></td></tr>
-            <tr><td>VIDA-IND</td><td>Vida Individual</td><td>Vida</td><td>v1.5</td><td>2</td><td>8</td><td><span class="badge badge-success">Vigente</span></td></tr>
-            <tr><td>INC-COM</td><td>Incendio Comercial</td><td>Incendio</td><td>v2.0</td><td>2</td><td>10</td><td><span class="badge badge-success">Vigente</span></td></tr>
-            <tr><td>AP-GRP</td><td>Accidentes Colectivo</td><td>Acc. Personales</td><td>v1.0</td><td>1</td><td>6</td><td><span class="badge badge-warning">Revisión</span></td></tr>
-          </tbody>
-        </table>
-      </div>
+
+      <!-- LAYOUT: lista izquierda + detalle derecha -->
+      <div style="display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start">
+
+        <!-- LISTA DE PRODUCTOS -->
+        <div class="card" style="padding:0;overflow:hidden">
+          <div style="padding:14px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600;background:var(--light)">Catálogo de Productos</div>
+          <div id="prod-list">
+            <div class="prod-item active" onclick="selectProd(this,'AUTO-FULL')" style="padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s">
+              <div style="font-weight:600;font-size:13px">Auto Full</div>
+              <div style="font-size:11px;color:var(--muted)">AUTO-FULL · Automóviles · v3.2</div>
+              <span class="badge badge-success" style="margin-top:4px">ACTIVO</span>
+            </div>
+            <div class="prod-item" onclick="selectProd(this,'AUTO-BASIC')" style="padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s">
+              <div style="font-weight:600;font-size:13px">Auto Básico (RC)</div>
+              <div style="font-size:11px;color:var(--muted)">AUTO-BASIC · Automóviles · v2.1</div>
+              <span class="badge badge-success" style="margin-top:4px">ACTIVO</span>
+            </div>
+            <div class="prod-item" onclick="selectProd(this,'VIDA-IND')" style="padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s">
+              <div style="font-weight:600;font-size:13px">Vida Individual</div>
+              <div style="font-size:11px;color:var(--muted)">VIDA-IND · Vida · v1.5</div>
+              <span class="badge badge-success" style="margin-top:4px">ACTIVO</span>
+            </div>
+            <div class="prod-item" onclick="selectProd(this,'INC-COM')" style="padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s">
+              <div style="font-weight:600;font-size:13px">Incendio Comercial</div>
+              <div style="font-size:11px;color:var(--muted)">INC-COM · Incendio · v2.0</div>
+              <span class="badge badge-success" style="margin-top:4px">ACTIVO</span>
+            </div>
+            <div class="prod-item" onclick="selectProd(this,'AP-GRP')" style="padding:12px 16px;cursor:pointer;transition:background .15s">
+              <div style="font-weight:600;font-size:13px">Accidentes Colectivo</div>
+              <div style="font-size:11px;color:var(--muted)">AP-GRP · Acc. Personales · v1.0</div>
+              <span class="badge badge-warning" style="margin-top:4px">BORRADOR</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- DETALLE DEL PRODUCTO -->
+        <div>
+          <!-- Encabezado del producto -->
+          <div class="card" style="margin-bottom:16px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <h3 style="font-size:16px;font-weight:700;margin-bottom:4px">Auto Full <span style="font-size:12px;color:var(--muted);font-weight:400">v3.2</span></h3>
+                <div style="font-size:12px;color:var(--muted)">Ramo: <strong>Automóviles (100)</strong> · Emisión: <strong>INDIVIDUAL</strong> · Precio: <strong>TARIFA</strong> · Renovación automática: <strong>Sí (30 días aviso)</strong></div>
+              </div>
+              <div style="display:flex;gap:8px">
+                <span class="badge badge-success">ACTIVO</span>
+                <button class="btn btn-outline btn-sm">✏️ Editar</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TABS DE GRUPOS -->
+          <div class="card" style="padding:0;overflow:hidden">
+            <div style="display:flex;border-bottom:2px solid var(--border);overflow-x:auto;background:var(--light)" id="prod-tabs">
+              <button class="prod-tab active" onclick="showTab('tab-coberturas')" style="padding:10px 16px;border:none;background:none;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--muted)">🛡️ B · Coberturas</button>
+              <button class="prod-tab" onclick="showTab('tab-tarifas')" style="padding:10px 16px;border:none;background:none;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--muted)">📊 C · Tarifas</button>
+              <button class="prod-tab" onclick="showTab('tab-objeto')" style="padding:10px 16px;border:none;background:none;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--muted)">🚗 D · Objeto Asegurado</button>
+              <button class="prod-tab" onclick="showTab('tab-planes')" style="padding:10px 16px;border:none;background:none;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--muted)">💼 E · Planes Comerciales</button>
+              <button class="prod-tab" onclick="showTab('tab-reaseguro')" style="padding:10px 16px;border:none;background:none;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--muted)">🔗 F · Coaseg./Reaseg.</button>
+              <button class="prod-tab" onclick="showTab('tab-clausulas')" style="padding:10px 16px;border:none;background:none;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--muted)">📝 G · Clausulado</button>
+              <button class="prod-tab" onclick="showTab('tab-anexos')" style="padding:10px 16px;border:none;background:none;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--muted)">📎 H · Anexos</button>
+              <button class="prod-tab" onclick="showTab('tab-documentos')" style="padding:10px 16px;border:none;background:none;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--muted)">🗂️ I · Documentos</button>
+            </div>
+
+            <!-- TAB B: COBERTURAS -->
+            <div id="tab-coberturas" class="prod-panel" style="padding:20px;display:block">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div>
+                  <span style="font-size:13px;font-weight:600">Coberturas y Exclusiones</span>
+                  <span style="font-size:11px;color:var(--muted);margin-left:8px">PRODUCTO_COBERTURAS · EXCLUSIONES</span>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="openModal('modal-nueva-cobertura')">+ Asociar Cobertura</button>
+              </div>
+              <table>
+                <thead><tr><th>Código</th><th>Cobertura</th><th>Tipo</th><th>Obligatoria</th><th>Suma Aseg. Min/Max</th><th>Franquicia</th><th>Edad Ing.</th><th>Precio</th><th>Estado</th><th></th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td><strong>COB-RC</strong></td><td>Responsabilidad Civil Obligatoria</td>
+                    <td><span class="badge badge-info">RESPONSABILIDAD</span></td>
+                    <td>✅ Sí</td><td>$ 10M – $ 50M</td><td>—</td><td>18–75 años</td>
+                    <td><span class="badge badge-gray">TARIFA</span></td>
+                    <td><span class="badge badge-success">Activa</span></td>
+                    <td><button class="btn btn-outline btn-sm" onclick="openModal('modal-ver-cobertura')">Ver</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>COB-DAÑOS</strong></td><td>Daños Propios</td>
+                    <td><span class="badge badge-gray">DAÑO</span></td>
+                    <td>❌ Electiva</td><td>$ 1M – $ 30M</td><td>10% relativa</td><td>18–70 años</td>
+                    <td><span class="badge badge-gray">TARIFA</span></td>
+                    <td><span class="badge badge-success">Activa</span></td>
+                    <td><button class="btn btn-outline btn-sm" onclick="openModal('modal-ver-cobertura')">Ver</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>COB-ROB</strong></td><td>Robo y Hurto Total</td>
+                    <td><span class="badge badge-gray">DAÑO</span></td>
+                    <td>❌ Electiva</td><td>$ 1M – $ 30M</td><td>—</td><td>18–65 años</td>
+                    <td><span class="badge badge-gray">TARIFA</span></td>
+                    <td><span class="badge badge-success">Activa</span></td>
+                    <td><button class="btn btn-outline btn-sm">Ver</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>COB-GRAN</strong></td><td>Granizo</td>
+                    <td><span class="badge badge-gray">DAÑO</span></td>
+                    <td>❌ Electiva</td><td>$ 500K – $ 30M</td><td>5% absoluta</td><td>—</td>
+                    <td><span class="badge badge-gray">TARIFA</span></td>
+                    <td><span class="badge badge-success">Activa</span></td>
+                    <td><button class="btn btn-outline btn-sm">Ver</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>COB-ASIST</strong></td><td>Asistencia en Viaje</td>
+                    <td><span class="badge badge-info">ASISTENCIA</span></td>
+                    <td>✅ Sí</td><td>—</td><td>—</td><td>—</td>
+                    <td><span class="badge badge-info">PRIMA FIJA</span></td>
+                    <td><span class="badge badge-success">Activa</span></td>
+                    <td><button class="btn btn-outline btn-sm">Ver</button></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div style="margin-top:20px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <span style="font-size:13px;font-weight:600">Exclusiones asociadas</span>
+                <button class="btn btn-outline btn-sm">+ Agregar Exclusión</button>
+              </div>
+              <table>
+                <thead><tr><th>Código</th><th>Descripción</th><th>Tipo</th><th>Cobertura</th></tr></thead>
+                <tbody>
+                  <tr><td>EXC-001</td><td>Daños intencionales por el asegurado</td><td><span class="badge badge-danger">GENERAL</span></td><td>Todas</td></tr>
+                  <tr><td>EXC-002</td><td>Conducción sin licencia habilitante</td><td><span class="badge badge-danger">GENERAL</span></td><td>Daños Propios, RC</td></tr>
+                  <tr><td>EXC-003</td><td>Robo sin signos de violencia</td><td><span class="badge badge-warning">ESPECÍFICA</span></td><td>Robo y Hurto Total</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- TAB C: TARIFAS -->
+            <div id="tab-tarifas" class="prod-panel" style="padding:20px;display:none">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div>
+                  <span style="font-size:13px;font-weight:600">Tablas de Tarifas</span>
+                  <span style="font-size:11px;color:var(--muted);margin-left:8px">TARIFAS · TARIFA_RANGOS</span>
+                </div>
+                <button class="btn btn-primary btn-sm">+ Nueva Tarifa</button>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden">
+                  <div style="padding:10px 14px;background:var(--light);font-size:12px;font-weight:600;border-bottom:1px solid var(--border)">
+                    📊 Tabla RC — Zona/Capital (TASA_SOBRE_SA) <span class="badge badge-success" style="float:right">Activa</span>
+                  </div>
+                  <table>
+                    <thead><tr><th>Zona</th><th>SA Desde</th><th>SA Hasta</th><th>Tasa ‰</th></tr></thead>
+                    <tbody>
+                      <tr><td>Zona 1 (CABA)</td><td>$ 10M</td><td>$ 20M</td><td>2.40 ‰</td></tr>
+                      <tr><td>Zona 1 (CABA)</td><td>$ 20M</td><td>$ 50M</td><td>2.10 ‰</td></tr>
+                      <tr><td>Zona 2 (GBA)</td><td>$ 10M</td><td>$ 20M</td><td>2.80 ‰</td></tr>
+                      <tr><td>Zona 2 (GBA)</td><td>$ 20M</td><td>$ 50M</td><td>2.50 ‰</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden">
+                  <div style="padding:10px 14px;background:var(--light);font-size:12px;font-weight:600;border-bottom:1px solid var(--border)">
+                    📊 Tabla Daños Propios — Antigüedad/Zona (TASA_SOBRE_SA) <span class="badge badge-success" style="float:right">Activa</span>
+                  </div>
+                  <table>
+                    <thead><tr><th>Antigüedad</th><th>Zona</th><th>Tasa ‰</th></tr></thead>
+                    <tbody>
+                      <tr><td>0–3 años</td><td>Zona 1</td><td>18.50 ‰</td></tr>
+                      <tr><td>0–3 años</td><td>Zona 2</td><td>21.00 ‰</td></tr>
+                      <tr><td>4–7 años</td><td>Zona 1</td><td>22.00 ‰</td></tr>
+                      <tr><td>4–7 años</td><td>Zona 2</td><td>25.50 ‰</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB D: OBJETO ASEGURADO -->
+            <div id="tab-objeto" class="prod-panel" style="padding:20px;display:none">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div>
+                  <span style="font-size:13px;font-weight:600">Objeto Asegurado</span>
+                  <span style="font-size:11px;color:var(--muted);margin-left:8px">TIPO_OBJETO_ASEGURADO · OBJETO_ASEGURADO_ATRIBUTOS</span>
+                </div>
+              </div>
+              <div style="display:inline-block;background:#dbeafe;color:#1d4ed8;padding:6px 14px;border-radius:6px;font-size:13px;font-weight:600;margin-bottom:16px">🚗 VEHICULO — Bien Material</div>
+              <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Atributos dinámicos requeridos al emitir:</p>
+              <table>
+                <thead><tr><th>Atributo</th><th>Tipo de dato</th><th>Obligatorio</th><th>Valores posibles</th><th>Orden</th></tr></thead>
+                <tbody>
+                  <tr><td>patente</td><td>STRING</td><td>✅ Sí</td><td>—</td><td>1</td></tr>
+                  <tr><td>marca</td><td>LISTA</td><td>✅ Sí</td><td>Toyota, Ford, Chevrolet, VW, Renault...</td><td>2</td></tr>
+                  <tr><td>modelo</td><td>STRING</td><td>✅ Sí</td><td>—</td><td>3</td></tr>
+                  <tr><td>año_fabricacion</td><td>INT</td><td>✅ Sí</td><td>1990–2026</td><td>4</td></tr>
+                  <tr><td>uso</td><td>LISTA</td><td>✅ Sí</td><td>PARTICULAR, COMERCIAL, TRANSPORTE</td><td>5</td></tr>
+                  <tr><td>combustible</td><td>LISTA</td><td>❌ No</td><td>NAFTA, DIESEL, ELECTRICO, GNC</td><td>6</td></tr>
+                  <tr><td>numero_chasis</td><td>STRING</td><td>✅ Sí</td><td>—</td><td>7</td></tr>
+                  <tr><td>numero_motor</td><td>STRING</td><td>✅ Sí</td><td>—</td><td>8</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- TAB E: PLANES COMERCIALES -->
+            <div id="tab-planes" class="prod-panel" style="padding:20px;display:none">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div>
+                  <span style="font-size:13px;font-weight:600">Planes Comerciales</span>
+                  <span style="font-size:11px;color:var(--muted);margin-left:8px">PLANES_COMERCIALES · PLAN_FORMAS_PAGO · PLAN_COMISIONES</span>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="openModal('modal-nuevo-plan')">+ Nuevo Plan</button>
+              </div>
+
+              <!-- 3 planes lado a lado -->
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+                <!-- Plan Básico -->
+                <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden">
+                  <div style="background:#f0fdf4;padding:12px 14px;border-bottom:1px solid var(--border)">
+                    <div style="font-weight:700;font-size:14px">Plan Básico</div>
+                    <div style="font-size:11px;color:var(--muted)">PLAN-BASIC · Activo</div>
+                  </div>
+                  <div style="padding:12px 14px;font-size:12px;display:flex;flex-direction:column;gap:8px">
+                    <div><strong>Coberturas:</strong> RC + Asistencia</div>
+                    <div><strong>Comisión PAS:</strong> 10%</div>
+                    <div><strong>Comisión extra:</strong> 2%</div>
+                    <div style="border-top:1px solid var(--border);padding-top:8px;font-weight:600">Formas de Pago:</div>
+                    <div>• Contado — sin recargo</div>
+                    <div>• 3 cuotas — 3% recargo</div>
+                    <div>• Débito CBU — sin recargo</div>
+                  </div>
+                </div>
+                <!-- Plan Plus -->
+                <div style="border:2px solid var(--accent);border-radius:8px;overflow:hidden">
+                  <div style="background:#dbeafe;padding:12px 14px;border-bottom:1px solid var(--accent)">
+                    <div style="font-weight:700;font-size:14px;color:var(--accent)">Plan Plus ⭐</div>
+                    <div style="font-size:11px;color:var(--muted)">PLAN-PLUS · Activo</div>
+                  </div>
+                  <div style="padding:12px 14px;font-size:12px;display:flex;flex-direction:column;gap:8px">
+                    <div><strong>Coberturas:</strong> RC + Daños + Granizo + Asist.</div>
+                    <div><strong>Comisión PAS:</strong> 12%</div>
+                    <div><strong>Comisión extra:</strong> 3%</div>
+                    <div style="border-top:1px solid var(--border);padding-top:8px;font-weight:600">Formas de Pago:</div>
+                    <div>• Contado — sin recargo</div>
+                    <div>• 3 cuotas — 3% recargo</div>
+                    <div>• 6 cuotas — 5.5% recargo</div>
+                    <div>• Débito CBU — sin recargo</div>
+                    <div>• Tarjeta crédito — 4% recargo</div>
+                  </div>
+                </div>
+                <!-- Plan Premium -->
+                <div style="border:1px solid #f59e0b;border-radius:8px;overflow:hidden">
+                  <div style="background:#fef3cd;padding:12px 14px;border-bottom:1px solid #f59e0b">
+                    <div style="font-weight:700;font-size:14px;color:#b45309">Plan Premium 🏆</div>
+                    <div style="font-size:11px;color:var(--muted)">PLAN-PREM · Activo</div>
+                  </div>
+                  <div style="padding:12px 14px;font-size:12px;display:flex;flex-direction:column;gap:8px">
+                    <div><strong>Coberturas:</strong> Todo riesgo completo</div>
+                    <div><strong>Comisión PAS:</strong> 15%</div>
+                    <div><strong>Comisión extra:</strong> 5%</div>
+                    <div style="border-top:1px solid var(--border);padding-top:8px;font-weight:600">Formas de Pago:</div>
+                    <div>• Contado — sin recargo</div>
+                    <div>• 3/6/9/12 cuotas</div>
+                    <div>• Débito CBU — sin recargo</div>
+                    <div>• Tarjeta crédito</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Canales de comercialización -->
+              <div style="margin-top:20px">
+                <div style="font-size:13px;font-weight:600;margin-bottom:10px">Canales de Comercialización <span style="font-size:11px;color:var(--muted)">PRODUCTO_CANALES</span></div>
+                <table>
+                  <thead><tr><th>Sucursal</th><th>Tipo de Negocio</th><th>Activo</th><th>Vigencia</th></tr></thead>
+                  <tbody>
+                    <tr><td>Casa Central</td><td>Directo / Portal</td><td>✅</td><td>01/01/2024 – Indefinido</td></tr>
+                    <tr><td>Sucursal Norte</td><td>PAS / Agencias</td><td>✅</td><td>01/01/2024 – Indefinido</td></tr>
+                    <tr><td>Sucursal Sur</td><td>PAS / Agencias</td><td>✅</td><td>01/03/2024 – Indefinido</td></tr>
+                    <tr><td>Digital</td><td>E-commerce / API</td><td>✅</td><td>01/06/2025 – Indefinido</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- TAB F: COASEGURO / REASEGURO -->
+            <div id="tab-reaseguro" class="prod-panel" style="padding:20px;display:none">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+                <div>
+                  <div style="font-size:13px;font-weight:600;margin-bottom:12px">🔗 Coaseguro <span style="font-size:11px;color:var(--muted)">COASEGURO_CONFIG</span></div>
+                  <div style="padding:10px;background:var(--light);border-radius:6px;font-size:12px;color:var(--muted);margin-bottom:10px">Este producto no tiene coaseguro configurado.</div>
+                  <button class="btn btn-outline btn-sm">+ Configurar Coaseguro</button>
+                </div>
+                <div>
+                  <div style="font-size:13px;font-weight:600;margin-bottom:12px">♻️ Reaseguro <span style="font-size:11px;color:var(--muted)">REASEGURO_CONFIG</span></div>
+                  <table>
+                    <thead><tr><th>Reasegurador</th><th>Contrato</th><th>Retención</th><th>Cesión máx.</th><th>Estado</th></tr></thead>
+                    <tbody>
+                      <tr><td>Munich Re Argentina</td><td>EXCEDENTE / AUTOMÁTICO</td><td>$ 5M</td><td>$ 25M</td><td><span class="badge badge-success">Activo</span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB G: CLAUSULADO -->
+            <div id="tab-clausulas" class="prod-panel" style="padding:20px;display:none">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                <div>
+                  <span style="font-size:13px;font-weight:600">Clausulado</span>
+                  <span style="font-size:11px;color:var(--muted);margin-left:8px">CLAUSULAS · 4 niveles de aplicación independientes</span>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="openModal('modal-nueva-clausula')">+ Asociar Cláusula</button>
+              </div>
+
+              <!-- Niveles explicados -->
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0">
+                <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:8px 10px;font-size:11px;text-align:center">
+                  <div style="font-weight:700;color:#15803d">Nivel 1</div><div style="color:var(--muted)">Ramo Comercial</div><div style="font-weight:600;margin-top:2px">3 cláusulas</div>
+                </div>
+                <div style="background:#eff6ff;border:1px solid #93c5fd;border-radius:6px;padding:8px 10px;font-size:11px;text-align:center">
+                  <div style="font-weight:700;color:#1d4ed8">Nivel 2</div><div style="color:var(--muted)">Ramo Técnico</div><div style="font-weight:600;margin-top:2px">1 cláusula</div>
+                </div>
+                <div style="background:#fefce8;border:1px solid #fde047;border-radius:6px;padding:8px 10px;font-size:11px;text-align:center">
+                  <div style="font-weight:700;color:#a16207">Nivel 3</div><div style="color:var(--muted)">Producto</div><div style="font-weight:600;margin-top:2px">2 cláusulas</div>
+                </div>
+                <div style="background:#fdf4ff;border:1px solid #e879f9;border-radius:6px;padding:8px 10px;font-size:11px;text-align:center">
+                  <div style="font-weight:700;color:#7e22ce">Nivel 4</div><div style="color:var(--muted)">Plan Comercial</div><div style="font-weight:600;margin-top:2px">4 cláusulas</div>
+                </div>
+              </div>
+
+              <table>
+                <thead><tr><th>Código</th><th>Nombre</th><th>Tipo</th><th>Nivel</th><th>Ámbito</th><th>Variables</th><th>Versión</th><th>Estado</th><th></th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td>CL-GEN-001</td><td>Condiciones Generales RC Argentina</td>
+                    <td><span class="badge badge-danger">OBLIGATORIA</span></td>
+                    <td><span style="background:#f0fdf4;color:#15803d;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600">Niv.1 Ramo</span></td>
+                    <td>GENERAL</td><td>✅ 3 vars</td><td>v2.1</td>
+                    <td><span class="badge badge-success">ACTIVO</span></td>
+                    <td><button class="btn btn-outline btn-sm" onclick="openModal('modal-ver-clausula')">Ver</button></td>
+                  </tr>
+                  <tr>
+                    <td>CL-AUTO-001</td><td>Cláusula de Uso del Vehículo</td>
+                    <td><span class="badge badge-warning">EXCLUSIÓN</span></td>
+                    <td><span style="background:#f0fdf4;color:#15803d;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600">Niv.1 Ramo</span></td>
+                    <td>GENERAL</td><td>❌</td><td>v1.0</td>
+                    <td><span class="badge badge-success">ACTIVO</span></td>
+                    <td><button class="btn btn-outline btn-sm">Ver</button></td>
+                  </tr>
+                  <tr>
+                    <td>CL-AUTO-002</td><td>Cláusula de Franquicia Relativa</td>
+                    <td><span class="badge badge-info">CONDICIÓN PARTICULAR</span></td>
+                    <td><span style="background:#fefce8;color:#a16207;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600">Niv.3 Producto</span></td>
+                    <td>ESPECÍFICA</td><td>✅ 2 vars</td><td>v1.0</td>
+                    <td><span class="badge badge-success">ACTIVO</span></td>
+                    <td><button class="btn btn-outline btn-sm">Ver</button></td>
+                  </tr>
+                  <tr>
+                    <td>CL-PREM-001</td><td>Cobertura Cristales sin franquicia</td>
+                    <td><span class="badge badge-success">AMPLIACIÓN</span></td>
+                    <td><span style="background:#fdf4ff;color:#7e22ce;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600">Niv.4 Plan Premium</span></td>
+                    <td>ESPECÍFICA</td><td>❌</td><td>v1.0</td>
+                    <td><span class="badge badge-success">ACTIVO</span></td>
+                    <td><button class="btn btn-outline btn-sm">Ver</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- TAB H: ANEXOS -->
+            <div id="tab-anexos" class="prod-panel" style="padding:20px;display:none">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                <div>
+                  <span style="font-size:13px;font-weight:600">Anexos</span>
+                  <span style="font-size:11px;color:var(--muted);margin-left:8px">ANEXOS · documentos autónomos adjuntos a la póliza</span>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="openModal('modal-nuevo-anexo')">+ Asociar Anexo</button>
+              </div>
+
+              <!-- Niveles -->
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0">
+                <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:8px 10px;font-size:11px;text-align:center">
+                  <div style="font-weight:700;color:#15803d">Nivel 1</div><div style="color:var(--muted)">Ramo Comercial</div><div style="font-weight:600;margin-top:2px">2 anexos</div>
+                </div>
+                <div style="background:#eff6ff;border:1px solid #93c5fd;border-radius:6px;padding:8px 10px;font-size:11px;text-align:center">
+                  <div style="font-weight:700;color:#1d4ed8">Nivel 2</div><div style="color:var(--muted)">Ramo Técnico</div><div style="font-weight:600;margin-top:2px">0 anexos</div>
+                </div>
+                <div style="background:#fefce8;border:1px solid #fde047;border-radius:6px;padding:8px 10px;font-size:11px;text-align:center">
+                  <div style="font-weight:700;color:#a16207">Nivel 3</div><div style="color:var(--muted)">Producto</div><div style="font-weight:600;margin-top:2px">1 anexo</div>
+                </div>
+                <div style="background:#fdf4ff;border:1px solid #e879f9;border-radius:6px;padding:8px 10px;font-size:11px;text-align:center">
+                  <div style="font-weight:700;color:#7e22ce">Nivel 4</div><div style="color:var(--muted)">Plan Comercial</div><div style="font-weight:600;margin-top:2px">1 anexo</div>
+                </div>
+              </div>
+
+              <table>
+                <thead><tr><th>Código</th><th>Nombre del Anexo</th><th>Tipo</th><th>Nivel</th><th>Tiene Variables</th><th>Adjunto PDF</th><th>Estado</th><th></th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td>ANX-001</td><td>Cuadro de Póliza</td>
+                    <td><span class="badge badge-gray">CERTIFICADO</span></td>
+                    <td><span style="background:#f0fdf4;color:#15803d;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600">Niv.1 Ramo</span></td>
+                    <td>✅ 8 vars</td><td>✅ cuadro_poliza_auto.pdf</td>
+                    <td><span class="badge badge-success">ACTIVO</span></td>
+                    <td><button class="btn btn-outline btn-sm">Ver</button></td>
+                  </tr>
+                  <tr>
+                    <td>ANX-002</td><td>Condiciones Generales Auto</td>
+                    <td><span class="badge badge-info">TEXTO COMPLETO</span></td>
+                    <td><span style="background:#f0fdf4;color:#15803d;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600">Niv.1 Ramo</span></td>
+                    <td>❌</td><td>✅ cond_gral_auto_v3.pdf</td>
+                    <td><span class="badge badge-success">ACTIVO</span></td>
+                    <td><button class="btn btn-outline btn-sm">Ver</button></td>
+                  </tr>
+                  <tr>
+                    <td>ANX-003</td><td>Formulario Declaración Uso del Vehículo</td>
+                    <td><span class="badge badge-warning">FORMULARIO</span></td>
+                    <td><span style="background:#fefce8;color:#a16207;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600">Niv.3 Producto</span></td>
+                    <td>✅ 4 vars</td><td>✅ declaracion_uso_auto.pdf</td>
+                    <td><span class="badge badge-success">ACTIVO</span></td>
+                    <td><button class="btn btn-outline btn-sm">Ver</button></td>
+                  </tr>
+                  <tr>
+                    <td>ANX-004</td><td>Rider Cristales — Plan Premium</td>
+                    <td><span class="badge badge-gray">CERTIFICADO</span></td>
+                    <td><span style="background:#fdf4ff;color:#7e22ce;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600">Niv.4 Plan Premium</span></td>
+                    <td>❌</td><td>✅ rider_cristales.pdf</td>
+                    <td><span class="badge badge-success">ACTIVO</span></td>
+                    <td><button class="btn btn-outline btn-sm">Ver</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- TAB I: DOCUMENTOS -->
+            <div id="tab-documentos" class="prod-panel" style="padding:20px;display:none">
+              <div style="font-size:13px;font-weight:600;margin-bottom:14px">Documentos del Producto <span style="font-size:11px;color:var(--muted)">PRODUCTO_DOCUMENTOS</span></div>
+              <table>
+                <thead><tr><th>Nombre</th><th>Tipo</th><th>Versión</th><th>Fecha carga</th><th>Vigente</th><th></th></tr></thead>
+                <tbody>
+                  <tr><td>Manual del Producto Auto Full v3.2</td><td>MANUAL_PRODUCTO</td><td>v3.2</td><td>01/01/2026</td><td>✅</td><td><button class="btn btn-outline btn-sm">📄 Ver</button></td></tr>
+                  <tr><td>Ficha Técnica Actuarial 2026</td><td>FICHA_TECNICA</td><td>v1.0</td><td>15/12/2025</td><td>✅</td><td><button class="btn btn-outline btn-sm">📄 Ver</button></td></tr>
+                  <tr><td>Resolución SSN Aprobación Ramo</td><td>REGULATORIO</td><td>—</td><td>10/03/2024</td><td>✅</td><td><button class="btn btn-outline btn-sm">📄 Ver</button></td></tr>
+                  <tr><td>Histórico Condiciones Grales v2.1</td><td>CONDICIONES_GENERALES</td><td>v2.1</td><td>01/01/2025</td><td>❌ Histórico</td><td><button class="btn btn-outline btn-sm">📄 Ver</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div><!-- /card tabs -->
+        </div><!-- /detalle -->
+      </div><!-- /grid -->
     </div>
 
     <!-- ===== CLIENTES ===== -->
@@ -684,6 +1119,182 @@
   </div>
 </div>
 
+<!-- Modal: Nuevo Producto -->
+<div class="modal-overlay" id="modal-nuevo-producto">
+  <div class="modal">
+    <h3>📦 Nuevo Producto</h3>
+    <div class="form-grid">
+      <div class="form-group"><label>Código</label><input type="text" placeholder="ej. AUTO-FULL"></div>
+      <div class="form-group"><label>Ramo Comercial</label><select><option>Automóviles</option><option>Vida</option><option>Incendio</option></select></div>
+      <div class="form-group form-full"><label>Nombre Comercial</label><input type="text" placeholder="Nombre del producto"></div>
+      <div class="form-group"><label>Tipo Emisión</label><select><option>INDIVIDUAL</option><option>COLECTIVO</option><option>FLOTANTE</option></select></div>
+      <div class="form-group"><label>Modalidad Precio</label><select><option>TARIFA</option><option>PRIMA_INFORMADA</option><option>PREMIO_INFORMADO</option></select></div>
+      <div class="form-group"><label>Versión inicial</label><input type="text" value="1.0"></div>
+      <div class="form-group"><label>Vigencia Desde</label><input type="date"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-nuevo-producto')">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-nuevo-producto');alert('✅ Producto creado en estado BORRADOR.\nAhora configurá coberturas, tarifas y planes.')">Crear Producto</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nueva Cobertura -->
+<div class="modal-overlay" id="modal-nueva-cobertura">
+  <div class="modal">
+    <h3>🛡️ Asociar Cobertura al Producto</h3>
+    <div class="form-grid">
+      <div class="form-group form-full"><label>Cobertura</label><select><option>COB-RC — Responsabilidad Civil</option><option>COB-DAÑOS — Daños Propios</option><option>COB-ROB — Robo y Hurto Total</option><option>COB-GRAN — Granizo</option><option>COB-ASIST — Asistencia en Viaje</option></select></div>
+      <div class="form-group"><label>¿Obligatoria?</label><select><option>Sí</option><option>No (electiva)</option></select></div>
+      <div class="form-group"><label>Modalidad Precio</label><select><option>TARIFA</option><option>PRIMA_INFORMADA</option><option>PREMIO_INFORMADO</option></select></div>
+      <div class="form-group"><label>Suma Aseg. Mínima</label><input type="text" placeholder="$ 0"></div>
+      <div class="form-group"><label>Suma Aseg. Máxima</label><input type="text" placeholder="$ 50.000.000"></div>
+      <div class="form-group"><label>Tipo Franquicia</label><select><option>Sin franquicia</option><option>ABSOLUTA</option><option>RELATIVA</option><option>PORCENTUAL</option></select></div>
+      <div class="form-group"><label>Edad Mín. Ingreso</label><input type="number" placeholder="18"></div>
+      <div class="form-group"><label>Edad Máx. Ingreso</label><input type="number" placeholder="75"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-nueva-cobertura')">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-nueva-cobertura');alert('✅ Cobertura asociada al producto.')">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Ver Cobertura -->
+<div class="modal-overlay" id="modal-ver-cobertura">
+  <div class="modal" style="width:580px">
+    <h3>🛡️ COB-RC — Responsabilidad Civil Obligatoria</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px;margin-bottom:16px">
+      <div><span style="color:var(--muted)">Tipo:</span> RESPONSABILIDAD</div>
+      <div><span style="color:var(--muted)">Obligatoria:</span> ✅ Sí</div>
+      <div><span style="color:var(--muted)">SA Min/Max:</span> $ 10M – $ 50M</div>
+      <div><span style="color:var(--muted)">Franquicia:</span> Sin franquicia</div>
+      <div><span style="color:var(--muted)">Edad ingreso:</span> 18 – 75 años</div>
+      <div><span style="color:var(--muted)">Precio:</span> TARIFA</div>
+    </div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:8px">Exclusiones vinculadas</div>
+    <table>
+      <thead><tr><th>Código</th><th>Descripción</th><th>Tipo</th></tr></thead>
+      <tbody>
+        <tr><td>EXC-001</td><td>Daños intencionales</td><td><span class="badge badge-danger">GENERAL</span></td></tr>
+        <tr><td>EXC-002</td><td>Conducción sin licencia</td><td><span class="badge badge-danger">GENERAL</span></td></tr>
+      </tbody>
+    </table>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-ver-cobertura')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nueva Cláusula -->
+<div class="modal-overlay" id="modal-nueva-clausula">
+  <div class="modal">
+    <h3>📝 Asociar Cláusula</h3>
+    <div class="form-grid">
+      <div class="form-group form-full"><label>Cláusula</label><select><option>CL-GEN-001 — Condiciones Generales RC</option><option>CL-AUTO-001 — Uso del Vehículo</option><option>CL-AUTO-002 — Franquicia Relativa</option><option>CL-PREM-001 — Cristales sin franquicia</option></select></div>
+      <div class="form-group"><label>Nivel de Aplicación</label>
+        <select>
+          <option>Nivel 1 — Ramo Comercial</option>
+          <option>Nivel 2 — Ramo Técnico</option>
+          <option>Nivel 3 — Producto Comercial</option>
+          <option>Nivel 4 — Plan Comercial</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Plan (solo Nivel 4)</label><select><option>—</option><option>Plan Básico</option><option>Plan Plus</option><option>Plan Premium</option></select></div>
+      <div class="form-group"><label>Vigencia Desde</label><input type="date"></div>
+      <div class="form-group"><label>Vigencia Hasta</label><input type="date" placeholder="Dejar vacío = indefinido"></div>
+      <div class="form-group"><label>¿Obligatoria en este nivel?</label><select><option>Sí</option><option>No (opcional)</option></select></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-nueva-clausula')">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-nueva-clausula');alert('✅ Cláusula asociada al nivel seleccionado.')">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Ver Cláusula -->
+<div class="modal-overlay" id="modal-ver-clausula">
+  <div class="modal" style="width:600px">
+    <h3>📝 CL-GEN-001 — Condiciones Generales RC Argentina</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px;margin-bottom:14px">
+      <div><span style="color:var(--muted)">Tipo:</span> OBLIGATORIA</div>
+      <div><span style="color:var(--muted)">Ámbito:</span> GENERAL</div>
+      <div><span style="color:var(--muted)">Versión:</span> v2.1</div>
+      <div><span style="color:var(--muted)">Estado:</span> <span class="badge badge-success">ACTIVO</span></div>
+    </div>
+    <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px">TEXTO BASE</div>
+    <div style="background:var(--light);border-radius:6px;padding:12px;font-size:12px;line-height:1.7;border:1px solid var(--border)">
+      El asegurado <strong>{{nombre_asegurado}}</strong>, CUIT <strong>{{cuit_asegurado}}</strong>, contrata cobertura de Responsabilidad Civil con una suma asegurada de <strong>{{suma_asegurada}}</strong> pesos argentinos, con vigencia desde el <strong>{{fecha_inicio}}</strong>. La cobertura opera conforme a las disposiciones de la Resolución SSN N° 38.708...
+    </div>
+    <div style="font-size:13px;font-weight:600;margin:14px 0 8px">Variables dinámicas</div>
+    <table>
+      <thead><tr><th>Variable</th><th>Etiqueta</th><th>Tipo</th><th>Obligatoria</th></tr></thead>
+      <tbody>
+        <tr><td>{{nombre_asegurado}}</td><td>Nombre del Asegurado</td><td>STRING</td><td>✅</td></tr>
+        <tr><td>{{cuit_asegurado}}</td><td>CUIT</td><td>STRING</td><td>✅</td></tr>
+        <tr><td>{{suma_asegurada}}</td><td>Suma Asegurada RC</td><td>DECIMAL</td><td>✅</td></tr>
+        <tr><td>{{fecha_inicio}}</td><td>Fecha de inicio de vigencia</td><td>DATE</td><td>✅</td></tr>
+      </tbody>
+    </table>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-ver-clausula')">Cerrar</button>
+      <button class="btn btn-outline">✏️ Editar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nuevo Anexo -->
+<div class="modal-overlay" id="modal-nuevo-anexo">
+  <div class="modal">
+    <h3>📎 Asociar Anexo</h3>
+    <div class="form-grid">
+      <div class="form-group form-full"><label>Anexo</label><select><option>ANX-001 — Cuadro de Póliza</option><option>ANX-002 — Condiciones Generales Auto</option><option>ANX-003 — Declaración Uso Vehículo</option><option>ANX-004 — Rider Cristales</option></select></div>
+      <div class="form-group"><label>Nivel de Aplicación</label>
+        <select>
+          <option>Nivel 1 — Ramo Comercial</option>
+          <option>Nivel 2 — Ramo Técnico</option>
+          <option>Nivel 3 — Producto Comercial</option>
+          <option>Nivel 4 — Plan Comercial</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Plan (solo Nivel 4)</label><select><option>—</option><option>Plan Premium</option></select></div>
+      <div class="form-group"><label>Vigencia Desde</label><input type="date"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-nuevo-anexo')">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-nuevo-anexo');alert('✅ Anexo asociado al nivel seleccionado.')">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nuevo Plan -->
+<div class="modal-overlay" id="modal-nuevo-plan">
+  <div class="modal">
+    <h3>💼 Nuevo Plan Comercial</h3>
+    <div class="form-grid">
+      <div class="form-group"><label>Código del Plan</label><input type="text" placeholder="PLAN-XXX"></div>
+      <div class="form-group"><label>Nombre del Plan</label><input type="text" placeholder="Plan Básico / Plus / Premium"></div>
+      <div class="form-group form-full"><label>Descripción</label><input type="text" placeholder="Beneficios y condiciones del plan"></div>
+      <div class="form-group"><label>Vigencia Desde</label><input type="date"></div>
+      <div class="form-group"><label>Comisión PAS (%)</label><input type="number" placeholder="10"></div>
+      <div class="form-group"><label>Comisión Extra (%)</label><input type="number" placeholder="2"></div>
+    </div>
+    <div style="margin-top:12px;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px">Formas de pago habilitadas</div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;font-size:12px">
+      <label><input type="checkbox" checked> Contado</label>
+      <label><input type="checkbox" checked> 3 cuotas (3%)</label>
+      <label><input type="checkbox"> 6 cuotas (5.5%)</label>
+      <label><input type="checkbox"> 12 cuotas (9%)</label>
+      <label><input type="checkbox" checked> Débito CBU</label>
+      <label><input type="checkbox"> Tarjeta crédito (4%)</label>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-nuevo-plan')">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-nuevo-plan');alert('✅ Plan Comercial creado exitosamente.')">Guardar Plan</button>
+    </div>
+  </div>
+</div>
+
 <!-- Modal: Nuevo Endoso -->
 <div class="modal-overlay" id="modal-endoso">
   <div class="modal">
@@ -730,6 +1341,40 @@
 
   function openModal(id)  { document.getElementById(id).classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  // TABS DE PRODUCTO
+  function showTab(tabId) {
+    document.querySelectorAll('.prod-panel').forEach(p => p.style.display = 'none');
+    document.querySelectorAll('.prod-tab').forEach(t => {
+      t.style.borderBottomColor = 'transparent';
+      t.style.color = 'var(--muted)';
+      t.style.background = 'none';
+    });
+    document.getElementById(tabId).style.display = 'block';
+    const idx = ['tab-coberturas','tab-tarifas','tab-objeto','tab-planes','tab-reaseguro','tab-clausulas','tab-anexos','tab-documentos'].indexOf(tabId);
+    const tabs = document.querySelectorAll('.prod-tab');
+    if (tabs[idx]) {
+      tabs[idx].style.borderBottomColor = 'var(--accent)';
+      tabs[idx].style.color = 'var(--accent)';
+      tabs[idx].style.background = '#fff';
+    }
+  }
+
+  // SELECCIÓN DE PRODUCTO EN LA LISTA
+  function selectProd(el, code) {
+    document.querySelectorAll('.prod-item').forEach(p => {
+      p.style.background = '';
+      p.classList.remove('active');
+    });
+    el.style.background = '#eff6ff';
+    el.classList.add('active');
+    showTab('tab-coberturas'); // reset al primer tab
+  }
+
+  // Inicializar tab activo en productos
+  document.addEventListener('DOMContentLoaded', () => {
+    showTab('tab-coberturas');
+  });
 
   // Cerrar modal al hacer click fuera
   document.querySelectorAll('.modal-overlay').forEach(overlay => {
