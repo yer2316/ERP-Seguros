@@ -1441,16 +1441,612 @@
     <!-- ===== PRODUCTOS ===== -->
     <div class="page" id="page-productos">
       <div class="page-header">
-        <div><h2>📦 Módulo 3 — Productos</h2><p>Definición técnica y comercial · 9 grupos funcionales (A→I)</p></div>
-        <button class="btn btn-primary" onclick="openModal('modal-nuevo-producto')">+ Nuevo Producto</button>
+        <div><h2>📦 Módulo 3 — Productos</h2><p>Definición técnica y comercial · 32 entidades · 9 grupos funcionales (A→I)</p></div>
+        <button class="btn btn-primary">+ Nuevo</button>
       </div>
 
-      <!-- LAYOUT: lista izquierda + detalle derecha -->
-      <div style="display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start">
+      <div style="display:grid;grid-template-columns:230px 1fr;gap:16px;align-items:start">
 
-        <!-- LISTA DE PRODUCTOS -->
-        <div class="card" style="padding:0;overflow:hidden">
-          <div style="padding:14px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600;background:var(--light)">Catálogo de Productos</div>
+        <!-- ══ MENÚ IZQUIERDO ══ -->
+        <div class="card" style="padding:0;overflow:hidden;position:sticky;top:70px">
+          <div style="padding:10px 14px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase">Catálogos del Módulo</div>
+
+          <div class="rc-group-hdr">🧩 A · NÚCLEO</div>
+          <div class="rc-item active" id="prd-mi-productos"        onclick="showPrdCatalog('prd-productos')">Productos</div>
+          <div class="rc-item"        id="prd-mi-versiones"        onclick="showPrdCatalog('prd-versiones')">Versiones del Producto</div>
+
+          <div class="rc-group-hdr">🛡️ B · COBERTURAS</div>
+          <div class="rc-item"        id="prd-mi-coberturas"       onclick="showPrdCatalog('prd-coberturas')">Coberturas</div>
+          <div class="rc-item"        id="prd-mi-prod-cob"         onclick="showPrdCatalog('prd-prod-cob')">Producto × Coberturas</div>
+          <div class="rc-item"        id="prd-mi-exclusiones"      onclick="showPrdCatalog('prd-exclusiones')">Exclusiones</div>
+          <div class="rc-item"        id="prd-mi-cob-excl"         onclick="showPrdCatalog('prd-cob-excl')">Exclusiones × Cobertura</div>
+
+          <div class="rc-group-hdr">📊 C · TARIFAS</div>
+          <div class="rc-item"        id="prd-mi-tarifas"          onclick="showPrdCatalog('prd-tarifas')">Tarifas</div>
+          <div class="rc-item"        id="prd-mi-tarifa-rangos"    onclick="showPrdCatalog('prd-tarifa-rangos')">Rangos de Tarifa</div>
+
+          <div class="rc-group-hdr">🚗 D · OBJETO ASEGURADO</div>
+          <div class="rc-item"        id="prd-mi-tipo-objeto"      onclick="showPrdCatalog('prd-tipo-objeto')">Tipo Objeto Asegurado</div>
+          <div class="rc-item"        id="prd-mi-obj-atrib"        onclick="showPrdCatalog('prd-obj-atrib')">Atributos del Objeto</div>
+          <div class="rc-item"        id="prd-mi-prod-objeto"      onclick="showPrdCatalog('prd-prod-objeto')">Producto × Tipo Objeto</div>
+
+          <div class="rc-group-hdr">💼 E · PLANO COMERCIAL</div>
+          <div class="rc-item"        id="prd-mi-planes"           onclick="showPrdCatalog('prd-planes')">Planes Comerciales</div>
+          <div class="rc-item"        id="prd-mi-formas-pago"      onclick="showPrdCatalog('prd-formas-pago')">Plan Formas de Pago</div>
+          <div class="rc-item"        id="prd-mi-comisiones"       onclick="showPrdCatalog('prd-comisiones')">Plan Comisiones</div>
+          <div class="rc-item"        id="prd-mi-canales"          onclick="showPrdCatalog('prd-canales')">Canales del Producto</div>
+
+          <div class="rc-group-hdr">🔗 F · COASEG./REASEG.</div>
+          <div class="rc-item"        id="prd-mi-coaseguro"        onclick="showPrdCatalog('prd-coaseguro')">Coaseguro Config</div>
+          <div class="rc-item"        id="prd-mi-reaseguro"        onclick="showPrdCatalog('prd-reaseguro')">Reaseguro Config</div>
+
+          <div class="rc-group-hdr">📝 G · CLAUSULADO</div>
+          <div class="rc-item"        id="prd-mi-clausulas"        onclick="showPrdCatalog('prd-clausulas')">Cláusulas</div>
+          <div class="rc-item"        id="prd-mi-claus-vars"       onclick="showPrdCatalog('prd-claus-vars')">Variables de Cláusula</div>
+          <div class="rc-item"        id="prd-mi-claus-adj"        onclick="showPrdCatalog('prd-claus-adj')">Adjuntos de Cláusula</div>
+          <div class="rc-item"        id="prd-mi-cl-ramo-com"      onclick="showPrdCatalog('prd-cl-ramo-com')">↳ Cláusula × Ramo Com <span style="font-size:9px;background:#dbeafe;color:#1d4ed8;padding:1px 5px;border-radius:8px;margin-left:2px">Niv.1</span></div>
+          <div class="rc-item"        id="prd-mi-cl-ramo-tec"      onclick="showPrdCatalog('prd-cl-ramo-tec')">↳ Cláusula × Ramo Tec <span style="font-size:9px;background:#e0e7ff;color:#3730a3;padding:1px 5px;border-radius:8px;margin-left:2px">Niv.2</span></div>
+          <div class="rc-item"        id="prd-mi-cl-producto"      onclick="showPrdCatalog('prd-cl-producto')">↳ Cláusula × Producto <span style="font-size:9px;background:#fef9c3;color:#854d0e;padding:1px 5px;border-radius:8px;margin-left:2px">Niv.3</span></div>
+          <div class="rc-item"        id="prd-mi-cl-plan"          onclick="showPrdCatalog('prd-cl-plan')">↳ Cláusula × Plan <span style="font-size:9px;background:#f3e8ff;color:#7e22ce;padding:1px 5px;border-radius:8px;margin-left:2px">Niv.4</span></div>
+
+          <div class="rc-group-hdr">📎 H · ANEXOS</div>
+          <div class="rc-item"        id="prd-mi-anexos"           onclick="showPrdCatalog('prd-anexos')">Anexos</div>
+          <div class="rc-item"        id="prd-mi-anex-vars"        onclick="showPrdCatalog('prd-anex-vars')">Variables de Anexo</div>
+          <div class="rc-item"        id="prd-mi-anex-adj"         onclick="showPrdCatalog('prd-anex-adj')">Adjuntos de Anexo</div>
+          <div class="rc-item"        id="prd-mi-anx-ramo-com"     onclick="showPrdCatalog('prd-anx-ramo-com')">↳ Anexo × Ramo Com <span style="font-size:9px;background:#dbeafe;color:#1d4ed8;padding:1px 5px;border-radius:8px;margin-left:2px">Niv.1</span></div>
+          <div class="rc-item"        id="prd-mi-anx-ramo-tec"     onclick="showPrdCatalog('prd-anx-ramo-tec')">↳ Anexo × Ramo Tec <span style="font-size:9px;background:#e0e7ff;color:#3730a3;padding:1px 5px;border-radius:8px;margin-left:2px">Niv.2</span></div>
+          <div class="rc-item"        id="prd-mi-anx-producto"     onclick="showPrdCatalog('prd-anx-producto')">↳ Anexo × Producto <span style="font-size:9px;background:#fef9c3;color:#854d0e;padding:1px 5px;border-radius:8px;margin-left:2px">Niv.3</span></div>
+          <div class="rc-item"        id="prd-mi-anx-plan"         onclick="showPrdCatalog('prd-anx-plan')">↳ Anexo × Plan <span style="font-size:9px;background:#f3e8ff;color:#7e22ce;padding:1px 5px;border-radius:8px;margin-left:2px">Niv.4</span></div>
+
+          <div class="rc-group-hdr">🗂️ I · DOCUMENTOS</div>
+          <div class="rc-item"        id="prd-mi-docs-prod"        onclick="showPrdCatalog('prd-docs-prod')">Documentos del Producto</div>
+        </div>
+
+        <!-- ══ PANELES DERECHO ══ -->
+        <div>
+
+          <!-- A1 ── PRODUCTOS ── -->
+          <div id="prd-productos" class="prd-panel" style="display:block">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Productos</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PRODUCTOS — entidad central, técnica + comercial</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Nombre</th><th>Ramo</th><th>Tipo Emisión</th><th>Precio</th><th>Versión</th><th>Estado</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>AUTO-FULL</td><td>Auto Full</td><td>Automóviles</td><td>INDIVIDUAL</td><td>TARIFA</td><td>3.2</td><td><span class="badge badge-success">ACTIVO</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>AUTO-BASIC</td><td>Auto Básico (RC)</td><td>Automóviles</td><td>INDIVIDUAL</td><td>TARIFA</td><td>2.1</td><td><span class="badge badge-success">ACTIVO</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>VIDA-IND</td><td>Vida Individual</td><td>Vida Individual</td><td>INDIVIDUAL</td><td>TARIFA</td><td>1.5</td><td><span class="badge badge-success">ACTIVO</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>INC-COM</td><td>Incendio Comercial</td><td>Incendio y Aliados</td><td>INDIVIDUAL</td><td>PRIMA_INFORMADA</td><td>2.0</td><td><span class="badge badge-success">ACTIVO</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>AP-GRP</td><td>Accidentes Colectivo</td><td>Acc. Personales</td><td>COLECTIVO</td><td>TARIFA</td><td>1.0</td><td><span class="badge badge-warning">BORRADOR</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- A2 ── VERSIONES DEL PRODUCTO ── -->
+          <div id="prd-versiones" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Versiones del Producto</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PRODUCTO_VERSIONES — historial de versiones con estados</p></div>
+                <button class="btn btn-primary btn-sm">+ Nueva Versión</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Producto</th><th>Versión</th><th>Estado</th><th>Vigencia Desde</th><th>Vigencia Hasta</th><th>Observaciones</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Auto Full</td><td>1.0</td><td><span class="badge badge-gray">HISTÓRICO</span></td><td>2022-01-01</td><td>2023-06-30</td><td>Versión inicial</td><td><button class="btn btn-outline btn-sm">👁️</button></td></tr>
+                <tr><td>2</td><td>Auto Full</td><td>2.0</td><td><span class="badge badge-gray">HISTÓRICO</span></td><td>2023-07-01</td><td>2024-12-31</td><td>Incorpora cobertura granizo</td><td><button class="btn btn-outline btn-sm">👁️</button></td></tr>
+                <tr><td>3</td><td>Auto Full</td><td>3.2</td><td><span class="badge badge-success">ACTIVO</span></td><td>2025-01-01</td><td>—</td><td>Nuevas tarifas zona 3</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Vida Individual</td><td>1.5</td><td><span class="badge badge-success">ACTIVO</span></td><td>2024-01-01</td><td>—</td><td>Ajuste tablas de mortalidad</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- B1 ── COBERTURAS ── -->
+          <div id="prd-coberturas" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Coberturas</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">COBERTURAS — catálogo maestro reutilizable</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Nombre</th><th>Tipo</th><th>Básica</th><th>Adicional</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>COB-RC</td><td>Responsabilidad Civil</td><td><span class="badge badge-info">RESPONSABILIDAD</span></td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>COB-DAÑOS</td><td>Daños Propios</td><td><span class="badge badge-warning">DAÑO</span></td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>COB-ROB</td><td>Robo y Hurto Total</td><td><span class="badge badge-warning">DAÑO</span></td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>COB-GRAN</td><td>Granizo</td><td><span class="badge badge-warning">DAÑO</span></td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>COB-ASIST</td><td>Asistencia en Viaje</td><td><span class="badge badge-info">ASISTENCIA</span></td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>6</td><td>COB-VIDA</td><td>Muerte por Accidente</td><td><span class="badge badge-gray">VIDA</span></td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>7</td><td>COB-INCEND</td><td>Incendio Edificio</td><td><span class="badge badge-warning">DAÑO</span></td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- B2 ── PRODUCTO × COBERTURAS ── -->
+          <div id="prd-prod-cob" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Producto × Coberturas</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PRODUCTO_COBERTURAS — condiciones técnicas por cobertura</p></div>
+                <button class="btn btn-primary btn-sm">+ Asociar</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Producto</th><th>Cobertura</th><th>Obligatoria</th><th>SA Min</th><th>SA Max</th><th>Franquicia</th><th>Edad Ing.</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Auto Full</td><td>RC</td><td><span class="badge badge-success">Sí</span></td><td>$10M</td><td>$50M</td><td>—</td><td>18–75</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Auto Full</td><td>Daños Propios</td><td><span class="badge badge-danger">No</span></td><td>$1M</td><td>$30M</td><td>10% rel.</td><td>18–70</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Auto Full</td><td>Robo Total</td><td><span class="badge badge-danger">No</span></td><td>$1M</td><td>$30M</td><td>—</td><td>18–65</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Auto Full</td><td>Granizo</td><td><span class="badge badge-danger">No</span></td><td>$500K</td><td>$30M</td><td>5% abs.</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>Vida Individual</td><td>Muerte Accidente</td><td><span class="badge badge-success">Sí</span></td><td>$500K</td><td>$20M</td><td>—</td><td>18–65</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- B3 ── EXCLUSIONES ── -->
+          <div id="prd-exclusiones" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Exclusiones</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">EXCLUSIONES — catálogo maestro reutilizable</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Descripción</th><th>Tipo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>EXC-001</td><td>Daños intencionales por el asegurado</td><td><span class="badge badge-danger">GENERAL</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>EXC-002</td><td>Conducción sin licencia habilitante</td><td><span class="badge badge-danger">GENERAL</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>EXC-003</td><td>Robo sin signos de violencia</td><td><span class="badge badge-warning">ESPECÍFICA</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>EXC-004</td><td>Zona de conflicto bélico</td><td><span class="badge badge-info">GEOGRÁFICA</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>EXC-005</td><td>Preexistencias no declaradas</td><td><span class="badge badge-danger">GENERAL</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- B4 ── EXCLUSIONES × COBERTURA ── -->
+          <div id="prd-cob-excl" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Exclusiones × Cobertura</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PRODUCTO_COBERTURA_EXCLUSIONES</p></div>
+                <button class="btn btn-primary btn-sm">+ Asociar</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Producto × Cobertura</th><th>Exclusión</th><th>Observaciones</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Auto Full · RC</td><td>Daños intencionales</td><td>Aplica a todas las coberturas</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Auto Full · RC</td><td>Conducción sin licencia</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Auto Full · Robo Total</td><td>Robo sin signos violencia</td><td>Requiere denuncia policial</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Vida Individual · Muerte</td><td>Preexistencias no declaradas</td><td>Período carencia 6 meses</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- C1 ── TARIFAS ── -->
+          <div id="prd-tarifas" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Tarifas</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">TARIFAS — cabecera de tabla por cobertura, con vigencias</p></div>
+                <button class="btn btn-primary btn-sm">+ Nueva</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Producto × Cobertura</th><th>Nombre</th><th>Tipo</th><th>Vigencia Desde</th><th>Vigencia Hasta</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Auto Full · RC</td><td>Tabla RC Zona/Capital 2025</td><td>TASA_SOBRE_SA</td><td>2025-01-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Auto Full · Daños Propios</td><td>Tabla Daños Antigüedad/Zona 2025</td><td>TASA_SOBRE_SA</td><td>2025-01-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Auto Full · RC</td><td>Tabla RC 2024 (histórica)</td><td>TASA_SOBRE_SA</td><td>2024-01-01</td><td>2024-12-31</td><td><span class="badge badge-gray">No</span></td><td><button class="btn btn-outline btn-sm">👁️</button></td></tr>
+                <tr><td>4</td><td>Vida Individual · Muerte</td><td>Tabla Vida Mortalidad 2024</td><td>TASA_COMPUESTA</td><td>2024-01-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- C2 ── RANGOS DE TARIFA ── -->
+          <div id="prd-tarifa-rangos" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Rangos de Tarifa</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">TARIFA_RANGOS — filas de la tabla, hasta 2 variables de entrada</p></div>
+                <button class="btn btn-primary btn-sm">+ Nueva Fila</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Tarifa</th><th>Variable 1</th><th>Desde 1</th><th>Hasta 1</th><th>Variable 2</th><th>Desde 2</th><th>Hasta 2</th><th>Tasa</th><th>Unidad</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Tabla RC 2025</td><td>zona</td><td>1</td><td>1</td><td>suma_asegurada</td><td>10M</td><td>20M</td><td>2.40</td><td>POR_MIL</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Tabla RC 2025</td><td>zona</td><td>1</td><td>1</td><td>suma_asegurada</td><td>20M</td><td>50M</td><td>2.10</td><td>POR_MIL</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Tabla RC 2025</td><td>zona</td><td>2</td><td>2</td><td>suma_asegurada</td><td>10M</td><td>20M</td><td>2.80</td><td>POR_MIL</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Tabla Daños 2025</td><td>antiguedad</td><td>0</td><td>3</td><td>zona</td><td>1</td><td>1</td><td>18.50</td><td>POR_MIL</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>Tabla Daños 2025</td><td>antiguedad</td><td>4</td><td>7</td><td>zona</td><td>1</td><td>1</td><td>22.00</td><td>POR_MIL</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- D1 ── TIPO OBJETO ASEGURADO ── -->
+          <div id="prd-tipo-objeto" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Tipo Objeto Asegurado</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">TIPO_OBJETO_ASEGURADO</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Descripción</th><th>Categoría</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>VEHICULO</td><td>Vehículo automotor</td><td>BIEN_MATERIAL</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>INMUEBLE</td><td>Inmueble / Edificio</td><td>BIEN_MATERIAL</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>PERSONA</td><td>Persona humana</td><td>PERSONA</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>CARGA</td><td>Mercadería / Carga</td><td>MERCADERIA</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>EMBARCACION</td><td>Embarcación</td><td>BIEN_MATERIAL</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>6</td><td>RESPONSABILIDAD</td><td>Responsabilidad civil genérica</td><td>RESPONSABILIDAD</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- D2 ── ATRIBUTOS DEL OBJETO ── -->
+          <div id="prd-obj-atrib" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Atributos del Objeto</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">OBJETO_ASEGURADO_ATRIBUTOS — estructura dinámica por tipo</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Tipo Objeto</th><th>Atributo</th><th>Tipo Dato</th><th>Obligatorio</th><th>Valores Posibles</th><th>Orden</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>VEHICULO</td><td>patente</td><td>STRING</td><td><span class="badge badge-success">Sí</span></td><td>—</td><td>1</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>VEHICULO</td><td>marca</td><td>LISTA</td><td><span class="badge badge-success">Sí</span></td><td>Toyota, Ford, VW…</td><td>2</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>VEHICULO</td><td>año_fabricacion</td><td>INT</td><td><span class="badge badge-success">Sí</span></td><td>1990–2026</td><td>3</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>VEHICULO</td><td>uso</td><td>LISTA</td><td><span class="badge badge-success">Sí</span></td><td>PARTICULAR, COMERCIAL</td><td>4</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>INMUEBLE</td><td>superficie_m2</td><td>DECIMAL</td><td><span class="badge badge-success">Sí</span></td><td>—</td><td>1</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>6</td><td>INMUEBLE</td><td>material_construccion</td><td>LISTA</td><td><span class="badge badge-success">Sí</span></td><td>LADRILLO, STEEL_FRAME…</td><td>2</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>7</td><td>PERSONA</td><td>fecha_nacimiento</td><td>DATE</td><td><span class="badge badge-success">Sí</span></td><td>—</td><td>1</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- D3 ── PRODUCTO × TIPO OBJETO ── -->
+          <div id="prd-prod-objeto" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Producto × Tipo Objeto</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PRODUCTO_TIPO_OBJETO — un multiriesgo puede aceptar varios tipos</p></div>
+                <button class="btn btn-primary btn-sm">+ Asociar</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Producto</th><th>Tipo Objeto</th><th>Principal</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Auto Full</td><td>VEHICULO</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Vida Individual</td><td>PERSONA</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Incendio Comercial</td><td>INMUEBLE</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Incendio Comercial</td><td>RESPONSABILIDAD</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- E1 ── PLANES COMERCIALES ── -->
+          <div id="prd-planes" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Planes Comerciales</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PLANES_COMERCIALES — Básico, Plus, Premium por producto</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Producto</th><th>Código</th><th>Nombre</th><th>Activo</th><th>Vigencia Desde</th><th>Vigencia Hasta</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Auto Full</td><td>AUTO-FULL-BAS</td><td>Plan Básico</td><td><span class="badge badge-success">Sí</span></td><td>2025-01-01</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Auto Full</td><td>AUTO-FULL-PLU</td><td>Plan Plus</td><td><span class="badge badge-success">Sí</span></td><td>2025-01-01</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Auto Full</td><td>AUTO-FULL-PRE</td><td>Plan Premium</td><td><span class="badge badge-success">Sí</span></td><td>2025-01-01</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Vida Individual</td><td>VIDA-IND-STD</td><td>Plan Estándar</td><td><span class="badge badge-success">Sí</span></td><td>2024-01-01</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>Accidentes Colectivo</td><td>AP-GRP-BAS</td><td>Plan Grupal Básico</td><td><span class="badge badge-warning">BORRADOR</span></td><td>—</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- E2 ── PLAN FORMAS DE PAGO ── -->
+          <div id="prd-formas-pago" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Plan Formas de Pago</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PLAN_FORMAS_PAGO — condiciones de financiación por plan</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Plan</th><th>Forma de Pago</th><th>Cuotas</th><th>Recargo %</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Auto Full — Básico</td><td>CONTADO</td><td>1</td><td>0.00%</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Auto Full — Básico</td><td>CUOTAS</td><td>3</td><td>6.00%</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Auto Full — Básico</td><td>CUOTAS</td><td>6</td><td>12.00%</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Auto Full — Básico</td><td>DEBITO_AUTO</td><td>12</td><td>0.00%</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>Auto Full — Premium</td><td>TARJETA</td><td>12</td><td>8.00%</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- E3 ── PLAN COMISIONES ── -->
+          <div id="prd-comisiones" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Plan Comisiones</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PLAN_COMISIONES — comisión base + extra por rol y plan</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Plan</th><th>Tipo Rol</th><th>Comisión Base %</th><th>Comisión Extra %</th><th>Desde</th><th>Hasta</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Auto Full — Básico</td><td>PRODUCTOR</td><td>10.00%</td><td>2.00%</td><td>2025-01-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Auto Full — Plus</td><td>PRODUCTOR</td><td>12.00%</td><td>3.00%</td><td>2025-01-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Auto Full — Premium</td><td>PRODUCTOR</td><td>15.00%</td><td>5.00%</td><td>2025-01-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Vida Individual — Estándar</td><td>PRODUCTOR</td><td>18.00%</td><td>4.00%</td><td>2024-01-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- E4 ── CANALES DEL PRODUCTO ── -->
+          <div id="prd-canales" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Canales del Producto</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PRODUCTO_CANALES — habilitación por sucursal + tipo negocio</p></div>
+                <button class="btn btn-primary btn-sm">+ Habilitar</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Producto</th><th>Sucursal</th><th>Tipo Negocio</th><th>Activo</th><th>Desde</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Auto Full</td><td>Casa Matriz</td><td>Directo</td><td><span class="badge badge-success">Sí</span></td><td>2025-01-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Auto Full</td><td>Casa Matriz</td><td>Corredor</td><td><span class="badge badge-success">Sí</span></td><td>2025-01-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Auto Full</td><td>Sucursal Maracaibo</td><td>Directo</td><td><span class="badge badge-success">Sí</span></td><td>2025-01-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Vida Individual</td><td>Casa Matriz</td><td>Corredor</td><td><span class="badge badge-success">Sí</span></td><td>2024-01-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- F1 ── COASEGURO CONFIG ── -->
+          <div id="prd-coaseguro" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Coaseguro Config</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">COASEGURO_CONFIG — compañías participantes y % de participación</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Producto</th><th>Compañía Coaseguradora</th><th>Participación %</th><th>¿Líder?</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Incendio Comercial</td><td>Aseguradora XYZ</td><td>60%</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Incendio Comercial</td><td>Cía. del Norte S.A.</td><td>25%</td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Incendio Comercial</td><td>Seguros Globales</td><td>15%</td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- F2 ── REASEGURO CONFIG ── -->
+          <div id="prd-reaseguro" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Reaseguro Config</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">REASEGURO_CONFIG — contrato por producto (persona Módulo 2 rol REASEGURADOR)</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Producto</th><th>Reasegurador</th><th>Tipo Contrato</th><th>Límite Retención</th><th>Límite Cesión</th><th>Modalidad</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Auto Full</td><td>Munich Re</td><td>PROPORCIONAL</td><td>$10M</td><td>$50M</td><td>AUTOMÁTICO</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Incendio Comercial</td><td>Swiss Re</td><td>EXCEDENTE</td><td>$20M</td><td>$200M</td><td>AUTOMÁTICO</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Vida Individual</td><td>Hannover Re</td><td>CUOTA</td><td>$5M</td><td>$30M</td><td>FACULTATIVO</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- G1 ── CLÁUSULAS ── -->
+          <div id="prd-clausulas" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Cláusulas</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">CLAUSULAS — catálogo maestro, GENERAL y ESPECÍFICA, con versionado</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Nombre</th><th>Tipo</th><th>Ámbito</th><th>Con Variables</th><th>Versión</th><th>Estado</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>CL-001</td><td>Condición General de No Acumulación</td><td>OBLIGATORIA</td><td>GENERAL</td><td><span class="badge badge-danger">No</span></td><td>1.0</td><td><span class="badge badge-success">ACTIVO</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>CL-002</td><td>Franquicia {{pct_franquicia}}% sobre daños propios</td><td>COND_PARTICULAR</td><td>ESPECÍFICA</td><td><span class="badge badge-success">Sí</span></td><td>2.1</td><td><span class="badge badge-success">ACTIVO</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>CL-RC-01</td><td>RC Obligatoria — Límite {{limite_rc}}</td><td>OBLIGATORIA</td><td>ESPECÍFICA</td><td><span class="badge badge-success">Sí</span></td><td>3.0</td><td><span class="badge badge-success">ACTIVO</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>CL-EXC-001</td><td>Exclusión por conducción bajo influencia</td><td>EXCLUSION</td><td>GENERAL</td><td><span class="badge badge-danger">No</span></td><td>1.0</td><td><span class="badge badge-success">ACTIVO</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>CL-VIDA-01</td><td>Período de carencia — {{dias_carencia}} días</td><td>COND_PARTICULAR</td><td>ESPECÍFICA</td><td><span class="badge badge-success">Sí</span></td><td>1.5</td><td><span class="badge badge-success">ACTIVO</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- G2 ── VARIABLES DE CLÁUSULA ── -->
+          <div id="prd-claus-vars" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Variables de Cláusula</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">CLAUSULA_VARIABLES — marcadores {{variable}} que se resuelven al emitir</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Cláusula</th><th>Variable</th><th>Etiqueta</th><th>Tipo</th><th>Obligatoria</th><th>Default</th><th>Orden</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>CL-002</td><td>pct_franquicia</td><td>% de franquicia</td><td>DECIMAL</td><td><span class="badge badge-success">Sí</span></td><td>10</td><td>1</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>CL-RC-01</td><td>limite_rc</td><td>Límite de RC</td><td>DECIMAL</td><td><span class="badge badge-success">Sí</span></td><td>—</td><td>1</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>CL-VIDA-01</td><td>dias_carencia</td><td>Días de carencia</td><td>INT</td><td><span class="badge badge-success">Sí</span></td><td>180</td><td>1</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- G3 ── ADJUNTOS DE CLÁUSULA ── -->
+          <div id="prd-claus-adj" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Adjuntos de Cláusula</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">CLAUSULA_ADJUNTOS — archivos PDF/Word independientes del texto base</p></div>
+                <button class="btn btn-primary btn-sm">+ Subir</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Cláusula</th><th>Tipo Adjunto</th><th>Nombre</th><th>Fecha Carga</th><th>Vigente</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>CL-001</td><td>TEXTO_COMPLETO</td><td>cond_gral_no_acum_v1.pdf</td><td>2025-01-01</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">📥</button></td></tr>
+                <tr><td>2</td><td>CL-RC-01</td><td>FORMULARIO</td><td>form_rc_obligatoria.docx</td><td>2025-03-15</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">📥</button></td></tr>
+                <tr><td>3</td><td>CL-VIDA-01</td><td>CERTIFICADO</td><td>cert_carencia_vida.pdf</td><td>2024-01-10</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">📥</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- G4 ── CLÁUSULA × RAMO COM (Niv.1) ── -->
+          <div id="prd-cl-ramo-com" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div><h3 style="margin:0;font-size:15px">Cláusula × Ramo Comercial <span style="font-size:11px;background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:10px;margin-left:6px">Nivel 1</span></h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">CLAUSULA_X_RAMO_COM — aplica por defecto a todos los productos del ramo</p></div>
+                <button class="btn btn-primary btn-sm">+ Asignar</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Cláusula</th><th>Ramo Comercial</th><th>Obligatoria</th><th>Activo</th><th>Desde</th><th>Hasta</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>CL-001 · No Acumulación</td><td>Automóviles</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td>2025-01-01</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>CL-EXC-001 · Conducción bajo influencia</td><td>Automóviles</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td>2025-01-01</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>CL-001 · No Acumulación</td><td>Vida Individual</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td>2024-01-01</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- G5 ── CLÁUSULA × RAMO TEC (Niv.2) ── -->
+          <div id="prd-cl-ramo-tec" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div><h3 style="margin:0;font-size:15px">Cláusula × Ramo Técnico <span style="font-size:11px;background:#e0e7ff;color:#3730a3;padding:2px 8px;border-radius:10px;margin-left:6px">Nivel 2</span></h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">CLAUSULA_X_RAMO_TEC — diferenciación actuarial dentro del mismo ramo</p></div>
+                <button class="btn btn-primary btn-sm">+ Asignar</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Cláusula</th><th>Ramo Técnico</th><th>Obligatoria</th><th>Activo</th><th>Desde</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>CL-002 · Franquicia</td><td>AUTO-01 · Todo Riesgo</td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-success">Sí</span></td><td>2025-01-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>CL-RC-01 · RC Obligatoria</td><td>AUTO-02 · RC</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td>2025-01-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- G6 ── CLÁUSULA × PRODUCTO (Niv.3) ── -->
+          <div id="prd-cl-producto" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div><h3 style="margin:0;font-size:15px">Cláusula × Producto <span style="font-size:11px;background:#fef9c3;color:#854d0e;padding:2px 8px;border-radius:10px;margin-left:6px">Nivel 3</span></h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">CLAUSULA_X_PRODUCTO_COM — agrega o anula lo heredado del ramo</p></div>
+                <button class="btn btn-primary btn-sm">+ Asignar</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Cláusula</th><th>Producto</th><th>Obligatoria</th><th>Orden Impresión</th><th>Activo</th><th>Desde</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>CL-002 · Franquicia 10%</td><td>Auto Full</td><td><span class="badge badge-danger">No</span></td><td>3</td><td><span class="badge badge-success">Sí</span></td><td>2025-01-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>CL-VIDA-01 · Carencia 180d</td><td>Vida Individual</td><td><span class="badge badge-success">Sí</span></td><td>1</td><td><span class="badge badge-success">Sí</span></td><td>2024-01-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- G7 ── CLÁUSULA × PLAN (Niv.4) ── -->
+          <div id="prd-cl-plan" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div><h3 style="margin:0;font-size:15px">Cláusula × Plan Comercial <span style="font-size:11px;background:#f3e8ff;color:#7e22ce;padding:2px 8px;border-radius:10px;margin-left:6px">Nivel 4</span></h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">CLAUSULA_X_PLAN_COM — máxima granularidad: Premium puede tener cláusulas que Básico no tiene</p></div>
+                <button class="btn btn-primary btn-sm">+ Asignar</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Cláusula</th><th>Plan</th><th>Obligatoria</th><th>Orden Impresión</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>CL-002 · Franquicia 5%</td><td>Auto Full — Premium</td><td><span class="badge badge-success">Sí</span></td><td>2</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>CL-002 · Franquicia 10%</td><td>Auto Full — Básico</td><td><span class="badge badge-danger">No</span></td><td>2</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- H1 ── ANEXOS ── -->
+          <div id="prd-anexos" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Anexos</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">ANEXOS — catálogo maestro de riders, certificados y formularios autónomos</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Nombre</th><th>Tipo</th><th>Ámbito</th><th>Con Variables</th><th>Versión</th><th>Estado</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>ANX-001</td><td>Rider Cobertura Adicional Granizo</td><td>RIDER</td><td>ESPECÍFICO</td><td><span class="badge badge-danger">No</span></td><td>1.0</td><td><span class="badge badge-success">ACTIVO</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>ANX-002</td><td>Certificado de Aseguramiento — Vehículo</td><td>CERTIFICADO</td><td>GENERAL</td><td><span class="badge badge-success">Sí</span></td><td>2.0</td><td><span class="badge badge-success">ACTIVO</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>ANX-003</td><td>Formulario Declaración de Salud</td><td>FORMULARIO</td><td>ESPECÍFICO</td><td><span class="badge badge-success">Sí</span></td><td>1.3</td><td><span class="badge badge-success">ACTIVO</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>ANX-VIDA-01</td><td>Condiciones Adicionales Vida</td><td>COND_ADICIONAL</td><td>ESPECÍFICO</td><td><span class="badge badge-danger">No</span></td><td>1.0</td><td><span class="badge badge-warning">BORRADOR</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- H2 ── VARIABLES DE ANEXO ── -->
+          <div id="prd-anex-vars" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Variables de Anexo</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">ANEXO_VARIABLES — marcadores dinámicos en documentos adjuntos</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Anexo</th><th>Variable</th><th>Etiqueta</th><th>Tipo</th><th>Obligatoria</th><th>Default</th><th>Orden</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>ANX-002 · Certificado Vehículo</td><td>nombre_asegurado</td><td>Nombre del asegurado</td><td>STRING</td><td><span class="badge badge-success">Sí</span></td><td>—</td><td>1</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>ANX-002 · Certificado Vehículo</td><td>patente_vehiculo</td><td>Patente / Placa</td><td>STRING</td><td><span class="badge badge-success">Sí</span></td><td>—</td><td>2</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>ANX-003 · Declaración Salud</td><td>fecha_nacimiento</td><td>Fecha de nacimiento</td><td>DATE</td><td><span class="badge badge-success">Sí</span></td><td>—</td><td>1</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- H3 ── ADJUNTOS DE ANEXO ── -->
+          <div id="prd-anex-adj" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Adjuntos de Anexo</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">ANEXO_ADJUNTOS — plantillas PDF/Word por versión de anexo</p></div>
+                <button class="btn btn-primary btn-sm">+ Subir</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Anexo</th><th>Tipo</th><th>Nombre</th><th>Fecha Carga</th><th>Vigente</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>ANX-001 · Rider Granizo</td><td>PLANTILLA</td><td>rider_granizo_v1.docx</td><td>2025-01-01</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">📥</button></td></tr>
+                <tr><td>2</td><td>ANX-002 · Certificado Vehículo</td><td>DOCUMENTO_BASE</td><td>cert_vehiculo_v2.pdf</td><td>2025-02-10</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">📥</button></td></tr>
+                <tr><td>3</td><td>ANX-003 · Decl. Salud</td><td>FORMULARIO</td><td>form_salud_v1.3.pdf</td><td>2024-06-01</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">📥</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- H4 ── ANEXO × RAMO COM (Niv.1) ── -->
+          <div id="prd-anx-ramo-com" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div><h3 style="margin:0;font-size:15px">Anexo × Ramo Comercial <span style="font-size:11px;background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:10px;margin-left:6px">Nivel 1</span></h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">ANEXO_X_RAMO_COM</p></div>
+                <button class="btn btn-primary btn-sm">+ Asignar</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Anexo</th><th>Ramo Comercial</th><th>Obligatorio</th><th>Activo</th><th>Desde</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>ANX-002 · Certificado Vehículo</td><td>Automóviles</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td>2025-01-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>ANX-003 · Decl. Salud</td><td>Vida Individual</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td>2024-01-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- H5 ── ANEXO × RAMO TEC (Niv.2) ── -->
+          <div id="prd-anx-ramo-tec" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div><h3 style="margin:0;font-size:15px">Anexo × Ramo Técnico <span style="font-size:11px;background:#e0e7ff;color:#3730a3;padding:2px 8px;border-radius:10px;margin-left:6px">Nivel 2</span></h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">ANEXO_X_RAMO_TEC</p></div>
+                <button class="btn btn-primary btn-sm">+ Asignar</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Anexo</th><th>Ramo Técnico</th><th>Obligatorio</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>ANX-001 · Rider Granizo</td><td>AUTO-01 · Todo Riesgo</td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- H6 ── ANEXO × PRODUCTO (Niv.3) ── -->
+          <div id="prd-anx-producto" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div><h3 style="margin:0;font-size:15px">Anexo × Producto <span style="font-size:11px;background:#fef9c3;color:#854d0e;padding:2px 8px;border-radius:10px;margin-left:6px">Nivel 3</span></h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">ANEXO_X_PRODUCTO_COM</p></div>
+                <button class="btn btn-primary btn-sm">+ Asignar</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Anexo</th><th>Producto</th><th>Obligatorio</th><th>Orden Legajo</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>ANX-001 · Rider Granizo</td><td>Auto Full</td><td><span class="badge badge-danger">No</span></td><td>5</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>ANX-VIDA-01 · Cond. Adicionales</td><td>Vida Individual</td><td><span class="badge badge-success">Sí</span></td><td>1</td><td><span class="badge badge-warning">BORRADOR</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- H7 ── ANEXO × PLAN (Niv.4) ── -->
+          <div id="prd-anx-plan" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <div><h3 style="margin:0;font-size:15px">Anexo × Plan Comercial <span style="font-size:11px;background:#f3e8ff;color:#7e22ce;padding:2px 8px;border-radius:10px;margin-left:6px">Nivel 4</span></h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">ANEXO_X_PLAN_COM — Plan Premium puede incluir anexos que Básico no tiene</p></div>
+                <button class="btn btn-primary btn-sm">+ Asignar</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Anexo</th><th>Plan</th><th>Obligatorio</th><th>Orden Legajo</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>ANX-001 · Rider Granizo</td><td>Auto Full — Premium</td><td><span class="badge badge-success">Sí</span></td><td>1</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>ANX-001 · Rider Granizo</td><td>Auto Full — Plus</td><td><span class="badge badge-danger">No</span></td><td>1</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- I1 ── DOCUMENTOS DEL PRODUCTO ── -->
+          <div id="prd-docs-prod" class="prd-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Documentos del Producto</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PRODUCTO_DOCUMENTOS — condiciones generales, manuales de tarificación</p></div>
+                <button class="btn btn-primary btn-sm">+ Subir</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Producto</th><th>Tipo</th><th>Nombre</th><th>Fecha Carga</th><th>Vigente</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Auto Full</td><td>COND_GENERALES</td><td>condiciones_generales_auto_full_v3.2.pdf</td><td>2025-01-01</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">📥</button></td></tr>
+                <tr><td>2</td><td>Auto Full</td><td>MANUAL</td><td>manual_tarificacion_auto_2025.xlsx</td><td>2025-01-01</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">📥</button></td></tr>
+                <tr><td>3</td><td>Vida Individual</td><td>COND_GENERALES</td><td>condiciones_generales_vida_v1.5.pdf</td><td>2024-01-01</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">📥</button></td></tr>
+                <tr><td>4</td><td>Incendio Comercial</td><td>COND_PARTICULARES</td><td>cond_particulares_incendio_com.pdf</td><td>2024-06-15</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">📥</button></td></tr>
+                <tr><td>5</td><td>Auto Full</td><td>COND_GENERALES</td><td>condiciones_generales_auto_full_v2.0.pdf</td><td>2023-07-01</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">👁️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+        </div><!-- /paneles derecho -->
+      </div><!-- /grid -->
+    </div>
+    <div style="display:none"><!-- OLD PRODUCTOS CONTENT HIDDEN -->
           <div id="prod-list">
             <div class="prod-item active" onclick="selectProd(this,'AUTO-FULL')" style="padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s">
               <div style="font-weight:600;font-size:13px">Auto Full</div>
@@ -1891,7 +2487,7 @@
           </div><!-- /card tabs -->
         </div><!-- /detalle -->
       </div><!-- /grid -->
-    </div>
+    </div></div><!-- END OLD PRODUCTOS HIDDEN -->
 
     <!-- ===== CLIENTES ===== -->
     <div class="page" id="page-clientes">
@@ -2946,6 +3542,18 @@
 
   function openModal(id)  { document.getElementById(id).classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  // CATÁLOGO MENU — Módulo 3 Productos
+  const prdPanelIds = ['prd-productos','prd-versiones','prd-coberturas','prd-prod-cob','prd-exclusiones','prd-cob-excl','prd-tarifas','prd-tarifa-rangos','prd-tipo-objeto','prd-obj-atrib','prd-prod-objeto','prd-planes','prd-formas-pago','prd-comisiones','prd-canales','prd-coaseguro','prd-reaseguro','prd-clausulas','prd-claus-vars','prd-claus-adj','prd-cl-ramo-com','prd-cl-ramo-tec','prd-cl-producto','prd-cl-plan','prd-anexos','prd-anex-vars','prd-anex-adj','prd-anx-ramo-com','prd-anx-ramo-tec','prd-anx-producto','prd-anx-plan','prd-docs-prod'];
+  function showPrdCatalog(panelId) {
+    prdPanelIds.forEach(id => { const el = document.getElementById(id); if(el) el.style.display='none'; });
+    document.querySelectorAll('[id^="prd-mi-"]').forEach(i => i.classList.remove('active'));
+    const panel = document.getElementById(panelId);
+    if (panel) panel.style.display = 'block';
+    const miId = 'prd-mi-' + panelId.replace('prd-','');
+    const mi = document.getElementById(miId);
+    if (mi) mi.classList.add('active');
+  }
 
   // CATÁLOGO MENU — Módulo 2 Clientes
   const cliPanelIds = ['cli-personas','cli-paises','cli-provincias','cli-localidades','cli-tipo-doc','cli-persona-docs','cli-cond-fiscal','cli-persona-fiscal','cli-tipo-rol','cli-persona-roles','cli-tipo-dir','cli-persona-dirs','cli-tipo-contacto','cli-persona-contactos','cli-relaciones','cli-adjuntos'];
