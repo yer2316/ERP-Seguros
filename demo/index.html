@@ -1896,25 +1896,361 @@
     <!-- ===== CLIENTES ===== -->
     <div class="page" id="page-clientes">
       <div class="page-header">
-        <div><h2>👥 Clientes</h2><p>Registro unificado de personas — físicas, jurídicas y autónomas</p></div>
-        <button class="btn btn-primary" onclick="openModal('modal-cliente')">+ Nuevo Cliente</button>
-      </div>
-      <div class="full-card">
-        <div class="search-bar">
-          <input type="text" placeholder="Buscar por nombre, CUIT, DNI...">
-          <button class="btn btn-outline">Filtrar</button>
+        <div>
+          <h2>👥 Módulo 2 — Clientes</h2>
+          <p>Identidad unificada de personas · 16 entidades · Selecciona un catálogo en el menú izquierdo</p>
         </div>
-        <table>
-          <thead><tr><th>ID</th><th>Tipo</th><th>Nombre / Razón Social</th><th>CUIT/DNI</th><th>Email</th><th>Condición IVA</th><th>Roles</th></tr></thead>
-          <tbody>
-            <tr><td>1001</td><td><span class="badge badge-info">FÍSICA</span></td><td>García, Juan Manuel</td><td>20-34567890-1</td><td>jgarcia@email.com</td><td>Consumidor Final</td><td>Tomador, Asegurado</td></tr>
-            <tr><td>1002</td><td><span class="badge badge-gray">JURÍDICA</span></td><td>López S.A.</td><td>30-65432100-9</td><td>admin@lopez.com.ar</td><td>Responsable Inscripto</td><td>Tomador</td></tr>
-            <tr><td>1003</td><td><span class="badge badge-info">FÍSICA</span></td><td>Rodríguez, María Elena</td><td>27-22334455-4</td><td>mrodriguez@gmail.com</td><td>Consumidor Final</td><td>Asegurado, Beneficiario</td></tr>
-            <tr><td>1004</td><td><span class="badge badge-info">FÍSICA</span></td><td>Martínez, Carlos Alberto</td><td>20-11223344-6</td><td>cmartinez@yahoo.com</td><td>Monotributista</td><td>Tomador, Asegurado</td></tr>
-            <tr><td>1005</td><td><span class="badge badge-gray">JURÍDICA</span></td><td>Constructora Norte S.R.L.</td><td>30-98765432-1</td><td>info@constructoranorte.com</td><td>Responsable Inscripto</td><td>Tomador</td></tr>
-          </tbody>
-        </table>
+        <button class="btn btn-primary">+ Nuevo</button>
       </div>
+
+      <div style="display:grid;grid-template-columns:230px 1fr;gap:16px;align-items:start">
+
+        <!-- ══ MENÚ IZQUIERDO ══ -->
+        <div class="card" style="padding:0;overflow:hidden;position:sticky;top:70px">
+          <div style="padding:10px 14px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase">Catálogos del Módulo</div>
+
+          <div class="rc-group-hdr">🧩 NÚCLEO</div>
+          <div class="rc-item active" id="cli-mi-personas"          onclick="showCliCatalog('cli-personas')">Personas</div>
+          <div class="rc-item"        id="cli-mi-paises"            onclick="showCliCatalog('cli-paises')">Países</div>
+          <div class="rc-item"        id="cli-mi-provincias"        onclick="showCliCatalog('cli-provincias')">Provincias / Estados</div>
+          <div class="rc-item"        id="cli-mi-localidades"       onclick="showCliCatalog('cli-localidades')">Localidades</div>
+
+          <div class="rc-group-hdr">📄 DOCUMENTOS</div>
+          <div class="rc-item"        id="cli-mi-tipo-doc"          onclick="showCliCatalog('cli-tipo-doc')">Tipo de Documento</div>
+          <div class="rc-item"        id="cli-mi-persona-docs"      onclick="showCliCatalog('cli-persona-docs')">Documentos de Persona</div>
+
+          <div class="rc-group-hdr">🧾 CONDICIÓN FISCAL</div>
+          <div class="rc-item"        id="cli-mi-cond-fiscal"       onclick="showCliCatalog('cli-cond-fiscal')">Condición Fiscal</div>
+          <div class="rc-item"        id="cli-mi-persona-fiscal"    onclick="showCliCatalog('cli-persona-fiscal')">Persona × Condición Fiscal</div>
+
+          <div class="rc-group-hdr">🎭 ROLES</div>
+          <div class="rc-item"        id="cli-mi-tipo-rol"          onclick="showCliCatalog('cli-tipo-rol')">Tipo de Rol</div>
+          <div class="rc-item"        id="cli-mi-persona-roles"     onclick="showCliCatalog('cli-persona-roles')">Roles de Persona</div>
+
+          <div class="rc-group-hdr">🏠 DIRECCIONES</div>
+          <div class="rc-item"        id="cli-mi-tipo-dir"          onclick="showCliCatalog('cli-tipo-dir')">Tipo de Dirección</div>
+          <div class="rc-item"        id="cli-mi-persona-dirs"      onclick="showCliCatalog('cli-persona-dirs')">Direcciones de Persona</div>
+
+          <div class="rc-group-hdr">📞 CONTACTOS</div>
+          <div class="rc-item"        id="cli-mi-tipo-contacto"     onclick="showCliCatalog('cli-tipo-contacto')">Tipo de Contacto</div>
+          <div class="rc-item"        id="cli-mi-persona-contactos" onclick="showCliCatalog('cli-persona-contactos')">Contactos de Persona</div>
+
+          <div class="rc-group-hdr">🔗 RELACIONES & ADJUNTOS</div>
+          <div class="rc-item"        id="cli-mi-relaciones"        onclick="showCliCatalog('cli-relaciones')">Relaciones entre Personas</div>
+          <div class="rc-item"        id="cli-mi-adjuntos"          onclick="showCliCatalog('cli-adjuntos')">Documentos Adjuntos</div>
+        </div>
+
+        <!-- ══ PANELES DERECHO ══ -->
+        <div>
+
+          <!-- ── PERSONAS ── -->
+          <div id="cli-personas" class="cli-panel" style="display:block">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Personas</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PERSONAS — entidad central, físicas · jurídicas · autónomas</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <div style="display:flex;gap:8px;margin-bottom:12px">
+                <input type="text" placeholder="Buscar por nombre, CUIT, DNI..." style="flex:1;padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px">
+                <select style="padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px"><option>Todos los tipos</option><option>FÍSICA</option><option>JURÍDICA</option><option>AUTÓNOMO</option></select>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Tipo</th><th>Nombre / Razón Social</th><th>País</th><th>Activo</th><th>Alta</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1001</td><td><span class="badge badge-info">FÍSICA</span></td><td>García, Juan Manuel</td><td>Argentina</td><td><span class="badge badge-success">Sí</span></td><td>2023-01-10</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>1002</td><td><span class="badge badge-gray">JURÍDICA</span></td><td>López S.A.</td><td>Argentina</td><td><span class="badge badge-success">Sí</span></td><td>2023-03-22</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>1003</td><td><span class="badge badge-info">FÍSICA</span></td><td>Rodríguez, María Elena</td><td>Argentina</td><td><span class="badge badge-success">Sí</span></td><td>2023-05-15</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>1004</td><td><span class="badge badge-warning">AUTÓNOMO</span></td><td>Martínez, Carlos Alberto</td><td>Argentina</td><td><span class="badge badge-success">Sí</span></td><td>2023-07-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>1005</td><td><span class="badge badge-gray">JURÍDICA</span></td><td>Constructora Norte S.R.L.</td><td>Argentina</td><td><span class="badge badge-success">Sí</span></td><td>2023-09-18</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>1006</td><td><span class="badge badge-info">FÍSICA</span></td><td>Fernández, Roberto Luis</td><td>Argentina</td><td><span class="badge badge-success">Sí</span></td><td>2024-02-05</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>1007</td><td><span class="badge badge-gray">JURÍDICA</span></td><td>Seguros del Sur S.A.</td><td>Argentina</td><td><span class="badge badge-danger">No</span></td><td>2022-11-30</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── PAÍSES ── -->
+          <div id="cli-paises" class="cli-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Países</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PAISES — catálogo multi-país Latam</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>ISO2</th><th>ISO3</th><th>Nombre</th><th>Doc. Fiscal</th><th>Moneda</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>AR</td><td>ARG</td><td>Argentina</td><td>CUIT</td><td>ARS</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>CL</td><td>CHL</td><td>Chile</td><td>RUT</td><td>CLP</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>CO</td><td>COL</td><td>Colombia</td><td>NIT</td><td>COP</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>BR</td><td>BRA</td><td>Brasil</td><td>CNPJ</td><td>BRL</td><td><span class="badge badge-warning">Próx.</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>MX</td><td>MEX</td><td>México</td><td>RFC</td><td>MXN</td><td><span class="badge badge-warning">Próx.</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>6</td><td>VE</td><td>VEN</td><td>Venezuela</td><td>RIF</td><td>VES</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── PROVINCIAS / ESTADOS ── -->
+          <div id="cli-provincias" class="cli-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Provincias / Estados</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PROVINCIAS_ESTADOS — por país</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>País</th><th>Código</th><th>Nombre</th><th>Tipo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Argentina</td><td>CABA</td><td>Ciudad Autónoma de Buenos Aires</td><td>Provincia</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Argentina</td><td>BA</td><td>Buenos Aires</td><td>Provincia</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Argentina</td><td>CBA</td><td>Córdoba</td><td>Provincia</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Argentina</td><td>SF</td><td>Santa Fe</td><td>Provincia</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>Argentina</td><td>MZA</td><td>Mendoza</td><td>Provincia</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>6</td><td>Chile</td><td>RM</td><td>Región Metropolitana</td><td>Región</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>7</td><td>Colombia</td><td>CUN</td><td>Cundinamarca</td><td>Departamento</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── LOCALIDADES ── -->
+          <div id="cli-localidades" class="cli-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Localidades</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">LOCALIDADES — ciudades y municipios</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Provincia</th><th>Nombre</th><th>Código Postal</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>CABA</td><td>Ciudad de Buenos Aires</td><td>C1000</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Buenos Aires</td><td>La Plata</td><td>B1900</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Buenos Aires</td><td>Mar del Plata</td><td>B7600</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Córdoba</td><td>Córdoba Capital</td><td>X5000</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>Santa Fe</td><td>Rosario</td><td>S2000</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>6</td><td>Mendoza</td><td>Ciudad de Mendoza</td><td>M5500</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── TIPO DE DOCUMENTO ── -->
+          <div id="cli-tipo-doc" class="cli-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Tipo de Documento</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">TIPO_DOCUMENTO — por país (DNI, CUIT, CUIL, RUT, NIT…)</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>País</th><th>Código</th><th>Descripción</th><th>Fiscal</th><th>Principal</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Argentina</td><td>DNI</td><td>Documento Nacional de Identidad</td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Argentina</td><td>CUIT</td><td>Clave Única de Identificación Tributaria</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Argentina</td><td>CUIL</td><td>Clave Única de Identificación Laboral</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Argentina</td><td>CDI</td><td>Clave de Identificación (extranjeros)</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>Chile</td><td>RUT</td><td>Rol Único Tributario</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>6</td><td>Colombia</td><td>NIT</td><td>Número de Identificación Tributaria</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>7</td><td>Colombia</td><td>CC</td><td>Cédula de Ciudadanía</td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>8</td><td>Brasil</td><td>CNPJ</td><td>Cadastro Nacional da Pessoa Jurídica</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── DOCUMENTOS DE PERSONA ── -->
+          <div id="cli-persona-docs" class="cli-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Documentos de Persona</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PERSONA_DOCUMENTOS — documentos registrados por persona</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Persona</th><th>Tipo Doc.</th><th>Número</th><th>Vencimiento</th><th>Principal</th><th>Verificado</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>García, Juan M.</td><td>DNI</td><td>34.567.890</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>García, Juan M.</td><td>CUIT</td><td>20-34567890-1</td><td>—</td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>López S.A.</td><td>CUIT</td><td>30-65432100-9</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Rodríguez, M. E.</td><td>DNI</td><td>22.334.455</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>Martínez, Carlos</td><td>CUIL</td><td>20-11223344-6</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── CONDICIÓN FISCAL ── -->
+          <div id="cli-cond-fiscal" class="cli-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Condición Fiscal</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">CONDICION_FISCAL — catálogo por país</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>País</th><th>Código</th><th>Descripción</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Argentina</td><td>RI</td><td>Responsable Inscripto</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Argentina</td><td>MO</td><td>Monotributista</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Argentina</td><td>CF</td><td>Consumidor Final</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Argentina</td><td>EX</td><td>Exento</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>Argentina</td><td>NS</td><td>No Sujeto</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>6</td><td>Chile</td><td>CF-CL</td><td>Contribuyente de Primera Categoría</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>7</td><td>Colombia</td><td>RES</td><td>Régimen Simple de Tributación</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── PERSONA × CONDICIÓN FISCAL ── -->
+          <div id="cli-persona-fiscal" class="cli-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Persona × Condición Fiscal</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PERSONA_CONDICION_FISCAL — incluye IIBB por provincia</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Persona</th><th>Condición</th><th>Provincia</th><th>N° IIBB</th><th>Desde</th><th>Hasta</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>García, Juan M.</td><td>Consumidor Final</td><td>CABA</td><td>—</td><td>2023-01-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>López S.A.</td><td>Responsable Inscripto</td><td>CABA</td><td>901-123456</td><td>2023-03-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>López S.A.</td><td>Responsable Inscripto</td><td>Buenos Aires</td><td>902-654321</td><td>2023-03-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Martínez, Carlos</td><td>Monotributista</td><td>CABA</td><td>—</td><td>2023-07-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── TIPO DE ROL ── -->
+          <div id="cli-tipo-rol" class="cli-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Tipo de Rol</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">TIPO_ROL — roles que puede tener una persona</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Descripción</th><th>Requiere Matrícula</th><th>Requiere Habilitación</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>CLIENTE</td><td>Cliente</td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>TOMADOR</td><td>Tomador de Póliza</td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>ASEGURADO</td><td>Asegurado</td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>BENEFICIARIO</td><td>Beneficiario</td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>PAGADOR</td><td>Pagador de Prima</td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>6</td><td>PRODUCTOR</td><td>Productor / PAS</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>7</td><td>PROVEEDOR</td><td>Proveedor (talleres, médicos)</td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>8</td><td>REASEGURADOR</td><td>Reasegurador</td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── ROLES DE PERSONA ── -->
+          <div id="cli-persona-roles" class="cli-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Roles de Persona</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PERSONA_ROLES — asignación con vigencias independientes</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Persona</th><th>Rol</th><th>Matrícula</th><th>N° Habilitación</th><th>Desde</th><th>Hasta</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>García, Juan M.</td><td>TOMADOR</td><td>—</td><td>—</td><td>2023-01-10</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>García, Juan M.</td><td>ASEGURADO</td><td>—</td><td>—</td><td>2023-01-10</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Fernández, Roberto</td><td>PRODUCTOR</td><td>PAS-00234</td><td>SSN-4521</td><td>2022-05-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>López S.A.</td><td>TOMADOR</td><td>—</td><td>—</td><td>2023-03-22</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>Rodríguez, M. E.</td><td>BENEFICIARIO</td><td>—</td><td>—</td><td>2023-05-15</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── TIPO DE DIRECCIÓN ── -->
+          <div id="cli-tipo-dir" class="cli-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Tipo de Dirección</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">TIPO_DIRECCION</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Descripción</th><th>Es Legal/Fiscal</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Legal / Fiscal</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Comercial</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Domicilio Real</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Correspondencia</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>Riesgo Asegurado</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── DIRECCIONES DE PERSONA ── -->
+          <div id="cli-persona-dirs" class="cli-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Direcciones de Persona</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PERSONA_DIRECCIONES — con geolocalización GPS</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Persona</th><th>Tipo</th><th>Dirección</th><th>Localidad</th><th>C.P.</th><th>Principal</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>García, Juan M.</td><td>Legal / Fiscal</td><td>Av. Corrientes 1234, Piso 3, Dto A</td><td>Buenos Aires</td><td>C1043</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>García, Juan M.</td><td>Correspondencia</td><td>Gurruchaga 567</td><td>Buenos Aires</td><td>C1414</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>López S.A.</td><td>Legal / Fiscal</td><td>Av. del Libertador 5500</td><td>Buenos Aires</td><td>C1428</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Constructora Norte</td><td>Comercial</td><td>Ruta 8 Km 42, Galpón 3</td><td>La Plata</td><td>B1900</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── TIPO DE CONTACTO ── -->
+          <div id="cli-tipo-contacto" class="cli-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Tipo de Contacto</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">TIPO_CONTACTO — canales de comunicación</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Descripción</th><th>Canal</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Email Personal</td><td>EMAIL</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Email Corporativo</td><td>EMAIL</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Teléfono Fijo</td><td>TELEFONO</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Celular</td><td>TELEFONO</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>WhatsApp</td><td>WHATSAPP</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>6</td><td>Sitio Web</td><td>WEB</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>7</td><td>LinkedIn</td><td>SOCIAL</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── CONTACTOS DE PERSONA ── -->
+          <div id="cli-persona-contactos" class="cli-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Contactos de Persona</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PERSONA_CONTACTOS — múltiples canales con control de notificaciones</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Persona</th><th>Tipo</th><th>Valor</th><th>Principal</th><th>Verificado</th><th>Notif.</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>García, Juan M.</td><td>Email Personal</td><td>jgarcia@email.com</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>García, Juan M.</td><td>WhatsApp</td><td>+54 9 11 3456-7890</td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>López S.A.</td><td>Email Corporativo</td><td>admin@lopez.com.ar</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Rodríguez, M. E.</td><td>Celular</td><td>+54 9 11 2233-4455</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-danger">No</span></td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>Constructora Norte</td><td>Teléfono Fijo</td><td>+54 11 4987-6543</td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── RELACIONES ENTRE PERSONAS ── -->
+          <div id="cli-relaciones" class="cli-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Relaciones entre Personas</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PERSONA_RELACIONES — socios, apoderados, grupos económicos, cónyuges</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Origen</th><th>Tipo Relación</th><th>Destino</th><th>Desde</th><th>Hasta</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Martínez, Carlos</td><td>SOCIO</td><td>Constructora Norte S.R.L.</td><td>2023-07-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>García, Juan M.</td><td>APODERADO</td><td>López S.A.</td><td>2024-01-15</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Rodríguez, M. E.</td><td>CÓNYUGE</td><td>García, Juan M.</td><td>2020-06-20</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>López S.A.</td><td>GRUPO_ECONOMICO</td><td>Constructora Norte S.R.L.</td><td>2022-01-01</td><td>—</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── DOCUMENTOS ADJUNTOS ── -->
+          <div id="cli-adjuntos" class="cli-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Documentos Adjuntos</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PERSONA_DOCUMENTOS_ADJUNTOS — DNI escaneado, constancias AFIP, poderes</p></div>
+                <button class="btn btn-primary btn-sm">+ Subir</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Persona</th><th>Tipo Adjunto</th><th>Archivo</th><th>Fecha Carga</th><th>Vigente</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>García, Juan M.</td><td>DNI_FRENTE</td><td>dni_frente_1001.pdf</td><td>2023-01-10</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">📥</button></td></tr>
+                <tr><td>2</td><td>García, Juan M.</td><td>DNI_DORSO</td><td>dni_dorso_1001.pdf</td><td>2023-01-10</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">📥</button></td></tr>
+                <tr><td>3</td><td>López S.A.</td><td>CONSTANCIA_AFIP</td><td>afip_cuit_1002.pdf</td><td>2023-03-22</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">📥</button></td></tr>
+                <tr><td>4</td><td>López S.A.</td><td>PODER</td><td>poder_notarial_1002.pdf</td><td>2024-01-15</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">📥</button></td></tr>
+                <tr><td>5</td><td>Constructora Norte</td><td>CONSTANCIA_AFIP</td><td>afip_cuit_1005.pdf</td><td>2023-09-18</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">📥</button></td></tr>
+                <tr><td>6</td><td>Martínez, Carlos</td><td>DNI_FRENTE</td><td>dni_frente_1004_v2.pdf</td><td>2024-03-01</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">📥</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+        </div><!-- /paneles derecho -->
+      </div><!-- /grid -->
     </div>
 
     <!-- ===== AGENTES ===== -->
@@ -2610,6 +2946,19 @@
 
   function openModal(id)  { document.getElementById(id).classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  // CATÁLOGO MENU — Módulo 2 Clientes
+  const cliPanelIds = ['cli-personas','cli-paises','cli-provincias','cli-localidades','cli-tipo-doc','cli-persona-docs','cli-cond-fiscal','cli-persona-fiscal','cli-tipo-rol','cli-persona-roles','cli-tipo-dir','cli-persona-dirs','cli-tipo-contacto','cli-persona-contactos','cli-relaciones','cli-adjuntos'];
+  function showCliCatalog(panelId) {
+    cliPanelIds.forEach(id => { const el = document.getElementById(id); if(el) el.style.display='none'; });
+    document.querySelectorAll('.cli-panel').forEach(() => {});
+    document.querySelectorAll('[id^="cli-mi-"]').forEach(i => i.classList.remove('active'));
+    const panel = document.getElementById(panelId);
+    if (panel) panel.style.display = 'block';
+    const miId = 'cli-mi-' + panelId.replace('cli-','');
+    const mi = document.getElementById(miId);
+    if (mi) mi.classList.add('active');
+  }
 
   // CATÁLOGO MENU — Módulo 1 Ramos
   const rcPanelIds = ['rc-ramos-com','rc-tipos-ramo','rc-ramos-tec','rc-subramos','rc-sucursales','rc-tipos-suc','rc-ramo-suc','rc-estr-sin','rc-tipos-op','rc-op-ramo','rc-tipos-neg','rc-neg-ramo','rc-tipos-end','rc-subtipos-end','rc-end-ramo','rc-tipos-vig','rc-vig-ramo','rc-ramos-cont','rc-mapeo-cont','rc-impuestos','rc-imp-ramo','rc-cond-fiscal','rc-cond-imp','rc-tipos-fact','rc-pag-ramo','rc-conceptos','rc-remisiones','rc-agencias','rc-ag-ramo'];
