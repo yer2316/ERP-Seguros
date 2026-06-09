@@ -18,3 +18,7 @@ Documentación de módulos del sistema ERP para gestión de pólizas de seguros.
 ## Estructura
 
 Cada módulo contiene el diagrama Entidad-Relación (ER) correspondiente en formato `.docx`.
+
+## Contribución
+
+Para proponer cambios, crea una rama nueva y abre un Pull Request describiendo la mejora.
