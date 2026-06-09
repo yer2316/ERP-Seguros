@@ -79,7 +79,7 @@
   .card h3 { font-size: 14px; font-weight: 600; margin-bottom: 16px; color: var(--text); }
 
   /* TABLES */
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table, table.tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
   thead th { background: var(--light); padding: 9px 12px; text-align: left; font-weight: 600; font-size: 12px; color: var(--muted); border-bottom: 1px solid var(--border); }
   tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
   tbody tr:last-child td { border-bottom: none; }
@@ -92,6 +92,13 @@
   .badge-success { background: #d4f5e2; color: #1a7a45; }
   .badge-warning { background: #fef3cd; color: #856404; }
   .badge-danger  { background: #fde8e8; color: #a02020; }
+
+  /* ── Ramos catalog menu ── */
+  .rc-group-hdr { padding:7px 14px 4px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); background:var(--light); border-top:1px solid var(--border); }
+  .rc-item { padding:8px 14px 8px 20px; font-size:12px; cursor:pointer; color:#444; border-left:3px solid transparent; transition:background .12s,border-color .12s; }
+  .rc-item:hover { background:#f0f4ff; }
+  .rc-item.active { background:#eff6ff; border-left-color:var(--accent); color:var(--accent); font-weight:600; }
+  .rc-panel { }
   .badge-info    { background: #dbeafe; color: #1d4ed8; }
   .badge-gray    { background: #eee; color: #555; }
 
@@ -300,15 +307,592 @@
       <div class="page-header">
         <div>
           <h2>🏷️ Módulo 1 — Ramos</h2>
-          <p>Base del ERP · 31 entidades · 9 grupos funcionales · Núcleo, Operativa, Endosos, Vigencias, Contabilidad, Impuestos, Facturación, Agencias</p>
+          <p>Configuración base del ERP · 31 entidades · Selecciona un catálogo en el menú izquierdo</p>
         </div>
-        <button class="btn btn-primary" onclick="openModal('modal-nuevo-ramo')">+ Nuevo Ramo Comercial</button>
+        <button class="btn btn-primary" id="btn-nuevo-ramo-ctx" onclick="openModal('modal-nuevo-ramo')">+ Nuevo</button>
       </div>
 
-      <div style="display:grid;grid-template-columns:260px 1fr;gap:20px;align-items:start">
+      <div style="display:grid;grid-template-columns:230px 1fr;gap:16px;align-items:start">
 
-        <!-- LISTA DE RAMOS COMERCIALES -->
+        <!-- ══ MENÚ IZQUIERDO: CATÁLOGOS ══ -->
+        <div class="card" style="padding:0;overflow:hidden;position:sticky;top:70px">
+          <div style="padding:10px 14px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase">Catálogos del Módulo</div>
+
+          <!-- NÚCLEO -->
+          <div class="rc-group-hdr">🧩 NÚCLEO</div>
+          <div class="rc-item active" id="mi-ramos-com"      onclick="showRamoCatalog('rc-ramos-com')">Ramos Comerciales</div>
+          <div class="rc-item"        id="mi-tipos-ramo"     onclick="showRamoCatalog('rc-tipos-ramo')">Tipos de Ramo</div>
+          <div class="rc-item"        id="mi-ramos-tec"      onclick="showRamoCatalog('rc-ramos-tec')">Ramos Técnicos</div>
+          <div class="rc-item"        id="mi-subramos"       onclick="showRamoCatalog('rc-subramos')">Subramos</div>
+
+          <!-- SUCURSALES -->
+          <div class="rc-group-hdr">🏢 SUCURSALES</div>
+          <div class="rc-item"        id="mi-sucursales"     onclick="showRamoCatalog('rc-sucursales')">Sucursales</div>
+          <div class="rc-item"        id="mi-tipos-suc"      onclick="showRamoCatalog('rc-tipos-suc')">Tipos Sucursal RAES</div>
+          <div class="rc-item"        id="mi-ramo-suc"       onclick="showRamoCatalog('rc-ramo-suc')">Hab. Ramo × Sucursal</div>
+
+          <!-- SINIESTROS -->
+          <div class="rc-group-hdr">🚨 SINIESTROS</div>
+          <div class="rc-item"        id="mi-estr-sin"       onclick="showRamoCatalog('rc-estr-sin')">Estructura Siniestros</div>
+
+          <!-- OPERACIONES -->
+          <div class="rc-group-hdr">⚙️ OPERACIONES</div>
+          <div class="rc-item"        id="mi-tipos-op"       onclick="showRamoCatalog('rc-tipos-op')">Tipos de Operación</div>
+          <div class="rc-item"        id="mi-op-ramo"        onclick="showRamoCatalog('rc-op-ramo')">Operaciones × Ramo</div>
+          <div class="rc-item"        id="mi-tipos-neg"      onclick="showRamoCatalog('rc-tipos-neg')">Tipos de Negocio</div>
+          <div class="rc-item"        id="mi-neg-ramo"       onclick="showRamoCatalog('rc-neg-ramo')">Negocio × Ramo</div>
+
+          <!-- ENDOSOS -->
+          <div class="rc-group-hdr">🔄 ENDOSOS</div>
+          <div class="rc-item"        id="mi-tipos-end"      onclick="showRamoCatalog('rc-tipos-end')">Tipos de Endoso</div>
+          <div class="rc-item"        id="mi-subtipos-end"   onclick="showRamoCatalog('rc-subtipos-end')">Subtipos de Endoso</div>
+          <div class="rc-item"        id="mi-end-ramo"       onclick="showRamoCatalog('rc-end-ramo')">Endosos × Ramo</div>
+
+          <!-- VIGENCIAS -->
+          <div class="rc-group-hdr">📅 VIGENCIAS</div>
+          <div class="rc-item"        id="mi-tipos-vig"      onclick="showRamoCatalog('rc-tipos-vig')">Tipos de Vigencia</div>
+          <div class="rc-item"        id="mi-vig-ramo"       onclick="showRamoCatalog('rc-vig-ramo')">Vigencias × Ramo</div>
+
+          <!-- CONTABILIDAD -->
+          <div class="rc-group-hdr">📒 CONTABILIDAD</div>
+          <div class="rc-item"        id="mi-ramos-cont"     onclick="showRamoCatalog('rc-ramos-cont')">Ramos Contables</div>
+          <div class="rc-item"        id="mi-mapeo-cont"     onclick="showRamoCatalog('rc-mapeo-cont')">Mapeo Contable</div>
+
+          <!-- IMPUESTOS -->
+          <div class="rc-group-hdr">💰 IMPUESTOS</div>
+          <div class="rc-item"        id="mi-impuestos"      onclick="showRamoCatalog('rc-impuestos')">Impuestos</div>
+          <div class="rc-item"        id="mi-imp-ramo"       onclick="showRamoCatalog('rc-imp-ramo')">Impuesto × Ramo</div>
+          <div class="rc-item"        id="mi-cond-fiscal"    onclick="showRamoCatalog('rc-cond-fiscal')">Condición Fiscal</div>
+          <div class="rc-item"        id="mi-cond-imp"       onclick="showRamoCatalog('rc-cond-imp')">Condición × Impuesto</div>
+
+          <!-- FACTURACIÓN -->
+          <div class="rc-group-hdr">🧾 FACTURACIÓN</div>
+          <div class="rc-item"        id="mi-tipos-fact"     onclick="showRamoCatalog('rc-tipos-fact')">Tipos de Facturación</div>
+          <div class="rc-item"        id="mi-pag-ramo"       onclick="showRamoCatalog('rc-pag-ramo')">Pagador × Ramo</div>
+
+          <!-- CONCEPTOS / AGENCIAS -->
+          <div class="rc-group-hdr">🏪 CONCEPTOS / AGENCIAS</div>
+          <div class="rc-item"        id="mi-conceptos"      onclick="showRamoCatalog('rc-conceptos')">Conceptos del Ramo</div>
+          <div class="rc-item"        id="mi-remisiones"     onclick="showRamoCatalog('rc-remisiones')">Remisiones</div>
+          <div class="rc-item"        id="mi-agencias"       onclick="showRamoCatalog('rc-agencias')">Agencias</div>
+          <div class="rc-item"        id="mi-ag-ramo"        onclick="showRamoCatalog('rc-ag-ramo')">Agencias × Ramo</div>
+        </div>
+
+        <!-- ══ PANELES DERECHO ══ -->
         <div>
+
+          <!-- helper macro: cada panel sigue la misma estructura -->
+
+          <!-- ── Ramos Comerciales ── -->
+          <div id="rc-ramos-com" class="rc-panel" style="display:block">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Ramos Comerciales</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">RAMOS_COM — catálogo maestro de ramos</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Clave SSN</th><th>Nombre</th><th>Tipo</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>100</td><td>Automóviles</td><td>Patrimonial</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>200</td><td>Vida Individual</td><td>Personas</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>300</td><td>Incendio y Aliados</td><td>Patrimonial</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>400</td><td>Accidentes Personales</td><td>Personas</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>500</td><td>Transporte de Mercaderías</td><td>Patrimonial</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Tipos de Ramo ── -->
+          <div id="rc-tipos-ramo" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Tipos de Ramo</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">TIPOS_RAMOS_COM</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Descripción</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>PAT</td><td>Patrimonial</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>PER</td><td>Personas</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>TEC</td><td>Técnico</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>FID</td><td>Fianzas</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Ramos Técnicos ── -->
+          <div id="rc-ramos-tec" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Ramos Técnicos</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">RAMOS_TEC — ramos internos de operación</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Nombre</th><th>Ramo Com.</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>AUTO-01</td><td>Automóviles Todo Riesgo</td><td>Automóviles</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>AUTO-02</td><td>Automóviles RC</td><td>Automóviles</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>INC-01</td><td>Incendio Residencial</td><td>Incendio y Aliados</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>INC-02</td><td>Incendio Comercial</td><td>Incendio y Aliados</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Subramos ── -->
+          <div id="rc-subramos" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Subramos</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">SUBRAMOS</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Nombre</th><th>Ramo Tec.</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>SR-001</td><td>Vehículos Livianos</td><td>AUTO-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>SR-002</td><td>Vehículos Pesados</td><td>AUTO-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>SR-003</td><td>Motocicletas</td><td>AUTO-01</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Sucursales ── -->
+          <div id="rc-sucursales" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Sucursales</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">SUCURSALES</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Nombre</th><th>Ciudad</th><th>Tipo</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>SUC-01</td><td>Casa Matriz</td><td>Caracas</td><td>Principal</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>SUC-02</td><td>Sucursal Maracaibo</td><td>Maracaibo</td><td>RAES</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>SUC-03</td><td>Sucursal Valencia</td><td>Valencia</td><td>RAES</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>SUC-04</td><td>Sucursal Barquisimeto</td><td>Barquisimeto</td><td>RAES</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>SUC-05</td><td>Sucursal Mérida</td><td>Mérida</td><td>RAES</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Tipos Sucursal RAES ── -->
+          <div id="rc-tipos-suc" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Tipos Sucursal RAES</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">TIPOS_SUCURSAL_RAES</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Descripción</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>PRINCIPAL</td><td>Casa Matriz / Principal</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>RAES</td><td>Red de Agencias</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>VIRTUAL</td><td>Sucursal Virtual</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Hab. Ramo × Sucursal ── -->
+          <div id="rc-ramo-suc" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Hab. Ramo × Sucursal</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">RAMO_SUCURSAL — habilitación por sucursal</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Ramo</th><th>Sucursal</th><th>Habilitado</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Automóviles</td><td>Casa Matriz</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Automóviles</td><td>Maracaibo</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Vida Individual</td><td>Casa Matriz</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Incendio</td><td>Valencia</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Estructura Siniestros ── -->
+          <div id="rc-estr-sin" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Estructura Siniestros</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">ESTRUCTURA_SINIESTROS_RAMO</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Ramo</th><th>Tipo Siniestro</th><th>Requiere Perito</th><th>SLA (días)</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Automóviles</td><td>Colisión</td><td><span class="badge badge-success">Sí</span></td><td>5</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Automóviles</td><td>Robo Total</td><td><span class="badge badge-success">Sí</span></td><td>10</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Incendio</td><td>Incendio Total</td><td><span class="badge badge-success">Sí</span></td><td>15</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Tipos de Operación ── -->
+          <div id="rc-tipos-op" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Tipos de Operación</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">TIPOS_OPERACION</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Nombre</th><th>Afecta Prima</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>EMI</td><td>Emisión</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>REN</td><td>Renovación</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>ANU</td><td>Anulación</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>INC</td><td>Inclusión</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>EXC</td><td>Exclusión</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>6</td><td>MOD</td><td>Modificación</td><td><span class="badge badge-warning">Parcial</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>7</td><td>SUS</td><td>Suspensión</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>8</td><td>REH</td><td>Rehabilitación</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Operaciones × Ramo ── -->
+          <div id="rc-op-ramo" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Operaciones × Ramo</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">OPERACIONES_RAMO — habilitación por ramo</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Ramo</th><th>Operación</th><th>Habilitado</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Automóviles</td><td>Emisión</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Automóviles</td><td>Renovación</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Vida Individual</td><td>Emisión</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Vida Individual</td><td>Suspensión</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Tipos de Negocio ── -->
+          <div id="rc-tipos-neg" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Tipos de Negocio</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">TIPOS_NEGOCIO</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Descripción</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>DIR</td><td>Directo</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>COR</td><td>Corredor</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>AGT</td><td>Agente</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>COL</td><td>Colectivo</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Negocio × Ramo ── -->
+          <div id="rc-neg-ramo" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Negocio × Ramo</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">NEGOCIO_RAMO</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Ramo</th><th>Tipo Negocio</th><th>Habilitado</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Automóviles</td><td>Directo</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Automóviles</td><td>Corredor</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Vida Individual</td><td>Colectivo</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Tipos de Endoso ── -->
+          <div id="rc-tipos-end" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Tipos de Endoso</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">TIPOS_ENDOSO</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Nombre</th><th>Afecta Prima</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>INC</td><td>Inclusión de Bienes</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>EXC</td><td>Exclusión de Bienes</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>CAM</td><td>Cambio de Asegurado</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>CRE</td><td>Cambio de Riesgo</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>REH</td><td>Rehabilitación</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>6</td><td>ANU</td><td>Anulación</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>7</td><td>PRO</td><td>Prórroga</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>8</td><td>REN</td><td>Renovación</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>9</td><td>COR</td><td>Corrección</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>10</td><td>SUP</td><td>Suplemento</td><td><span class="badge badge-warning">Parcial</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Subtipos de Endoso ── -->
+          <div id="rc-subtipos-end" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Subtipos de Endoso</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">SUBTIPOS_ENDOSO</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Nombre</th><th>Tipo Endoso</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>INC-VEH</td><td>Inclusión de Vehículo</td><td>Inclusión de Bienes</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>INC-CON</td><td>Inclusión de Conductor</td><td>Inclusión de Bienes</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>EXC-VEH</td><td>Exclusión de Vehículo</td><td>Exclusión de Bienes</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>ANU-TOT</td><td>Anulación Total</td><td>Anulación</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>ANU-PAR</td><td>Anulación Parcial</td><td>Anulación</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Endosos × Ramo ── -->
+          <div id="rc-end-ramo" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Endosos × Ramo</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">ENDOSOS_RAMO — endosos habilitados por ramo</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Ramo</th><th>Tipo Endoso</th><th>Habilitado</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Automóviles</td><td>Inclusión de Bienes</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Automóviles</td><td>Anulación</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Vida Individual</td><td>Cambio de Asegurado</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Incendio</td><td>Inclusión de Bienes</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Tipos de Vigencia ── -->
+          <div id="rc-tipos-vig" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Tipos de Vigencia</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">TIPOS_VIGENCIA</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Descripción</th><th>Meses</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>ANUAL</td><td>Anual</td><td>12</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>SEMEST</td><td>Semestral</td><td>6</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>TRIM</td><td>Trimestral</td><td>3</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>MENSUAL</td><td>Mensual</td><td>1</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>CORTO</td><td>Corto Plazo</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>6</td><td>INDEF</td><td>Indefinido</td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Vigencias × Ramo ── -->
+          <div id="rc-vig-ramo" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Vigencias × Ramo</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">VIGENCIAS_RAMO</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Ramo</th><th>Tipo Vigencia</th><th>Predeterminada</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Automóviles</td><td>Anual</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Automóviles</td><td>Semestral</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Vida Individual</td><td>Anual</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Vida Individual</td><td>Indefinido</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Ramos Contables ── -->
+          <div id="rc-ramos-cont" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Ramos Contables</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">RAMOS_CONTABLES</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código Cont.</th><th>Nombre Contable</th><th>Ramo Com.</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>1001</td><td>Automóviles — Patrimonio</td><td>Automóviles</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>2001</td><td>Vida — Reserva Matemática</td><td>Vida Individual</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>3001</td><td>Incendio — Patrimonio</td><td>Incendio y Aliados</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Mapeo Contable ── -->
+          <div id="rc-mapeo-cont" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Mapeo Contable</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">MAPEO_CONTABLE_RAMO — cuentas por operación</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Ramo</th><th>Operación</th><th>Cuenta Débito</th><th>Cuenta Crédito</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Automóviles</td><td>Emisión</td><td>1101-Primas x Cobrar</td><td>4101-Primas Emitidas</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Automóviles</td><td>Anulación</td><td>4101-Primas Emitidas</td><td>1101-Primas x Cobrar</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Vida Individual</td><td>Emisión</td><td>1102-Primas x Cobrar</td><td>4102-Primas Emitidas</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Impuestos ── -->
+          <div id="rc-impuestos" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Impuestos</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">IMPUESTOS — catálogo de tributos</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Nombre</th><th>Tasa %</th><th>Aplica Sobre</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>IVA</td><td>IVA</td><td>16%</td><td>Prima</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>IGTF</td><td>IGTF</td><td>3%</td><td>Prima + IVA</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>CTRL</td><td>Control SSN</td><td>1%</td><td>Prima</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>FONDO</td><td>Fondo de Garantía</td><td>0.5%</td><td>Prima</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>CATAS</td><td>Catastrófico</td><td>0.1%</td><td>Prima</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>6</td><td>MUNI</td><td>Municipal</td><td>Variable</td><td>Prima</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>7</td><td>EST</td><td>Estatal</td><td>Variable</td><td>Prima</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Impuesto × Ramo ── -->
+          <div id="rc-imp-ramo" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Impuesto × Ramo</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">IMPUESTO_RAMO</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Ramo</th><th>Impuesto</th><th>Aplica</th><th>Orden Cálculo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Automóviles</td><td>IVA</td><td><span class="badge badge-success">Sí</span></td><td>1</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Automóviles</td><td>IGTF</td><td><span class="badge badge-success">Sí</span></td><td>2</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Automóviles</td><td>Control SSN</td><td><span class="badge badge-success">Sí</span></td><td>3</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Vida Individual</td><td>IVA</td><td><span class="badge badge-danger">No</span></td><td>—</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Condición Fiscal ── -->
+          <div id="rc-cond-fiscal" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Condición Fiscal</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">CONDICION_FISCAL</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Descripción</th><th>Exento IVA</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>GRAVADO</td><td>Gravado</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>EXENTO</td><td>Exento</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>NO-SUJETO</td><td>No Sujeto</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Condición × Impuesto ── -->
+          <div id="rc-cond-imp" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Condición × Impuesto</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">CONDICION_IMPUESTO</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Condición Fiscal</th><th>Impuesto</th><th>Aplica</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Gravado</td><td>IVA</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Gravado</td><td>IGTF</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Exento</td><td>IVA</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>No Sujeto</td><td>IVA</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Tipos de Facturación ── -->
+          <div id="rc-tipos-fact" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Tipos de Facturación</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">TIPOS_FACTURACION</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Descripción</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>CONT</td><td>Contado</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>CRED</td><td>Crédito</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>CTAS</td><td>Cuotas</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>DOM</td><td>Domiciliación</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Pagador × Ramo ── -->
+          <div id="rc-pag-ramo" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Pagador × Ramo</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">PAGADOR_RAMO — quién paga la prima</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Ramo</th><th>Tipo Pagador</th><th>Predeterminado</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Automóviles</td><td>Contratante</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Automóviles</td><td>Financiera</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Vida Individual</td><td>Contratante</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Conceptos del Ramo ── -->
+          <div id="rc-conceptos" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Conceptos del Ramo</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">CONCEPTOS_RAMO — conceptos de cobro/pago</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Ramo</th><th>Código</th><th>Nombre</th><th>Tipo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Automóviles</td><td>PRIM</td><td>Prima Neta</td><td>Ingreso</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Automóviles</td><td>DER</td><td>Derecho de Póliza</td><td>Ingreso</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Automóviles</td><td>COM</td><td>Comisión Agente</td><td>Egreso</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Vida Individual</td><td>PRIM</td><td>Prima Neta</td><td>Ingreso</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Remisiones ── -->
+          <div id="rc-remisiones" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Remisiones</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">REMISIONES — tipos de remisión de prima</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Descripción</th><th>Días Plazo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>REM-30</td><td>Remisión 30 días</td><td>30</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>REM-60</td><td>Remisión 60 días</td><td>60</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>REM-90</td><td>Remisión 90 días</td><td>90</td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Agencias ── -->
+          <div id="rc-agencias" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Agencias</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">AGENCIAS — red de distribución</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Código</th><th>Nombre</th><th>Ciudad</th><th>Tipo</th><th>Activo</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>AG-001</td><td>Agencia Norte</td><td>Caracas</td><td>Propia</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>AG-002</td><td>Agencia Sur</td><td>Valencia</td><td>Franquiciada</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>AG-003</td><td>Agencia Occidente</td><td>Maracaibo</td><td>Propia</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>AG-004</td><td>Agencia Andes</td><td>Mérida</td><td>Franquiciada</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>AG-005</td><td>Agencia Llanos</td><td>Barinas</td><td>Propia</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>6</td><td>AG-006</td><td>Agencia Oriente</td><td>Barcelona</td><td>Propia</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <!-- ── Agencias × Ramo ── -->
+          <div id="rc-ag-ramo" class="rc-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0;font-size:15px">Agencias × Ramo</h3><p style="margin:3px 0 0;font-size:12px;color:var(--muted)">AGENCIAS_RAMO — ramos habilitados por agencia</p></div>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl"><thead><tr><th>ID</th><th>Agencia</th><th>Ramo</th><th>Comisión %</th><th>Habilitado</th><th>Acc.</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Agencia Norte</td><td>Automóviles</td><td>10%</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>2</td><td>Agencia Norte</td><td>Vida Individual</td><td>15%</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>3</td><td>Agencia Sur</td><td>Automóviles</td><td>10%</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>4</td><td>Agencia Occidente</td><td>Incendio y Aliados</td><td>8%</td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                <tr><td>5</td><td>Agencia Andes</td><td>Automóviles</td><td>10%</td><td><span class="badge badge-danger">No</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+        </div><!-- /panel derecho -->
+      </div><!-- /grid -->
+    </div>
+
+    <!-- OLD CONTENT HIDDEN START --><div style="display:none">
           <div class="card" style="padding:0;overflow:hidden;margin-bottom:14px">
             <div style="padding:10px 14px;background:var(--light);border-bottom:1px solid var(--border);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Ramos Comerciales</div>
             <div id="ramo-list">
@@ -852,7 +1436,7 @@
           </div><!-- /card tabs -->
         </div><!-- /panel derecho -->
       </div><!-- /grid -->
-    </div>
+    </div></div><!-- OLD CONTENT HIDDEN END -->
 
     <!-- ===== PRODUCTOS ===== -->
     <div class="page" id="page-productos">
@@ -2027,7 +2611,18 @@
   function openModal(id)  { document.getElementById(id).classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-  // TABS DE RAMO
+  // CATÁLOGO MENU — Módulo 1 Ramos
+  const rcPanelIds = ['rc-ramos-com','rc-tipos-ramo','rc-ramos-tec','rc-subramos','rc-sucursales','rc-tipos-suc','rc-ramo-suc','rc-estr-sin','rc-tipos-op','rc-op-ramo','rc-tipos-neg','rc-neg-ramo','rc-tipos-end','rc-subtipos-end','rc-end-ramo','rc-tipos-vig','rc-vig-ramo','rc-ramos-cont','rc-mapeo-cont','rc-impuestos','rc-imp-ramo','rc-cond-fiscal','rc-cond-imp','rc-tipos-fact','rc-pag-ramo','rc-conceptos','rc-remisiones','rc-agencias','rc-ag-ramo'];
+  function showRamoCatalog(panelId) {
+    rcPanelIds.forEach(id => { const el = document.getElementById(id); if(el) el.style.display='none'; });
+    document.querySelectorAll('.rc-item').forEach(i => i.classList.remove('active'));
+    const panel = document.getElementById(panelId);
+    if (panel) panel.style.display = 'block';
+    const mi = document.getElementById('mi-' + panelId.replace('rc-',''));
+    if (mi) mi.classList.add('active');
+  }
+
+  // TABS DE RAMO (legacy — kept for compatibility)
   const ramoTabIds = ['tab-r-nucleo','tab-r-sucursales','tab-r-operaciones','tab-r-endosos','tab-r-vigencias','tab-r-contabilidad','tab-r-impuestos','tab-r-facturacion','tab-r-agencias','tab-r-tipos-op','tab-r-endosos-cat','tab-r-vigencias-cat','tab-r-impuestos-cat','tab-r-facturacion-cat','tab-r-agencias-cat'];
   function showRamoTab(tabId) {
     ramoTabIds.forEach(id => {
