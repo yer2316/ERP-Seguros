@@ -48,7 +48,7 @@
     background: #fff; border-bottom: 1px solid var(--border); padding: 0 28px;
     height: 56px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
   }
-  #topbar h2 { font-size: 17px; font-weight: 600; }
+  #topbar h2 { font-size: 17px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   #topbar .user { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
   #topbar .user .avatar {
     width: 34px; height: 34px; border-radius: 50%; background: var(--accent);
@@ -3783,9 +3783,9 @@
 <script>
   const titles = {
     dashboard: 'Dashboard', ramos: 'Ramos', productos: 'Productos',
-    clientes: 'Clientes', agentes: 'Agentes / Productores',
+    clientes: 'Clientes', agentes: 'Agentes',
     cotizador: 'Cotizador', preemision: 'Pre-Emisión',
-    polizas: 'Pólizas', movimientos: 'Movimientos de Póliza'
+    polizas: 'Pólizas', movimientos: 'Movimientos'
   };
 
   function go(page) {
