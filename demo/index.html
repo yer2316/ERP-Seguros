@@ -3794,6 +3794,7 @@
     document.getElementById('page-' + page).classList.add('active');
     document.querySelector(`[data-page="${page}"]`).classList.add('active');
     document.getElementById('topbar-title').textContent = titles[page] || page;
+    document.getElementById('content').scrollTop = 0;
   }
 
   function openModal(id)  { document.getElementById(id).classList.add('open'); }
