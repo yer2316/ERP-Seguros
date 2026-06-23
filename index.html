@@ -222,6 +222,9 @@
     <a onclick="go('preemision')"  data-page="preemision"><span class="icon">⚡</span> Pre-Emisión</a>
     <a onclick="go('polizas')"     data-page="polizas"><span class="icon">📄</span> Pólizas</a>
     <a onclick="go('movimientos')" data-page="movimientos"><span class="icon">🔄</span> Movimientos</a>
+
+    <div class="section-label">Finanzas</div>
+    <a onclick="go('cobranza')"   data-page="cobranza"><span class="icon">💰</span> Cobranza</a>
   </nav>
 </div>
 
@@ -3781,12 +3784,404 @@
   </div>
 </div>
 
+    <!-- ===== COBRANZA ===== -->
+    <div class="page" id="page-cobranza">
+      <div style="display:grid;grid-template-columns:230px 1fr;gap:16px;align-items:start">
+
+        <!-- ══ MENÚ IZQUIERDO ══ -->
+        <div class="card" style="padding:0;overflow:hidden;position:sticky;top:70px">
+          <div style="padding:10px 14px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase">Catálogos del Módulo</div>
+
+          <div class="rc-group-hdr">💳 GESTIÓN DE COBROS</div>
+          <div class="rc-item active" id="cob-mi-cuponeras"   onclick="showCobCatalog('cob-cuponeras')">Cuponeras</div>
+          <div class="rc-item"        id="cob-mi-cuotas"      onclick="showCobCatalog('cob-cuotas')">Cuotas</div>
+          <div class="rc-item"        id="cob-mi-recibos"     onclick="showCobCatalog('cob-recibos')">Recibos</div>
+
+          <div class="rc-group-hdr">📊 SEGUIMIENTO</div>
+          <div class="rc-item"        id="cob-mi-estado"      onclick="showCobCatalog('cob-estado')">Estado de Cuenta</div>
+          <div class="rc-item"        id="cob-mi-mora"        onclick="showCobCatalog('cob-mora')">Cuotas en Mora</div>
+
+          <div class="rc-group-hdr">⚙️ CONFIGURACIÓN</div>
+          <div class="rc-item"        id="cob-mi-medios"      onclick="showCobCatalog('cob-medios')">Medios de Pago</div>
+          <div class="rc-item"        id="cob-mi-periodos"    onclick="showCobCatalog('cob-periodos')">Periodicidades</div>
+        </div>
+
+        <!-- ══ PANELES DERECHO ══ -->
+        <div>
+          <div class="page-header" style="margin-bottom:16px">
+            <div><h2>💰 Módulo 9 — Cobranza</h2><p>Gestión de cuponeras, cuotas y recibos de pago · 7 entidades</p></div>
+            <button class="btn btn-primary" onclick="openModal('modal-nueva-cuponera')">+ Nueva Cuponera</button>
+          </div>
+
+          <!-- ── Cuponeras ── -->
+          <div id="cob-cuponeras" class="cob-panel" style="display:block">
+            <div class="card" style="margin-bottom:16px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0">Cuponeras de Pago</h3><p style="font-size:12px;color:var(--muted);margin:0">Planes de cuotas vinculados a pólizas</p></div>
+                <div style="display:flex;gap:8px">
+                  <select class="btn btn-outline" style="font-size:12px">
+                    <option>Todos los estados</option>
+                    <option>Activa</option>
+                    <option>Finalizada</option>
+                    <option>Anulada</option>
+                  </select>
+                  <button class="btn btn-primary btn-sm" onclick="openModal('modal-nueva-cuponera')">+ Nueva</button>
+                </div>
+              </div>
+              <table class="tbl">
+                <thead><tr><th>Póliza</th><th>Cliente</th><th>Periodicidad</th><th>Cuotas</th><th>Monto Total</th><th>Cuotas Pagas</th><th>Estado</th><th>Acc.</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td style="font-weight:600">POL-00000001</td>
+                    <td>García, Juan Manuel</td>
+                    <td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">MENSUAL</span></td>
+                    <td style="text-align:center">12</td>
+                    <td>$ 84.000</td>
+                    <td><span style="color:var(--success);font-weight:600">4 / 12</span></td>
+                    <td><span class="badge badge-success">ACTIVA</span></td>
+                    <td><button class="btn btn-outline btn-sm" onclick="showCobCatalog('cob-cuotas')">Ver cuotas</button></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">POL-00000002</td>
+                    <td>López S.A.</td>
+                    <td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">TRIMESTRAL</span></td>
+                    <td style="text-align:center">4</td>
+                    <td>$ 220.000</td>
+                    <td><span style="color:var(--success);font-weight:600">4 / 4</span></td>
+                    <td><span class="badge" style="background:#d4f5e2;color:#1a7a45">FINALIZADA</span></td>
+                    <td><button class="btn btn-outline btn-sm">Ver cuotas</button></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">POL-00000003</td>
+                    <td>Rodríguez, María Elena</td>
+                    <td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">MENSUAL</span></td>
+                    <td style="text-align:center">12</td>
+                    <td>$ 48.000</td>
+                    <td><span style="color:var(--danger);font-weight:600">1 / 12</span></td>
+                    <td><span class="badge badge-success">ACTIVA</span></td>
+                    <td><button class="btn btn-outline btn-sm">Ver cuotas</button></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">POL-00000004</td>
+                    <td>Fernández, Carlos</td>
+                    <td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">SEMESTRAL</span></td>
+                    <td style="text-align:center">2</td>
+                    <td>$ 95.000</td>
+                    <td><span style="color:var(--warning);font-weight:600">0 / 2</span></td>
+                    <td><span class="badge badge-warning">ACTIVA</span></td>
+                    <td><button class="btn btn-outline btn-sm">Ver cuotas</button></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">POL-00000005</td>
+                    <td>Tech Solutions S.R.L.</td>
+                    <td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">ANUAL</span></td>
+                    <td style="text-align:center">1</td>
+                    <td>$ 340.000</td>
+                    <td><span style="color:var(--success);font-weight:600">1 / 1</span></td>
+                    <td><span class="badge" style="background:#d4f5e2;color:#1a7a45">FINALIZADA</span></td>
+                    <td><button class="btn btn-outline btn-sm">Ver cuotas</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- KPIs cobranza -->
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+              <div class="card" style="padding:16px;text-align:center">
+                <div style="font-size:24px;font-weight:700;color:var(--success)">$ 148.000</div>
+                <div style="font-size:11px;color:var(--muted);margin-top:4px">COBRADO ESTE MES</div>
+              </div>
+              <div class="card" style="padding:16px;text-align:center">
+                <div style="font-size:24px;font-weight:700;color:var(--warning)">$ 36.000</div>
+                <div style="font-size:11px;color:var(--muted);margin-top:4px">PENDIENTE DE COBRO</div>
+              </div>
+              <div class="card" style="padding:16px;text-align:center">
+                <div style="font-size:24px;font-weight:700;color:var(--danger)">$ 14.000</div>
+                <div style="font-size:11px;color:var(--muted);margin-top:4px">EN MORA</div>
+              </div>
+              <div class="card" style="padding:16px;text-align:center">
+                <div style="font-size:24px;font-weight:700;color:var(--primary)">89%</div>
+                <div style="font-size:11px;color:var(--muted);margin-top:4px">ÍNDICE DE COBRO</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Cuotas ── -->
+          <div id="cob-cuotas" class="cob-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0">Cuotas — POL-00000001 · García, Juan Manuel</h3></div>
+                <div style="display:flex;gap:8px">
+                  <select class="btn btn-outline" style="font-size:12px">
+                    <option>Todas</option><option>Pendiente</option><option>Pagada</option><option>Vencida</option>
+                  </select>
+                </div>
+              </div>
+              <table class="tbl">
+                <thead><tr><th>#</th><th>Vencimiento</th><th>Monto</th><th>Recargo</th><th>Total</th><th>Fecha Pago</th><th>Medio</th><th>Estado</th><th>Acción</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>01/02/2026</td><td>$ 7.000</td><td>—</td><td>$ 7.000</td><td>28/01/2026</td><td>TRANSFERENCIA</td><td><span class="badge badge-success">PAGADA</span></td><td><button class="btn btn-outline btn-sm">📄 Recibo</button></td></tr>
+                  <tr><td>2</td><td>01/03/2026</td><td>$ 7.000</td><td>—</td><td>$ 7.000</td><td>27/02/2026</td><td>TRANSFERENCIA</td><td><span class="badge badge-success">PAGADA</span></td><td><button class="btn btn-outline btn-sm">📄 Recibo</button></td></tr>
+                  <tr><td>3</td><td>01/04/2026</td><td>$ 7.000</td><td>—</td><td>$ 7.000</td><td>31/03/2026</td><td>EFECTIVO</td><td><span class="badge badge-success">PAGADA</span></td><td><button class="btn btn-outline btn-sm">📄 Recibo</button></td></tr>
+                  <tr><td>4</td><td>01/05/2026</td><td>$ 7.000</td><td>—</td><td>$ 7.000</td><td>29/04/2026</td><td>DÉBITO AUT.</td><td><span class="badge badge-success">PAGADA</span></td><td><button class="btn btn-outline btn-sm">📄 Recibo</button></td></tr>
+                  <tr style="background:#fff8e1"><td>5</td><td>01/06/2026</td><td>$ 7.000</td><td><span style="color:var(--danger)">$ 700</span></td><td><strong>$ 7.700</strong></td><td>—</td><td>—</td><td><span class="badge badge-danger">VENCIDA</span></td><td><button class="btn btn-primary btn-sm" onclick="openModal('modal-pagar-cuota')">💳 Pagar</button></td></tr>
+                  <tr><td>6</td><td>01/07/2026</td><td>$ 7.000</td><td>—</td><td>$ 7.000</td><td>—</td><td>—</td><td><span class="badge badge-warning">PENDIENTE</span></td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-pagar-cuota')">💳 Pagar</button></td></tr>
+                  <tr><td>7</td><td>01/08/2026</td><td>$ 7.000</td><td>—</td><td>$ 7.000</td><td>—</td><td>—</td><td><span class="badge badge-warning">PENDIENTE</span></td><td><button class="btn btn-outline btn-sm">💳 Pagar</button></td></tr>
+                  <tr><td>8</td><td>01/09/2026</td><td>$ 7.000</td><td>—</td><td>$ 7.000</td><td>—</td><td>—</td><td><span class="badge badge-warning">PENDIENTE</span></td><td><button class="btn btn-outline btn-sm">💳 Pagar</button></td></tr>
+                  <tr><td>9</td><td>01/10/2026</td><td>$ 7.000</td><td>—</td><td>$ 7.000</td><td>—</td><td>—</td><td><span class="badge badge-warning">PENDIENTE</span></td><td><button class="btn btn-outline btn-sm">💳 Pagar</button></td></tr>
+                  <tr><td>10</td><td>01/11/2026</td><td>$ 7.000</td><td>—</td><td>$ 7.000</td><td>—</td><td>—</td><td><span class="badge badge-warning">PENDIENTE</span></td><td><button class="btn btn-outline btn-sm">💳 Pagar</button></td></tr>
+                  <tr><td>11</td><td>01/12/2026</td><td>$ 7.000</td><td>—</td><td>$ 7.000</td><td>—</td><td>—</td><td><span class="badge badge-warning">PENDIENTE</span></td><td><button class="btn btn-outline btn-sm">💳 Pagar</button></td></tr>
+                  <tr><td>12</td><td>01/01/2027</td><td>$ 7.000</td><td>—</td><td>$ 7.000</td><td>—</td><td>—</td><td><span class="badge badge-warning">PENDIENTE</span></td><td><button class="btn btn-outline btn-sm">💳 Pagar</button></td></tr>
+                </tbody>
+              </table>
+              <div style="display:flex;justify-content:flex-end;gap:20px;padding-top:12px;font-size:13px">
+                <span>Pagado: <strong style="color:var(--success)">$ 28.000</strong></span>
+                <span>En mora: <strong style="color:var(--danger)">$ 7.700</strong></span>
+                <span>Pendiente: <strong style="color:var(--warning)">$ 56.000</strong></span>
+                <span>Total: <strong>$ 84.000</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Recibos ── -->
+          <div id="cob-recibos" class="cob-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <h3 style="margin:0">Recibos de Pago</h3>
+                <input type="text" placeholder="Buscar por número, cliente..." style="border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-size:12px;width:250px">
+              </div>
+              <table class="tbl">
+                <thead><tr><th>Número</th><th>Fecha</th><th>Cliente</th><th>Póliza</th><th>Cuota #</th><th>Monto</th><th>Medio</th><th>Estado</th><th></th></tr></thead>
+                <tbody>
+                  <tr><td style="font-weight:600">REC-00000004</td><td>29/04/2026</td><td>García, Juan Manuel</td><td>POL-00000001</td><td>4</td><td>$ 7.000</td><td>DÉBITO AUT.</td><td><span class="badge badge-success">ACTIVO</span></td><td><button class="btn btn-outline btn-sm">🖨️</button></td></tr>
+                  <tr><td style="font-weight:600">REC-00000003</td><td>31/03/2026</td><td>García, Juan Manuel</td><td>POL-00000001</td><td>3</td><td>$ 7.000</td><td>EFECTIVO</td><td><span class="badge badge-success">ACTIVO</span></td><td><button class="btn btn-outline btn-sm">🖨️</button></td></tr>
+                  <tr><td style="font-weight:600">REC-00000002</td><td>27/02/2026</td><td>García, Juan Manuel</td><td>POL-00000001</td><td>2</td><td>$ 7.000</td><td>TRANSFERENCIA</td><td><span class="badge badge-success">ACTIVO</span></td><td><button class="btn btn-outline btn-sm">🖨️</button></td></tr>
+                  <tr><td style="font-weight:600">REC-00000001</td><td>28/01/2026</td><td>García, Juan Manuel</td><td>POL-00000001</td><td>1</td><td>$ 7.000</td><td>TRANSFERENCIA</td><td><span class="badge badge-success">ACTIVO</span></td><td><button class="btn btn-outline btn-sm">🖨️</button></td></tr>
+                  <tr><td style="font-weight:600;color:var(--muted);text-decoration:line-through">REC-00000005</td><td>15/05/2026</td><td>Rodríguez, María Elena</td><td>POL-00000003</td><td>1</td><td>$ 4.000</td><td>EFECTIVO</td><td><span class="badge badge-danger">ANULADO</span></td><td><button class="btn btn-outline btn-sm" disabled>🖨️</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- ── Estado de Cuenta ── -->
+          <div id="cob-estado" class="cob-panel" style="display:none">
+            <div class="card" style="margin-bottom:16px">
+              <h3 style="margin-bottom:14px">Estado de Cuenta del Asegurado</h3>
+              <div style="display:flex;gap:12px;margin-bottom:16px">
+                <input type="text" placeholder="Buscar asegurado por nombre o CUIT..." style="flex:1;border:1px solid var(--border);border-radius:6px;padding:8px 14px;font-size:13px">
+                <button class="btn btn-primary">Consultar</button>
+              </div>
+              <!-- Resumen del cliente -->
+              <div style="background:var(--light);border-radius:8px;padding:16px;margin-bottom:16px">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                  <div>
+                    <div style="font-size:15px;font-weight:700">García, Juan Manuel</div>
+                    <div style="font-size:12px;color:var(--muted)">CUIT: 20-12345678-9 · FÍSICA · Responsable Inscripto</div>
+                  </div>
+                  <span class="badge badge-success">AL DÍA</span>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+                  <div style="background:#fff;border-radius:6px;padding:12px;text-align:center">
+                    <div style="font-size:20px;font-weight:700;color:var(--primary)">12</div>
+                    <div style="font-size:11px;color:var(--muted)">TOTAL CUOTAS</div>
+                  </div>
+                  <div style="background:#fff;border-radius:6px;padding:12px;text-align:center">
+                    <div style="font-size:20px;font-weight:700;color:var(--success)">4</div>
+                    <div style="font-size:11px;color:var(--muted)">PAGAS</div>
+                  </div>
+                  <div style="background:#fff;border-radius:6px;padding:12px;text-align:center">
+                    <div style="font-size:20px;font-weight:700;color:var(--danger)">1</div>
+                    <div style="font-size:11px;color:var(--muted)">VENCIDAS</div>
+                  </div>
+                  <div style="background:#fff;border-radius:6px;padding:12px;text-align:center">
+                    <div style="font-size:20px;font-weight:700;color:var(--warning)">7</div>
+                    <div style="font-size:11px;color:var(--muted)">PENDIENTES</div>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--border);font-size:13px">
+                <span>Saldo adeudado:</span><strong style="color:var(--danger)">$ 7.700 (incluye recargo)</strong>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--border);font-size:13px">
+                <span>Próximo vencimiento:</span><strong>01/07/2026 — $ 7.000</strong>
+              </div>
+              <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
+                <button class="btn btn-outline" onclick="openModal('modal-pagar-cuota')">💳 Registrar Pago</button>
+                <button class="btn btn-outline">📄 Exportar Estado de Cuenta</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Mora ── -->
+          <div id="cob-mora" class="cob-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0">Cuotas en Mora</h3><p style="font-size:12px;color:var(--muted);margin:0">Cuotas vencidas con recargo aplicado — tasa 3% mensual</p></div>
+                <button class="btn btn-outline btn-sm">⚡ Procesar Vencimientos</button>
+              </div>
+              <table class="tbl">
+                <thead><tr><th>Póliza</th><th>Cliente</th><th>Cuota #</th><th>Vencimiento</th><th>Días Mora</th><th>Capital</th><th>Recargo</th><th>Total</th><th></th></tr></thead>
+                <tbody>
+                  <tr style="background:#fff5f5">
+                    <td>POL-00000001</td>
+                    <td>García, Juan Manuel</td>
+                    <td style="text-align:center">5</td>
+                    <td>01/06/2026</td>
+                    <td><span style="color:var(--danger);font-weight:700">22 días</span></td>
+                    <td>$ 7.000</td>
+                    <td style="color:var(--danger)">$ 700</td>
+                    <td><strong>$ 7.700</strong></td>
+                    <td><button class="btn btn-primary btn-sm" onclick="openModal('modal-pagar-cuota')">💳 Pagar</button></td>
+                  </tr>
+                  <tr style="background:#fff5f5">
+                    <td>POL-00000003</td>
+                    <td>Rodríguez, María Elena</td>
+                    <td style="text-align:center">1</td>
+                    <td>01/05/2026</td>
+                    <td><span style="color:var(--danger);font-weight:700">53 días</span></td>
+                    <td>$ 4.000</td>
+                    <td style="color:var(--danger)">$ 212</td>
+                    <td><strong>$ 4.212</strong></td>
+                    <td><button class="btn btn-primary btn-sm">💳 Pagar</button></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="margin-top:12px;padding:10px;background:#fff8e1;border-radius:6px;font-size:12px;color:#856404">
+                ⚠️ <strong>2 cuotas en mora</strong> · Total adeudado con recargo: <strong>$ 11.912</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Medios de Pago ── -->
+          <div id="cob-medios" class="cob-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <h3 style="margin:0">Medios de Pago</h3>
+                <button class="btn btn-primary btn-sm">+ Nuevo</button>
+              </div>
+              <table class="tbl">
+                <thead><tr><th>Código</th><th>Descripción</th><th>Requiere Referencia</th><th>Activo</th><th></th></tr></thead>
+                <tbody>
+                  <tr><td>EFECTIVO</td><td>Pago en efectivo</td><td><span class="badge" style="background:#eee;color:#555">No</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                  <tr><td>TRANSFERENCIA</td><td>Transferencia bancaria</td><td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                  <tr><td>TARJETA</td><td>Tarjeta de crédito/débito</td><td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                  <tr><td>CHEQUE</td><td>Cheque bancario</td><td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                  <tr><td>DEBITO_AUTOMATICO</td><td>Débito automático en cuenta</td><td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">Sí</span></td><td><span class="badge badge-success">Sí</span></td><td><button class="btn btn-outline btn-sm">✏️</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- ── Periodicidades ── -->
+          <div id="cob-periodos" class="cob-panel" style="display:none">
+            <div class="card">
+              <h3 style="margin-bottom:14px">Periodicidades de Cobro</h3>
+              <table class="tbl">
+                <thead><tr><th>Código</th><th>Descripción</th><th>Días entre cuotas</th><th>Cuotas/Año</th><th>Activo</th></tr></thead>
+                <tbody>
+                  <tr><td>CONTADO</td><td>Pago único al contado</td><td>—</td><td>1</td><td><span class="badge badge-success">Sí</span></td></tr>
+                  <tr><td>MENSUAL</td><td>Pago mensual</td><td>~30</td><td>12</td><td><span class="badge badge-success">Sí</span></td></tr>
+                  <tr><td>TRIMESTRAL</td><td>Pago cada 3 meses</td><td>~90</td><td>4</td><td><span class="badge badge-success">Sí</span></td></tr>
+                  <tr><td>SEMESTRAL</td><td>Pago cada 6 meses</td><td>~180</td><td>2</td><td><span class="badge badge-success">Sí</span></td></tr>
+                  <tr><td>ANUAL</td><td>Pago anual</td><td>365</td><td>1</td><td><span class="badge badge-success">Sí</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div><!-- /right -->
+      </div>
+    </div><!-- /page-cobranza -->
+
+    <!-- Modal: Nueva Cuponera -->
+    <div id="modal-nueva-cuponera" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-nueva-cuponera')">
+      <div class="modal-box" style="max-width:480px">
+        <div class="modal-header"><h3>Nueva Cuponera de Pago</h3><button class="modal-close" onclick="closeModal('modal-nueva-cuponera')">✕</button></div>
+        <div class="modal-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div style="grid-column:1/-1">
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">PÓLIZA</label>
+              <select style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+                <option>POL-00000006 — Martínez, Carlos</option>
+                <option>POL-00000007 — Gómez, Laura</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">PERIODICIDAD</label>
+              <select id="cob-periodSelect" onchange="calcCuotas()" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+                <option value="1">CONTADO (1 cuota)</option>
+                <option value="12" selected>MENSUAL (12 cuotas)</option>
+                <option value="4">TRIMESTRAL (4 cuotas)</option>
+                <option value="2">SEMESTRAL (2 cuotas)</option>
+                <option value="1a">ANUAL (1 cuota)</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">MONTO TOTAL</label>
+              <input id="cob-montoTotal" type="number" placeholder="0.00" oninput="calcCuotas()" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">PRIMER VENCIMIENTO</label>
+              <input type="date" value="2026-08-01" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+            </div>
+            <div style="grid-column:1/-1;background:var(--light);border-radius:8px;padding:12px;text-align:center">
+              <div style="font-size:12px;color:var(--muted)">VALOR POR CUOTA</div>
+              <div id="cob-valorCuota" style="font-size:22px;font-weight:700;color:var(--accent)">$ 0,00</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" onclick="closeModal('modal-nueva-cuponera')">Cancelar</button>
+          <button class="btn btn-primary">Generar Cuponera</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Pagar Cuota -->
+    <div id="modal-pagar-cuota" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-pagar-cuota')">
+      <div class="modal-box" style="max-width:420px">
+        <div class="modal-header"><h3>Registrar Pago de Cuota</h3><button class="modal-close" onclick="closeModal('modal-pagar-cuota')">✕</button></div>
+        <div class="modal-body">
+          <div style="background:var(--light);border-radius:8px;padding:12px;margin-bottom:14px;font-size:13px">
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Póliza:</span><strong>POL-00000001</strong></div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px"><span style="color:var(--muted)">Cliente:</span><strong>García, Juan Manuel</strong></div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px"><span style="color:var(--muted)">Cuota:</span><strong>N° 5 — Vto. 01/06/2026</strong></div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px"><span style="color:var(--muted)">Monto + recargo:</span><strong style="color:var(--danger)">$ 7.700</strong></div>
+          </div>
+          <div style="display:grid;gap:12px">
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">MEDIO DE PAGO</label>
+              <select style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+                <option>EFECTIVO</option><option>TRANSFERENCIA</option><option>TARJETA</option><option>CHEQUE</option><option>DÉBITO AUTOMÁTICO</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">FECHA DE PAGO</label>
+              <input type="date" value="2026-06-23" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">MONTO PAGADO</label>
+              <input type="number" value="7700" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">REFERENCIA / N° COMPROBANTE</label>
+              <input type="text" placeholder="Ej: CBU, N° cheque..." style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" onclick="closeModal('modal-pagar-cuota')">Cancelar</button>
+          <button class="btn btn-primary" onclick="closeModal('modal-pagar-cuota');alert('✅ Pago registrado. Recibo REC-00000006 generado.')">Confirmar Pago</button>
+        </div>
+      </div>
+    </div>
+
 <script>
   const titles = {
     dashboard: 'Dashboard', ramos: 'Ramos', productos: 'Productos',
     clientes: 'Clientes', agentes: 'Agentes',
     cotizador: 'Cotizador', preemision: 'Pre-Emisión',
-    polizas: 'Pólizas', movimientos: 'Movimientos'
+    polizas: 'Pólizas', movimientos: 'Movimientos',
+    cobranza: 'Cobranza'
   };
 
   function go(page) {
@@ -3846,6 +4241,26 @@
     if (panel) panel.style.display = 'block';
     const mi = document.getElementById('mi-' + panelId.replace('rc-',''));
     if (mi) mi.classList.add('active');
+  }
+
+  // COBRANZA catalog
+  const cobPanelIds = ['cob-cuponeras','cob-cuotas','cob-recibos','cob-estado','cob-mora','cob-medios','cob-periodos'];
+  function showCobCatalog(panelId) {
+    cobPanelIds.forEach(id => { const el = document.getElementById(id); if(el) el.style.display='none'; });
+    document.querySelectorAll('#page-cobranza .rc-item').forEach(i => i.classList.remove('active'));
+    const panel = document.getElementById(panelId);
+    if (panel) panel.style.display = 'block';
+    const mi = document.getElementById('cob-mi-' + panelId.replace('cob-',''));
+    if (mi) mi.classList.add('active');
+  }
+
+  function calcCuotas() {
+    const sel = document.getElementById('cob-periodSelect');
+    const monto = parseFloat(document.getElementById('cob-montoTotal').value) || 0;
+    const cuotas = parseInt(sel ? sel.value : '12') || 1;
+    const valor = cuotas > 0 ? monto / cuotas : 0;
+    const el = document.getElementById('cob-valorCuota');
+    if (el) el.textContent = '$ ' + valor.toLocaleString('es-AR', {minimumFractionDigits:2, maximumFractionDigits:2});
   }
 
   // TABS DE RAMO (legacy — kept for compatibility)
