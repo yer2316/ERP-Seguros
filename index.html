@@ -3803,9 +3803,15 @@
           <div class="rc-item"        id="cob-mi-comisiones"  onclick="showCobCatalog('cob-comisiones')">Comisiones</div>
           <div class="rc-item"        id="cob-mi-endosos"     onclick="showCobCatalog('cob-endosos')">Ajustes por Endoso</div>
 
+          <div class="rc-group-hdr">🔔 RECORDATORIOS</div>
+          <div class="rc-item"        id="cob-mi-recordatorios" onclick="showCobCatalog('cob-recordatorios')">Gestión de Recordatorios</div>
+          <div class="rc-item"        id="cob-mi-reglas"        onclick="showCobCatalog('cob-reglas')">Reglas de Aviso</div>
+
           <div class="rc-group-hdr">⚙️ CONFIGURACIÓN</div>
-          <div class="rc-item"        id="cob-mi-medios"      onclick="showCobCatalog('cob-medios')">Medios de Pago</div>
-          <div class="rc-item"        id="cob-mi-periodos"    onclick="showCobCatalog('cob-periodos')">Periodicidades</div>
+          <div class="rc-item"        id="cob-mi-medios"        onclick="showCobCatalog('cob-medios')">Medios de Pago</div>
+          <div class="rc-item"        id="cob-mi-periodos"      onclick="showCobCatalog('cob-periodos')">Periodicidades</div>
+          <div class="rc-item"        id="cob-mi-tasas"         onclick="showCobCatalog('cob-tasas')">Tasas de Recargo</div>
+          <div class="rc-item"        id="cob-mi-plantillas"    onclick="showCobCatalog('cob-plantillas')">Plantillas de Mensaje</div>
         </div>
 
         <!-- ══ PANELES DERECHO ══ -->
@@ -4222,6 +4228,421 @@
             </div>
           </div>
 
+          <!-- ── Recordatorios ── -->
+          <div id="cob-recordatorios" class="cob-panel" style="display:none">
+            <div class="page-header" style="margin-bottom:16px">
+              <div><h2>🔔 Gestión de Recordatorios</h2><p>Seguimiento de cobros pendientes — acciones por canal</p></div>
+              <div style="display:flex;gap:8px">
+                <button class="btn btn-outline" onclick="openModal('modal-recordatorio-manual')">+ Recordatorio manual</button>
+                <button class="btn btn-primary" onclick="alert('⚡ Proceso ejecutado:\n• 3 emails enviados\n• 2 WhatsApp programados\n• 1 llamada agendada')">⚡ Ejecutar proceso</button>
+              </div>
+            </div>
+
+            <!-- KPIs recordatorios -->
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">
+              <div class="card" style="padding:14px;border-left:3px solid var(--warning)">
+                <div style="font-size:22px;font-weight:700;color:var(--warning)">6</div>
+                <div style="font-size:11px;color:var(--muted);margin-top:2px">PENDIENTES DE ENVÍO</div>
+              </div>
+              <div class="card" style="padding:14px;border-left:3px solid var(--accent)">
+                <div style="font-size:22px;font-weight:700;color:var(--accent)">12</div>
+                <div style="font-size:11px;color:var(--muted);margin-top:2px">ENVIADOS ESTE MES</div>
+              </div>
+              <div class="card" style="padding:14px;border-left:3px solid var(--success)">
+                <div style="font-size:22px;font-weight:700;color:var(--success)">4</div>
+                <div style="font-size:11px;color:var(--muted);margin-top:2px">CUOTAS REGULARIZADAS</div>
+              </div>
+              <div class="card" style="padding:14px;border-left:3px solid var(--danger)">
+                <div style="font-size:22px;font-weight:700;color:var(--danger)">2</div>
+                <div style="font-size:11px;color:var(--muted);margin-top:2px">SIN RESPUESTA +15 DÍAS</div>
+              </div>
+            </div>
+
+            <!-- Cola de recordatorios pendientes -->
+            <div class="card" style="margin-bottom:16px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0">Cola de Recordatorios Pendientes</h3><p style="font-size:12px;color:var(--muted);margin:0">Acciones programadas por la regla de avisos automáticos</p></div>
+                <div style="display:flex;gap:8px">
+                  <select class="btn btn-outline" style="font-size:12px">
+                    <option>Todos los canales</option>
+                    <option>Email</option>
+                    <option>WhatsApp</option>
+                    <option>Llamada</option>
+                    <option>Carta</option>
+                  </select>
+                  <select class="btn btn-outline" style="font-size:12px">
+                    <option>Todos</option>
+                    <option>Previo al vencimiento</option>
+                    <option>Vencido</option>
+                    <option>En mora</option>
+                  </select>
+                </div>
+              </div>
+              <table class="tbl">
+                <thead>
+                  <tr><th>Cliente</th><th>Póliza</th><th>Cuota</th><th>Vencimiento</th><th>Días</th><th>Monto</th><th>Canal</th><th>Tipo Aviso</th><th>Estado</th><th></th></tr>
+                </thead>
+                <tbody>
+                  <!-- Previos al vencimiento -->
+                  <tr style="background:#fffbeb">
+                    <td>
+                      <div style="font-weight:600;font-size:13px">Fernández, Carlos</div>
+                      <div style="font-size:11px;color:var(--muted)">carlos.fernandez@email.com</div>
+                    </td>
+                    <td><a onclick="go('polizas')" style="color:var(--accent);cursor:pointer;font-size:12px">POL-00000004</a></td>
+                    <td style="text-align:center">1/2</td>
+                    <td>01/07/2026</td>
+                    <td><span class="badge" style="background:#fef9e7;color:#856404">en 7 días</span></td>
+                    <td>$ 47.500</td>
+                    <td><span style="font-size:18px" title="Email">📧</span></td>
+                    <td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">PRE-VENCIMIENTO</span></td>
+                    <td><span class="badge badge-warning">PENDIENTE</span></td>
+                    <td style="white-space:nowrap">
+                      <button class="btn btn-primary btn-sm" onclick="alert('✅ Email enviado a carlos.fernandez@email.com')">Enviar</button>
+                      <button class="btn btn-outline btn-sm" onclick="openModal('modal-recordatorio-manual')">✏️</button>
+                    </td>
+                  </tr>
+                  <!-- Día del vencimiento -->
+                  <tr style="background:#fff8e1">
+                    <td>
+                      <div style="font-weight:600;font-size:13px">García, Juan Manuel</div>
+                      <div style="font-size:11px;color:var(--muted)">+54 9 11 4444-5555</div>
+                    </td>
+                    <td><a onclick="go('polizas')" style="color:var(--accent);cursor:pointer;font-size:12px">POL-00000001</a></td>
+                    <td style="text-align:center">6/12</td>
+                    <td>01/07/2026</td>
+                    <td><span class="badge" style="background:#fef9e7;color:#856404">en 7 días</span></td>
+                    <td>$ 7.000</td>
+                    <td><span style="font-size:18px" title="WhatsApp">💬</span></td>
+                    <td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">PRE-VENCIMIENTO</span></td>
+                    <td><span class="badge badge-warning">PENDIENTE</span></td>
+                    <td style="white-space:nowrap">
+                      <button class="btn btn-primary btn-sm" onclick="alert('✅ WhatsApp enviado a +54 9 11 4444-5555')">Enviar</button>
+                      <button class="btn btn-outline btn-sm">✏️</button>
+                    </td>
+                  </tr>
+                  <!-- Vencidos en mora -->
+                  <tr style="background:#fff5f5">
+                    <td>
+                      <div style="font-weight:600;font-size:13px">García, Juan Manuel</div>
+                      <div style="font-size:11px;color:var(--muted)">+54 9 11 4444-5555</div>
+                    </td>
+                    <td><a onclick="go('polizas')" style="color:var(--accent);cursor:pointer;font-size:12px">POL-00000001</a></td>
+                    <td style="text-align:center">5/12</td>
+                    <td>01/06/2026</td>
+                    <td><span class="badge badge-danger">23 días vencida</span></td>
+                    <td><strong style="color:var(--danger)">$ 7.700</strong></td>
+                    <td><span style="font-size:18px" title="Llamada">📞</span></td>
+                    <td><span class="badge badge-danger">MORA 2°AVISO</span></td>
+                    <td><span class="badge badge-warning">PENDIENTE</span></td>
+                    <td style="white-space:nowrap">
+                      <button class="btn btn-primary btn-sm" onclick="openModal('modal-gestionar-llamada')">Gestionar</button>
+                      <button class="btn btn-outline btn-sm">✏️</button>
+                    </td>
+                  </tr>
+                  <tr style="background:#fff5f5">
+                    <td>
+                      <div style="font-weight:600;font-size:13px">Rodríguez, María Elena</div>
+                      <div style="font-size:11px;color:var(--muted)">mrodriguez@gmail.com</div>
+                    </td>
+                    <td><a onclick="go('polizas')" style="color:var(--accent);cursor:pointer;font-size:12px">POL-00000003</a></td>
+                    <td style="text-align:center">2/12</td>
+                    <td>01/05/2026</td>
+                    <td><span class="badge badge-danger">54 días vencida</span></td>
+                    <td><strong style="color:var(--danger)">$ 4.212</strong></td>
+                    <td><span style="font-size:18px" title="Carta documento">📄</span></td>
+                    <td><span class="badge badge-danger">MORA 3°AVISO</span></td>
+                    <td><span class="badge" style="background:#f8d7da;color:#721c24">CRÍTICO</span></td>
+                    <td style="white-space:nowrap">
+                      <button class="btn btn-primary btn-sm" onclick="openModal('modal-gestionar-llamada')">Gestionar</button>
+                      <button class="btn btn-outline btn-sm">✏️</button>
+                    </td>
+                  </tr>
+                  <!-- Enviados recientemente -->
+                  <tr style="opacity:.7">
+                    <td>
+                      <div style="font-weight:600;font-size:13px">López S.A.</div>
+                      <div style="font-size:11px;color:var(--muted)">finanzas@lopez.com.ar</div>
+                    </td>
+                    <td><span style="font-size:12px;color:var(--muted)">POL-00000002</span></td>
+                    <td style="text-align:center">4/4</td>
+                    <td>15/04/2026</td>
+                    <td><span class="badge" style="background:#d4f5e2;color:#1a7a45">pagado</span></td>
+                    <td style="text-decoration:line-through;color:var(--muted)">$ 55.000</td>
+                    <td><span style="font-size:18px">📧</span></td>
+                    <td><span style="font-size:12px;color:var(--muted)">PRE-VENCIMIENTO</span></td>
+                    <td><span class="badge badge-success">ENVIADO</span></td>
+                    <td><button class="btn btn-outline btn-sm" disabled>Ver</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Historial de gestiones -->
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <h3 style="margin:0">Historial de Gestiones</h3>
+                <select class="btn btn-outline" style="font-size:12px"><option>Últimos 30 días</option><option>Últimos 60 días</option><option>Último trimestre</option></select>
+              </div>
+              <table class="tbl">
+                <thead><tr><th>Fecha</th><th>Cliente</th><th>Canal</th><th>Detalle</th><th>Resultado</th><th>Usuario</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td style="font-size:12px;white-space:nowrap">20/06/2026 10:14</td>
+                    <td>García, Juan Manuel</td>
+                    <td><span style="font-size:16px">📞</span> Llamada</td>
+                    <td style="font-size:12px">1° aviso mora cuota 5 · POL-00000001</td>
+                    <td><span class="badge" style="background:#d4f5e2;color:#1a7a45">CONTACTADO</span></td>
+                    <td style="font-size:12px;color:var(--muted)">admin</td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:12px;white-space:nowrap">15/06/2026 09:00</td>
+                    <td>García, Juan Manuel</td>
+                    <td><span style="font-size:16px">💬</span> WhatsApp</td>
+                    <td style="font-size:12px">Aviso automático vencimiento cuota 5</td>
+                    <td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">ENTREGADO</span></td>
+                    <td style="font-size:12px;color:var(--muted)">sistema</td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:12px;white-space:nowrap">10/06/2026 08:00</td>
+                    <td>Rodríguez, María Elena</td>
+                    <td><span style="font-size:16px">📧</span> Email</td>
+                    <td style="font-size:12px">2° aviso mora cuota 2 · POL-00000003</td>
+                    <td><span class="badge badge-danger">SIN RESPUESTA</span></td>
+                    <td style="font-size:12px;color:var(--muted)">sistema</td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:12px;white-space:nowrap">01/06/2026 08:00</td>
+                    <td>Rodríguez, María Elena</td>
+                    <td><span style="font-size:16px">📧</span> Email</td>
+                    <td style="font-size:12px">1° aviso mora cuota 2 · POL-00000003</td>
+                    <td><span class="badge badge-danger">SIN RESPUESTA</span></td>
+                    <td style="font-size:12px;color:var(--muted)">sistema</td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:12px;white-space:nowrap">25/05/2026 11:30</td>
+                    <td>López S.A.</td>
+                    <td><span style="font-size:16px">📧</span> Email</td>
+                    <td style="font-size:12px">Pre-aviso vencimiento cuota 4 · POL-00000002</td>
+                    <td><span class="badge badge-success">COBRADO</span></td>
+                    <td style="font-size:12px;color:var(--muted)">sistema</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- ── Reglas de Aviso ── -->
+          <div id="cob-reglas" class="cob-panel" style="display:none">
+            <div class="card" style="margin-bottom:16px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0">Reglas de Aviso Automático</h3><p style="font-size:12px;color:var(--muted);margin:0">Define cuándo y por qué canal se envía cada recordatorio</p></div>
+                <button class="btn btn-primary btn-sm" onclick="openModal('modal-nueva-regla')">+ Nueva Regla</button>
+              </div>
+              <table class="tbl">
+                <thead><tr><th>Nombre</th><th>Momento</th><th>Canal</th><th>Plantilla</th><th>Prioridad</th><th>Activa</th><th></th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td style="font-weight:600">Pre-vencimiento 7 días</td>
+                    <td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">7 días ANTES</span></td>
+                    <td><span style="font-size:15px">📧</span> Email</td>
+                    <td style="font-size:12px">aviso_previo_7d</td>
+                    <td style="text-align:center">1</td>
+                    <td><span class="badge badge-success">Sí</span></td>
+                    <td><button class="btn btn-outline btn-sm">✏️</button></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">Pre-vencimiento 2 días</td>
+                    <td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">2 días ANTES</span></td>
+                    <td><span style="font-size:15px">💬</span> WhatsApp</td>
+                    <td style="font-size:12px">aviso_previo_2d</td>
+                    <td style="text-align:center">2</td>
+                    <td><span class="badge badge-success">Sí</span></td>
+                    <td><button class="btn btn-outline btn-sm">✏️</button></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">Día de vencimiento</td>
+                    <td><span class="badge" style="background:#fef9e7;color:#856404">DÍA DE VTO</span></td>
+                    <td><span style="font-size:15px">💬</span> WhatsApp + <span style="font-size:15px">📧</span> Email</td>
+                    <td style="font-size:12px">aviso_vencimiento</td>
+                    <td style="text-align:center">3</td>
+                    <td><span class="badge badge-success">Sí</span></td>
+                    <td><button class="btn btn-outline btn-sm">✏️</button></td>
+                  </tr>
+                  <tr style="background:#fff8e1">
+                    <td style="font-weight:600">1° Aviso mora</td>
+                    <td><span class="badge badge-warning">5 días DESPUÉS</span></td>
+                    <td><span style="font-size:15px">📧</span> Email + <span style="font-size:15px">💬</span> WhatsApp</td>
+                    <td style="font-size:12px">mora_aviso_1</td>
+                    <td style="text-align:center">4</td>
+                    <td><span class="badge badge-success">Sí</span></td>
+                    <td><button class="btn btn-outline btn-sm">✏️</button></td>
+                  </tr>
+                  <tr style="background:#fff8e1">
+                    <td style="font-weight:600">2° Aviso mora</td>
+                    <td><span class="badge badge-warning">15 días DESPUÉS</span></td>
+                    <td><span style="font-size:15px">📞</span> Llamada</td>
+                    <td style="font-size:12px">mora_aviso_2</td>
+                    <td style="text-align:center">5</td>
+                    <td><span class="badge badge-success">Sí</span></td>
+                    <td><button class="btn btn-outline btn-sm">✏️</button></td>
+                  </tr>
+                  <tr style="background:#fff5f5">
+                    <td style="font-weight:600">3° Aviso mora — Carta doc.</td>
+                    <td><span class="badge badge-danger">30 días DESPUÉS</span></td>
+                    <td><span style="font-size:15px">📄</span> Carta documento</td>
+                    <td style="font-size:12px">mora_aviso_3_carta</td>
+                    <td style="text-align:center">6</td>
+                    <td><span class="badge badge-success">Sí</span></td>
+                    <td><button class="btn btn-outline btn-sm">✏️</button></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600;color:var(--muted)">Baja por impago</td>
+                    <td><span class="badge badge-danger">60 días DESPUÉS</span></td>
+                    <td><span style="font-size:15px">📄</span> Carta documento</td>
+                    <td style="font-size:12px">baja_impago</td>
+                    <td style="text-align:center">7</td>
+                    <td><span class="badge" style="background:#eee;color:#666">No</span></td>
+                    <td><button class="btn btn-outline btn-sm">✏️</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Flujo visual del proceso -->
+            <div class="card">
+              <h3 style="margin-bottom:14px">Flujo del Proceso de Cobranza</h3>
+              <div style="display:flex;align-items:center;gap:0;overflow-x:auto;padding-bottom:8px">
+                <div style="text-align:center;min-width:110px">
+                  <div style="background:#e8f4fd;border:2px solid var(--accent);border-radius:8px;padding:10px 8px;font-size:11px;font-weight:600;color:var(--accent)">📧 Email<br>−7 días</div>
+                </div>
+                <div style="flex:1;height:2px;background:var(--accent);min-width:20px"></div>
+                <div style="text-align:center;min-width:110px">
+                  <div style="background:#e8f4fd;border:2px solid var(--accent);border-radius:8px;padding:10px 8px;font-size:11px;font-weight:600;color:var(--accent)">💬 WApp<br>−2 días</div>
+                </div>
+                <div style="flex:1;height:2px;background:var(--warning);min-width:20px"></div>
+                <div style="text-align:center;min-width:110px">
+                  <div style="background:#fff8e1;border:2px solid var(--warning);border-radius:8px;padding:10px 8px;font-size:11px;font-weight:600;color:#856404">📧💬<br>Vencimiento</div>
+                  <div style="font-size:10px;color:var(--muted);margin-top:4px">DÍA 0</div>
+                </div>
+                <div style="flex:1;height:2px;background:var(--warning);min-width:20px"></div>
+                <div style="text-align:center;min-width:110px">
+                  <div style="background:#fff8e1;border:2px solid var(--warning);border-radius:8px;padding:10px 8px;font-size:11px;font-weight:600;color:#856404">📧💬<br>1° Mora</div>
+                  <div style="font-size:10px;color:var(--muted);margin-top:4px">+5 días</div>
+                </div>
+                <div style="flex:1;height:2px;background:var(--danger);min-width:20px"></div>
+                <div style="text-align:center;min-width:110px">
+                  <div style="background:#fff5f5;border:2px solid var(--danger);border-radius:8px;padding:10px 8px;font-size:11px;font-weight:600;color:var(--danger)">📞 Llamada<br>2° Mora</div>
+                  <div style="font-size:10px;color:var(--muted);margin-top:4px">+15 días</div>
+                </div>
+                <div style="flex:1;height:2px;background:var(--danger);min-width:20px"></div>
+                <div style="text-align:center;min-width:110px">
+                  <div style="background:#fff5f5;border:2px solid var(--danger);border-radius:8px;padding:10px 8px;font-size:11px;font-weight:600;color:var(--danger)">📄 Carta<br>3° Mora</div>
+                  <div style="font-size:10px;color:var(--muted);margin-top:4px">+30 días</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Tasas de Recargo ── -->
+          <div id="cob-tasas" class="cob-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0">Tasas de Recargo por Mora</h3><p style="font-size:12px;color:var(--muted);margin:0">Aplicadas automáticamente al procesar vencimientos</p></div>
+                <button class="btn btn-primary btn-sm">+ Nueva Tasa</button>
+              </div>
+              <table class="tbl">
+                <thead><tr><th>Ramo</th><th>% Mensual</th><th>Días de gracia</th><th>Tope máximo</th><th>Vigente desde</th><th>Activa</th><th></th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td>Todos los ramos (general)</td>
+                    <td style="text-align:center;font-weight:700;color:var(--danger)">3,00%</td>
+                    <td style="text-align:center">3 días</td>
+                    <td style="text-align:center">15%</td>
+                    <td>01/01/2026</td>
+                    <td><span class="badge badge-success">Sí</span></td>
+                    <td><button class="btn btn-outline btn-sm">✏️</button></td>
+                  </tr>
+                  <tr>
+                    <td>Automotores</td>
+                    <td style="text-align:center;font-weight:700;color:var(--warning)">2,50%</td>
+                    <td style="text-align:center">5 días</td>
+                    <td style="text-align:center">12%</td>
+                    <td>01/01/2026</td>
+                    <td><span class="badge badge-success">Sí</span></td>
+                    <td><button class="btn btn-outline btn-sm">✏️</button></td>
+                  </tr>
+                  <tr>
+                    <td>Vida / Accidentes Personales</td>
+                    <td style="text-align:center;font-weight:700;color:var(--warning)">2,00%</td>
+                    <td style="text-align:center">10 días</td>
+                    <td style="text-align:center">10%</td>
+                    <td>01/01/2026</td>
+                    <td><span class="badge badge-success">Sí</span></td>
+                    <td><button class="btn btn-outline btn-sm">✏️</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- ── Plantillas de Mensaje ── -->
+          <div id="cob-plantillas" class="cob-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0">Plantillas de Mensaje</h3><p style="font-size:12px;color:var(--muted);margin:0">Variables disponibles: {{cliente}}, {{poliza}}, {{cuota}}, {{monto}}, {{vencimiento}}, {{empresa}}</p></div>
+                <button class="btn btn-primary btn-sm">+ Nueva Plantilla</button>
+              </div>
+              <table class="tbl">
+                <thead><tr><th>Código</th><th>Nombre</th><th>Canal</th><th>Asunto / Vista previa</th><th></th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td style="font-size:12px;font-family:monospace">aviso_previo_7d</td>
+                    <td>Pre-vencimiento 7 días</td>
+                    <td><span style="font-size:14px">📧</span> Email</td>
+                    <td style="font-size:12px;color:var(--muted)">«Recordatorio de pago — su cuota vence en 7 días»</td>
+                    <td><button class="btn btn-outline btn-sm" onclick="openModal('modal-ver-plantilla')">Ver</button></td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:12px;font-family:monospace">aviso_previo_2d</td>
+                    <td>Pre-vencimiento 2 días</td>
+                    <td><span style="font-size:14px">💬</span> WhatsApp</td>
+                    <td style="font-size:12px;color:var(--muted)">«Hola {{cliente}}, su cuota N°{{cuota}} de {{monto}} vence el {{vencimiento}}.»</td>
+                    <td><button class="btn btn-outline btn-sm" onclick="openModal('modal-ver-plantilla')">Ver</button></td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:12px;font-family:monospace">aviso_vencimiento</td>
+                    <td>Día de vencimiento</td>
+                    <td><span style="font-size:14px">📧</span>+<span style="font-size:14px">💬</span></td>
+                    <td style="font-size:12px;color:var(--muted)">«Su cuota {{poliza}} vence HOY — evite recargos pagando hoy mismo.»</td>
+                    <td><button class="btn btn-outline btn-sm" onclick="openModal('modal-ver-plantilla')">Ver</button></td>
+                  </tr>
+                  <tr style="background:#fff8e1">
+                    <td style="font-size:12px;font-family:monospace">mora_aviso_1</td>
+                    <td>1° Aviso mora</td>
+                    <td><span style="font-size:14px">📧</span>+<span style="font-size:14px">💬</span></td>
+                    <td style="font-size:12px;color:var(--muted)">«Estimado {{cliente}}, su cuota se encuentra impaga. Por favor regularice...»</td>
+                    <td><button class="btn btn-outline btn-sm" onclick="openModal('modal-ver-plantilla')">Ver</button></td>
+                  </tr>
+                  <tr style="background:#fff8e1">
+                    <td style="font-size:12px;font-family:monospace">mora_aviso_2</td>
+                    <td>2° Aviso mora — Llamada</td>
+                    <td><span style="font-size:14px">📞</span> Guión</td>
+                    <td style="font-size:12px;color:var(--muted)">«Buenos días, llamo de {{empresa}}. Hablamos con {{cliente}}? Tenemos un saldo pendiente...»</td>
+                    <td><button class="btn btn-outline btn-sm" onclick="openModal('modal-ver-plantilla')">Ver</button></td>
+                  </tr>
+                  <tr style="background:#fff5f5">
+                    <td style="font-size:12px;font-family:monospace">mora_aviso_3_carta</td>
+                    <td>3° Aviso mora — Carta</td>
+                    <td><span style="font-size:14px">📄</span> Carta doc.</td>
+                    <td style="font-size:12px;color:var(--muted)">«Por la presente le notificamos el incumplimiento de pago y la intimación formal...»</td>
+                    <td><button class="btn btn-outline btn-sm" onclick="openModal('modal-ver-plantilla')">Ver</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <!-- ── Medios de Pago ── -->
           <div id="cob-medios" class="cob-panel" style="display:none">
             <div class="card">
@@ -4411,6 +4832,201 @@
       </div>
     </div>
 
+    <!-- Modal: Gestionar Llamada / Acción de cobranza -->
+    <div id="modal-gestionar-llamada" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-gestionar-llamada')">
+      <div class="modal-box" style="max-width:500px">
+        <div class="modal-header"><h3>📞 Gestionar Acción de Cobranza</h3><button class="modal-close" onclick="closeModal('modal-gestionar-llamada')">✕</button></div>
+        <div class="modal-body">
+          <div style="background:var(--light);border-radius:8px;padding:12px;margin-bottom:14px;font-size:13px">
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Cliente:</span><strong>García, Juan Manuel</strong></div>
+            <div style="display:flex;justify-content:space-between;margin-top:4px"><span style="color:var(--muted)">Póliza:</span><strong>POL-00000001</strong></div>
+            <div style="display:flex;justify-content:space-between;margin-top:4px"><span style="color:var(--muted)">Cuota:</span><strong>5/12 — Vto. 01/06/2026</strong></div>
+            <div style="display:flex;justify-content:space-between;margin-top:4px"><span style="color:var(--muted)">Saldo c/recargo:</span><strong style="color:var(--danger)">$ 7.700</strong></div>
+            <div style="display:flex;justify-content:space-between;margin-top:4px"><span style="color:var(--muted)">Días en mora:</span><strong style="color:var(--danger)">23 días</strong></div>
+          </div>
+          <div style="display:grid;gap:12px">
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">CANAL DE GESTIÓN</label>
+              <div style="display:flex;gap:8px;margin-top:6px">
+                <button id="gc-email" class="btn btn-outline btn-sm" style="flex:1" onclick="selectGC('email')">📧 Email</button>
+                <button id="gc-wapp" class="btn btn-outline btn-sm" style="flex:1" onclick="selectGC('wapp')">💬 WhatsApp</button>
+                <button id="gc-call" class="btn btn-primary btn-sm" style="flex:1" onclick="selectGC('call')">📞 Llamada</button>
+                <button id="gc-carta" class="btn btn-outline btn-sm" style="flex:1" onclick="selectGC('carta')">📄 Carta</button>
+              </div>
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">RESULTADO DE LA GESTIÓN</label>
+              <select style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+                <option value="">— Seleccionar —</option>
+                <option>Contactado — prometió pago</option>
+                <option>Contactado — no puede pagar ahora</option>
+                <option>Contactado — solicitó refinanciamiento</option>
+                <option>No atendió — se dejó mensaje</option>
+                <option>Número incorrecto</option>
+                <option>Sin respuesta</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">FECHA COMPROMISO DE PAGO</label>
+              <input type="date" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">OBSERVACIONES</label>
+              <textarea rows="3" placeholder="Notas de la gestión..." style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px;resize:vertical"></textarea>
+            </div>
+            <div style="background:#e8f4fd;border-radius:6px;padding:10px;font-size:12px;color:#1a6fa0">
+              💡 Si el cliente acordó pagar, podés registrar el cobro directamente desde <strong>Cuotas</strong>.
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" onclick="closeModal('modal-gestionar-llamada')">Cancelar</button>
+          <button class="btn btn-primary" onclick="closeModal('modal-gestionar-llamada');alert('✅ Gestión registrada en el historial.')">Guardar Gestión</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Recordatorio Manual -->
+    <div id="modal-recordatorio-manual" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-recordatorio-manual')">
+      <div class="modal-box" style="max-width:460px">
+        <div class="modal-header"><h3>+ Recordatorio Manual</h3><button class="modal-close" onclick="closeModal('modal-recordatorio-manual')">✕</button></div>
+        <div class="modal-body">
+          <div style="display:grid;gap:12px">
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">CUOTA / CUPONERA</label>
+              <select style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+                <option>POL-00000001 · García — Cuota 6 · Vto. 01/07/2026 · $ 7.000</option>
+                <option>POL-00000004 · Fernández — Cuota 1 · Vto. 01/07/2026 · $ 47.500</option>
+                <option>POL-00000003 · Rodríguez — Cuota 2 · Vto. 01/05/2026 · $ 4.212</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">CANAL</label>
+              <select style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+                <option>📧 Email</option>
+                <option>💬 WhatsApp</option>
+                <option>📞 Llamada telefónica</option>
+                <option>📄 Carta documento</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">PLANTILLA</label>
+              <select style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+                <option>aviso_previo_7d — Pre-vencimiento 7 días</option>
+                <option>aviso_previo_2d — Pre-vencimiento 2 días</option>
+                <option>mora_aviso_1 — 1° Aviso mora</option>
+                <option>mora_aviso_2 — 2° Aviso mora</option>
+                <option>Personalizado (editar abajo)</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">PROGRAMAR ENVÍO</label>
+              <div style="display:flex;gap:8px;margin-top:4px">
+                <input type="date" value="2026-06-25" style="flex:1;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px">
+                <input type="time" value="09:00" style="width:100px;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" onclick="closeModal('modal-recordatorio-manual')">Cancelar</button>
+          <button class="btn btn-outline" onclick="closeModal('modal-recordatorio-manual');alert('📧 Vista previa enviada a su email.')">Vista previa</button>
+          <button class="btn btn-primary" onclick="closeModal('modal-recordatorio-manual');alert('✅ Recordatorio programado para 25/06/2026 09:00.')">Programar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Nueva Regla de Aviso -->
+    <div id="modal-nueva-regla" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-nueva-regla')">
+      <div class="modal-box" style="max-width:460px">
+        <div class="modal-header"><h3>+ Nueva Regla de Aviso</h3><button class="modal-close" onclick="closeModal('modal-nueva-regla')">✕</button></div>
+        <div class="modal-body">
+          <div style="display:grid;gap:12px">
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">NOMBRE DE LA REGLA</label>
+              <input type="text" placeholder="Ej: 4° Aviso mora — SMS" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div>
+                <label style="font-size:12px;font-weight:600;color:var(--muted)">MOMENTO</label>
+                <select style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+                  <option>ANTES del vencimiento</option>
+                  <option>DÍA del vencimiento</option>
+                  <option>DESPUÉS del vencimiento</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size:12px;font-weight:600;color:var(--muted)">DÍAS</label>
+                <input type="number" value="45" min="1" max="365" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+              </div>
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">CANAL</label>
+              <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox"> 📧 Email</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox" checked> 💬 WhatsApp</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox"> 📞 Llamada</label>
+                <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer"><input type="checkbox"> 📄 Carta doc.</label>
+              </div>
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">PLANTILLA</label>
+              <select style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+                <option>mora_aviso_2 — 2° Aviso mora</option>
+                <option>mora_aviso_3_carta — 3° Aviso mora</option>
+                <option>aviso_previo_7d — Pre-vencimiento</option>
+              </select>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div>
+                <label style="font-size:12px;font-weight:600;color:var(--muted)">PRIORIDAD</label>
+                <input type="number" value="8" min="1" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+              </div>
+              <div style="display:flex;align-items:flex-end;padding-bottom:2px">
+                <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+                  <input type="checkbox" checked> Activar regla inmediatamente
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" onclick="closeModal('modal-nueva-regla')">Cancelar</button>
+          <button class="btn btn-primary" onclick="closeModal('modal-nueva-regla');alert('✅ Regla creada y activa.')">Guardar Regla</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Ver Plantilla -->
+    <div id="modal-ver-plantilla" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-ver-plantilla')">
+      <div class="modal-box" style="max-width:520px">
+        <div class="modal-header"><h3>📧 Plantilla: aviso_previo_7d</h3><button class="modal-close" onclick="closeModal('modal-ver-plantilla')">✕</button></div>
+        <div class="modal-body">
+          <div style="margin-bottom:10px;font-size:12px;color:var(--muted)">ASUNTO</div>
+          <div style="border:1px solid var(--border);border-radius:6px;padding:10px;font-size:13px;margin-bottom:14px;background:#f8f9fa">
+            Recordatorio de pago — Póliza {{poliza}} vence en 7 días
+          </div>
+          <div style="margin-bottom:10px;font-size:12px;color:var(--muted)">CUERPO DEL MENSAJE</div>
+          <div style="border:1px solid var(--border);border-radius:6px;padding:14px;font-size:13px;line-height:1.7;background:#fff">
+            <p>Estimado/a <strong>{{cliente}}</strong>,</p>
+            <p>Le recordamos que su cuota N° <strong>{{cuota}}</strong> correspondiente a la póliza <strong>{{poliza}}</strong> vencerá el <strong>{{vencimiento}}</strong>.</p>
+            <p><strong>Monto a abonar: {{monto}}</strong></p>
+            <p>Para realizar su pago puede utilizar cualquiera de los medios habilitados: transferencia bancaria, débito automático, efectivo en nuestras oficinas o tarjeta de crédito.</p>
+            <p>Si ya realizó el pago, por favor ignore este mensaje.</p>
+            <p style="color:var(--muted);font-size:12px">— {{empresa}} · Sector Cobranzas</p>
+          </div>
+          <div style="margin-top:14px;padding:10px;background:#e8f4fd;border-radius:6px;font-size:12px;color:#1a6fa0">
+            Vista previa con datos reales: <strong>García, Juan Manuel · POL-00000001 · Cuota 6 · 01/07/2026 · $ 7.000</strong>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" onclick="closeModal('modal-ver-plantilla')">Cerrar</button>
+          <button class="btn btn-outline" onclick="closeModal('modal-ver-plantilla');alert('📧 Vista previa enviada a su email.')">Enviar prueba</button>
+          <button class="btn btn-primary" onclick="closeModal('modal-ver-plantilla')">Editar plantilla</button>
+        </div>
+      </div>
+    </div>
+
 <script>
   const titles = {
     dashboard: 'Dashboard', ramos: 'Ramos', productos: 'Productos',
@@ -4480,7 +5096,7 @@
   }
 
   // COBRANZA catalog
-  const cobPanelIds = ['cob-cuponeras','cob-cuotas','cob-recibos','cob-estado','cob-mora','cob-comisiones','cob-endosos','cob-medios','cob-periodos'];
+  const cobPanelIds = ['cob-cuponeras','cob-cuotas','cob-recibos','cob-estado','cob-mora','cob-comisiones','cob-endosos','cob-recordatorios','cob-reglas','cob-medios','cob-periodos','cob-tasas','cob-plantillas'];
   function showCobCatalog(panelId) {
     cobPanelIds.forEach(id => { const el = document.getElementById(id); if(el) el.style.display='none'; });
     document.querySelectorAll('#page-cobranza .rc-item').forEach(i => i.classList.remove('active'));
@@ -4488,6 +5104,15 @@
     if (panel) panel.style.display = 'block';
     const mi = document.getElementById('cob-mi-' + panelId.replace('cob-',''));
     if (mi) mi.classList.add('active');
+  }
+
+  function selectGC(canal) {
+    ['email','wapp','call','carta'].forEach(c => {
+      const el = document.getElementById('gc-'+c);
+      if (el) { el.className = 'btn btn-outline btn-sm'; el.style.flex='1'; }
+    });
+    const sel = document.getElementById('gc-'+canal);
+    if (sel) { sel.className = 'btn btn-primary btn-sm'; sel.style.flex='1'; }
   }
 
   function calcCuotas() {
