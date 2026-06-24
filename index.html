@@ -3800,6 +3800,8 @@
           <div class="rc-group-hdr">📊 SEGUIMIENTO</div>
           <div class="rc-item"        id="cob-mi-estado"      onclick="showCobCatalog('cob-estado')">Estado de Cuenta</div>
           <div class="rc-item"        id="cob-mi-mora"        onclick="showCobCatalog('cob-mora')">Cuotas en Mora</div>
+          <div class="rc-item"        id="cob-mi-comisiones"  onclick="showCobCatalog('cob-comisiones')">Comisiones</div>
+          <div class="rc-item"        id="cob-mi-endosos"     onclick="showCobCatalog('cob-endosos')">Ajustes por Endoso</div>
 
           <div class="rc-group-hdr">⚙️ CONFIGURACIÓN</div>
           <div class="rc-item"        id="cob-mi-medios"      onclick="showCobCatalog('cob-medios')">Medios de Pago</div>
@@ -3829,57 +3831,73 @@
                 </div>
               </div>
               <table class="tbl">
-                <thead><tr><th>Póliza</th><th>Cliente</th><th>Periodicidad</th><th>Cuotas</th><th>Monto Total</th><th>Cuotas Pagas</th><th>Estado</th><th>Acc.</th></tr></thead>
+                <thead><tr><th>Póliza</th><th>Cliente</th><th>Agente</th><th>Comisión</th><th>Periodicidad</th><th>Cuotas</th><th>Monto Total</th><th>Pagas</th><th>Estado</th><th></th></tr></thead>
                 <tbody>
                   <tr>
-                    <td style="font-weight:600">POL-00000001</td>
+                    <td><a onclick="go('polizas')" style="color:var(--accent);cursor:pointer;font-weight:600">POL-00000001</a></td>
                     <td>García, Juan Manuel</td>
+                    <td style="font-size:12px">Martínez, Pedro</td>
+                    <td style="text-align:center"><span class="badge" style="background:#fef9e7;color:#856404">10%</span></td>
                     <td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">MENSUAL</span></td>
                     <td style="text-align:center">12</td>
                     <td>$ 84.000</td>
                     <td><span style="color:var(--success);font-weight:600">4 / 12</span></td>
                     <td><span class="badge badge-success">ACTIVA</span></td>
-                    <td><button class="btn btn-outline btn-sm" onclick="showCobCatalog('cob-cuotas')">Ver cuotas</button></td>
+                    <td style="white-space:nowrap">
+                      <button class="btn btn-outline btn-sm" onclick="showCobCatalog('cob-cuotas')" title="Ver cuotas">📋</button>
+                      <button class="btn btn-outline btn-sm" onclick="showCobCatalog('cob-comisiones')" title="Ver comisiones">💼</button>
+                    </td>
                   </tr>
                   <tr>
-                    <td style="font-weight:600">POL-00000002</td>
+                    <td><a onclick="go('polizas')" style="color:var(--accent);cursor:pointer;font-weight:600">POL-00000002</a></td>
                     <td>López S.A.</td>
+                    <td style="font-size:12px">Gómez, Laura</td>
+                    <td style="text-align:center"><span class="badge" style="background:#fef9e7;color:#856404">12%</span></td>
                     <td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">TRIMESTRAL</span></td>
                     <td style="text-align:center">4</td>
                     <td>$ 220.000</td>
                     <td><span style="color:var(--success);font-weight:600">4 / 4</span></td>
                     <td><span class="badge" style="background:#d4f5e2;color:#1a7a45">FINALIZADA</span></td>
-                    <td><button class="btn btn-outline btn-sm">Ver cuotas</button></td>
+                    <td><button class="btn btn-outline btn-sm" title="Ver cuotas">📋</button></td>
                   </tr>
                   <tr>
-                    <td style="font-weight:600">POL-00000003</td>
+                    <td><a onclick="go('polizas')" style="color:var(--accent);cursor:pointer;font-weight:600">POL-00000003</a></td>
                     <td>Rodríguez, María Elena</td>
+                    <td style="font-size:12px">Martínez, Pedro</td>
+                    <td style="text-align:center"><span class="badge" style="background:#fef9e7;color:#856404">10%</span></td>
                     <td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">MENSUAL</span></td>
                     <td style="text-align:center">12</td>
                     <td>$ 48.000</td>
                     <td><span style="color:var(--danger);font-weight:600">1 / 12</span></td>
                     <td><span class="badge badge-success">ACTIVA</span></td>
-                    <td><button class="btn btn-outline btn-sm">Ver cuotas</button></td>
+                    <td style="white-space:nowrap">
+                      <button class="btn btn-outline btn-sm" title="Ver cuotas">📋</button>
+                      <button class="btn btn-outline btn-sm" onclick="showCobCatalog('cob-endosos')" title="Ver ajuste endoso">📝</button>
+                    </td>
                   </tr>
                   <tr>
-                    <td style="font-weight:600">POL-00000004</td>
+                    <td><a onclick="go('polizas')" style="color:var(--accent);cursor:pointer;font-weight:600">POL-00000004</a></td>
                     <td>Fernández, Carlos</td>
+                    <td style="font-size:12px">Díaz, Roberto</td>
+                    <td style="text-align:center"><span class="badge" style="background:#fef9e7;color:#856404">8%</span></td>
                     <td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">SEMESTRAL</span></td>
                     <td style="text-align:center">2</td>
                     <td>$ 95.000</td>
                     <td><span style="color:var(--warning);font-weight:600">0 / 2</span></td>
                     <td><span class="badge badge-warning">ACTIVA</span></td>
-                    <td><button class="btn btn-outline btn-sm">Ver cuotas</button></td>
+                    <td><button class="btn btn-outline btn-sm" title="Ver cuotas">📋</button></td>
                   </tr>
                   <tr>
-                    <td style="font-weight:600">POL-00000005</td>
+                    <td><a onclick="go('polizas')" style="color:var(--accent);cursor:pointer;font-weight:600">POL-00000005</a></td>
                     <td>Tech Solutions S.R.L.</td>
+                    <td style="font-size:12px">Gómez, Laura</td>
+                    <td style="text-align:center"><span class="badge" style="background:#fef9e7;color:#856404">12%</span></td>
                     <td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">ANUAL</span></td>
                     <td style="text-align:center">1</td>
                     <td>$ 340.000</td>
                     <td><span style="color:var(--success);font-weight:600">1 / 1</span></td>
                     <td><span class="badge" style="background:#d4f5e2;color:#1a7a45">FINALIZADA</span></td>
-                    <td><button class="btn btn-outline btn-sm">Ver cuotas</button></td>
+                    <td><button class="btn btn-outline btn-sm" title="Ver cuotas">📋</button></td>
                   </tr>
                 </tbody>
               </table>
@@ -4052,6 +4070,158 @@
             </div>
           </div>
 
+          <!-- ── Comisiones ── -->
+          <div id="cob-comisiones" class="cob-panel" style="display:none">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0">Comisiones de Agentes</h3><p style="font-size:12px;color:var(--muted);margin:0">Generadas automáticamente al registrar cada cobro</p></div>
+                <div style="display:flex;gap:8px">
+                  <select class="btn btn-outline" style="font-size:12px">
+                    <option>Todos los agentes</option>
+                    <option>Martínez, Pedro</option>
+                    <option>Gómez, Laura</option>
+                    <option>Díaz, Roberto</option>
+                  </select>
+                  <select class="btn btn-outline" style="font-size:12px">
+                    <option>Todos los estados</option><option>Pendiente</option><option>Pagada</option><option>Anulada</option>
+                  </select>
+                </div>
+              </div>
+              <table class="tbl">
+                <thead><tr><th>Recibo</th><th>Póliza</th><th>Agente</th><th>% Com.</th><th>Monto Cuota</th><th>Comisión</th><th>Fecha</th><th>Estado</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td><span style="font-weight:600;font-size:12px">REC-00000004</span></td>
+                    <td><a onclick="go('polizas')" style="color:var(--accent);cursor:pointer">POL-00000001</a></td>
+                    <td>Martínez, Pedro</td>
+                    <td style="text-align:center">10%</td>
+                    <td>$ 7.000</td>
+                    <td><strong style="color:var(--success)">$ 700</strong></td>
+                    <td>29/04/2026</td>
+                    <td><span class="badge badge-warning">PENDIENTE</span></td>
+                  </tr>
+                  <tr>
+                    <td><span style="font-weight:600;font-size:12px">REC-00000003</span></td>
+                    <td><a onclick="go('polizas')" style="color:var(--accent);cursor:pointer">POL-00000001</a></td>
+                    <td>Martínez, Pedro</td>
+                    <td style="text-align:center">10%</td>
+                    <td>$ 7.000</td>
+                    <td><strong style="color:var(--success)">$ 700</strong></td>
+                    <td>31/03/2026</td>
+                    <td><span class="badge badge-warning">PENDIENTE</span></td>
+                  </tr>
+                  <tr>
+                    <td><span style="font-weight:600;font-size:12px">REC-00000002</span></td>
+                    <td><a onclick="go('polizas')" style="color:var(--accent);cursor:pointer">POL-00000001</a></td>
+                    <td>Martínez, Pedro</td>
+                    <td style="text-align:center">10%</td>
+                    <td>$ 7.000</td>
+                    <td><strong style="color:var(--success)">$ 700</strong></td>
+                    <td>27/02/2026</td>
+                    <td><span class="badge badge-success">PAGADA</span></td>
+                  </tr>
+                  <tr>
+                    <td><span style="font-weight:600;font-size:12px">REC-00000001</span></td>
+                    <td><a onclick="go('polizas')" style="color:var(--accent);cursor:pointer">POL-00000001</a></td>
+                    <td>Martínez, Pedro</td>
+                    <td style="text-align:center">10%</td>
+                    <td>$ 7.000</td>
+                    <td><strong style="color:var(--success)">$ 700</strong></td>
+                    <td>28/01/2026</td>
+                    <td><span class="badge badge-success">PAGADA</span></td>
+                  </tr>
+                  <tr style="background:#f8f9fa">
+                    <td colspan="8" style="text-align:center;font-size:12px;color:var(--muted);padding:8px">
+                      + 1 comisión ANULADA (REC-00000005 · Rodríguez) · $ 400 anulada
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- Resumen por agente -->
+              <div style="margin-top:16px">
+                <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Resumen por Agente — Junio 2026</div>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+                  <div style="border:1px solid var(--border);border-radius:8px;padding:12px">
+                    <div style="font-weight:600;margin-bottom:6px">Martínez, Pedro</div>
+                    <div style="font-size:12px;color:var(--muted)">Cuotas cobradas: <strong>4</strong></div>
+                    <div style="font-size:12px;color:var(--muted)">Base: <strong>$ 28.000</strong></div>
+                    <div style="font-size:14px;font-weight:700;color:var(--success);margin-top:6px">Comisión: $ 2.800</div>
+                    <div style="font-size:11px;color:var(--muted)">Pagada: $ 1.400 · Pendiente: $ 1.400</div>
+                  </div>
+                  <div style="border:1px solid var(--border);border-radius:8px;padding:12px">
+                    <div style="font-weight:600;margin-bottom:6px">Gómez, Laura</div>
+                    <div style="font-size:12px;color:var(--muted)">Cuotas cobradas: <strong>5</strong></div>
+                    <div style="font-size:12px;color:var(--muted)">Base: <strong>$ 395.000</strong></div>
+                    <div style="font-size:14px;font-weight:700;color:var(--success);margin-top:6px">Comisión: $ 47.400</div>
+                    <div style="font-size:11px;color:var(--muted)">Pagada: $ 47.400 · Pendiente: $ 0</div>
+                  </div>
+                  <div style="border:1px solid var(--border);border-radius:8px;padding:12px">
+                    <div style="font-weight:600;margin-bottom:6px">Díaz, Roberto</div>
+                    <div style="font-size:12px;color:var(--muted)">Cuotas cobradas: <strong>0</strong></div>
+                    <div style="font-size:12px;color:var(--muted)">Base: <strong>$ 0</strong></div>
+                    <div style="font-size:14px;font-weight:700;color:var(--muted);margin-top:6px">Comisión: $ 0</div>
+                    <div style="font-size:11px;color:var(--muted)">Sin cobros este mes</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Ajustes por Endoso ── -->
+          <div id="cob-endosos" class="cob-panel" style="display:none">
+            <div class="card" style="margin-bottom:16px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div><h3 style="margin:0">Ajustes de Cuotas por Endoso</h3><p style="font-size:12px;color:var(--muted);margin:0">Cuando un endoso modifica la prima, las cuotas pendientes se recalculan proporcionalmente</p></div>
+                <button class="btn btn-primary btn-sm" onclick="openModal('modal-ajuste-endoso')">+ Aplicar Endoso</button>
+              </div>
+              <table class="tbl">
+                <thead><tr><th>Movimiento</th><th>Póliza</th><th>Tipo</th><th>Monto Ajuste</th><th>Cuotas Afect.</th><th>Ajuste/Cuota</th><th>Fecha</th><th>Estado</th></tr></thead>
+                <tbody>
+                  <tr style="background:#f0f9ff">
+                    <td><span style="font-weight:600;font-size:12px">MOV-00000003</span></td>
+                    <td><a onclick="go('polizas')" style="color:var(--accent);cursor:pointer">POL-00000003</a></td>
+                    <td><span class="badge" style="background:#e8f4fd;color:#1a6fa0">ENDOSO</span></td>
+                    <td style="color:var(--success);font-weight:600">+ $ 6.600</td>
+                    <td style="text-align:center">11</td>
+                    <td>+ $ 600 / cuota</td>
+                    <td>15/05/2026</td>
+                    <td><span class="badge badge-success">APLICADO</span></td>
+                  </tr>
+                  <tr>
+                    <td colspan="8" style="padding:0">
+                      <div style="background:#f8faff;border-left:3px solid var(--accent);padding:10px 14px;font-size:12px">
+                        <strong>Detalle:</strong> POL-00000003 · Rodrigrez, María Elena · Suma asegurada aumentó de $ 500.000 a $ 560.000 → Prima ajustada en $ 6.600 · Distribuida en 11 cuotas pendientes
+                        <div style="margin-top:6px;display:flex;gap:16px">
+                          <span>Prima anterior: <strong>$ 48.000</strong></span>
+                          <span>Prima nueva: <strong>$ 54.600</strong></span>
+                          <span>Cuota anterior: <strong>$ 4.000</strong></span>
+                          <span>Cuota nueva: <strong>$ 4.600</strong></span>
+                          <span>Comisión agente ajustada: <strong>+ $ 660</strong></span>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Cuotas de POL-00000003 después del endoso -->
+            <div class="card">
+              <h3 style="margin-bottom:12px">Cuotas POL-00000003 · Rodríguez, María Elena <small style="font-weight:400;color:var(--muted)">(post-endoso MOV-00000003)</small></h3>
+              <table class="tbl">
+                <thead><tr><th>#</th><th>Vencimiento</th><th>Monto Orig.</th><th>Ajuste</th><th>Monto Final</th><th>Estado</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>01/04/2026</td><td>$ 4.000</td><td>—</td><td>$ 4.000</td><td><span class="badge badge-success">PAGADA</span></td></tr>
+                  <tr style="background:#f0f9ff"><td>2</td><td>01/05/2026</td><td>$ 4.000</td><td><span style="color:var(--success)">+ $ 600</span></td><td><strong>$ 4.600</strong></td><td><span class="badge badge-danger">VENCIDA</span></td></tr>
+                  <tr style="background:#f0f9ff"><td>3</td><td>01/06/2026</td><td>$ 4.000</td><td><span style="color:var(--success)">+ $ 600</span></td><td><strong>$ 4.600</strong></td><td><span class="badge badge-warning">PENDIENTE</span></td></tr>
+                  <tr style="background:#f0f9ff"><td>4</td><td>01/07/2026</td><td>$ 4.000</td><td><span style="color:var(--success)">+ $ 600</span></td><td><strong>$ 4.600</strong></td><td><span class="badge badge-warning">PENDIENTE</span></td></tr>
+                  <tr style="background:#f0f9ff"><td>5</td><td>01/08/2026</td><td>$ 4.000</td><td><span style="color:var(--success)">+ $ 600</span></td><td><strong>$ 4.600</strong></td><td><span class="badge badge-warning">PENDIENTE</span></td></tr>
+                  <tr style="background:#f0f9ff"><td>…</td><td colspan="4" style="color:var(--muted);font-style:italic">7 cuotas más ajustadas (6–12)</td><td><span class="badge badge-warning">PENDIENTE</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <!-- ── Medios de Pago ── -->
           <div id="cob-medios" class="cob-panel" style="display:none">
             <div class="card">
@@ -4094,16 +4264,24 @@
 
     <!-- Modal: Nueva Cuponera -->
     <div id="modal-nueva-cuponera" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-nueva-cuponera')">
-      <div class="modal-box" style="max-width:480px">
+      <div class="modal-box" style="max-width:520px">
         <div class="modal-header"><h3>Nueva Cuponera de Pago</h3><button class="modal-close" onclick="closeModal('modal-nueva-cuponera')">✕</button></div>
         <div class="modal-body">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
             <div style="grid-column:1/-1">
               <label style="font-size:12px;font-weight:600;color:var(--muted)">PÓLIZA</label>
-              <select style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
-                <option>POL-00000006 — Martínez, Carlos</option>
-                <option>POL-00000007 — Gómez, Laura</option>
+              <select id="cob-polizaSelect" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+                <option value="POL-00000006|García, Juan Manuel|Martínez, Pedro|10">POL-00000006 — García, Juan Manuel</option>
+                <option value="POL-00000007|López S.A.|Gómez, Laura|12">POL-00000007 — López S.A.</option>
               </select>
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">AGENTE (de la póliza)</label>
+              <input id="cob-agenteDisplay" type="text" value="Martínez, Pedro" readonly style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px;background:#f8f9fa">
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">% COMISIÓN AGENTE</label>
+              <input id="cob-pctComision" type="number" value="10" min="0" max="100" step="0.5" oninput="calcCuotas()" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
             </div>
             <div>
               <label style="font-size:12px;font-weight:600;color:var(--muted)">PERIODICIDAD</label>
@@ -4112,26 +4290,84 @@
                 <option value="12" selected>MENSUAL (12 cuotas)</option>
                 <option value="4">TRIMESTRAL (4 cuotas)</option>
                 <option value="2">SEMESTRAL (2 cuotas)</option>
-                <option value="1a">ANUAL (1 cuota)</option>
+                <option value="1">ANUAL (1 cuota)</option>
               </select>
             </div>
             <div>
-              <label style="font-size:12px;font-weight:600;color:var(--muted)">MONTO TOTAL</label>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">MONTO TOTAL (prima)</label>
               <input id="cob-montoTotal" type="number" placeholder="0.00" oninput="calcCuotas()" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
             </div>
             <div>
               <label style="font-size:12px;font-weight:600;color:var(--muted)">PRIMER VENCIMIENTO</label>
               <input type="date" value="2026-08-01" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
             </div>
-            <div style="grid-column:1/-1;background:var(--light);border-radius:8px;padding:12px;text-align:center">
-              <div style="font-size:12px;color:var(--muted)">VALOR POR CUOTA</div>
-              <div id="cob-valorCuota" style="font-size:22px;font-weight:700;color:var(--accent)">$ 0,00</div>
+            <div style="grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;background:var(--light);border-radius:8px;padding:12px;text-align:center">
+              <div>
+                <div style="font-size:11px;color:var(--muted)">VALOR POR CUOTA</div>
+                <div id="cob-valorCuota" style="font-size:18px;font-weight:700;color:var(--accent)">$ 0,00</div>
+              </div>
+              <div>
+                <div style="font-size:11px;color:var(--muted)">COMISIÓN / CUOTA</div>
+                <div id="cob-comisionCuota" style="font-size:18px;font-weight:700;color:var(--success)">$ 0,00</div>
+              </div>
+              <div>
+                <div style="font-size:11px;color:var(--muted)">COMISIÓN TOTAL</div>
+                <div id="cob-comisionTotal" style="font-size:18px;font-weight:700;color:var(--success)">$ 0,00</div>
+              </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-outline" onclick="closeModal('modal-nueva-cuponera')">Cancelar</button>
-          <button class="btn btn-primary">Generar Cuponera</button>
+          <button class="btn btn-primary" onclick="closeModal('modal-nueva-cuponera');alert('✅ Cuponera generada con 12 cuotas.\nComisión del 10% registrada para Martínez, Pedro.')">Generar Cuponera</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Ajuste por Endoso -->
+    <div id="modal-ajuste-endoso" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-ajuste-endoso')">
+      <div class="modal-box" style="max-width:460px">
+        <div class="modal-header"><h3>Aplicar Ajuste por Endoso</h3><button class="modal-close" onclick="closeModal('modal-ajuste-endoso')">✕</button></div>
+        <div class="modal-body">
+          <div style="background:#fff8e1;border-radius:8px;padding:12px;margin-bottom:14px;font-size:12px;color:#856404">
+            ⚠️ El ajuste se distribuirá proporcionalmente entre todas las cuotas <strong>pendientes y vencidas</strong> de la cuponera.
+          </div>
+          <div style="display:grid;gap:12px">
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">CUPONERA (PÓLIZA)</label>
+              <select style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+                <option>POL-00000003 · Rodríguez, María Elena — MENSUAL</option>
+                <option>POL-00000001 · García, Juan Manuel — MENSUAL</option>
+                <option>POL-00000004 · Fernández, Carlos — SEMESTRAL</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">MOVIMIENTO DE ENDOSO</label>
+              <select style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+                <option>MOV-00000004 · Endoso inclusión cláusula adicional · $ 6.600</option>
+                <option>MOV-00000005 · Endoso reducción de cobertura · -$ 3.200</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:600;color:var(--muted)">AJUSTE DE PRIMA (+ aumento / - reducción)</label>
+              <input type="number" value="6600" style="width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;margin-top:4px">
+            </div>
+            <div style="background:var(--light);border-radius:8px;padding:12px;font-size:13px">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+                <span style="color:var(--muted)">Cuotas pendientes:</span><strong>11</strong>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+                <span style="color:var(--muted)">Ajuste por cuota:</span><strong style="color:var(--success)">+ $ 600</strong>
+              </div>
+              <div style="display:flex;justify-content:space-between">
+                <span style="color:var(--muted)">Nueva comisión agente:</span><strong style="color:var(--success)">+ $ 660 adicional</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" onclick="closeModal('modal-ajuste-endoso')">Cancelar</button>
+          <button class="btn btn-primary" onclick="closeModal('modal-ajuste-endoso');alert('✅ Endoso aplicado.\n11 cuotas ajustadas en + $ 600 c/u.\nComisión adicional: $ 660 para Martínez, Pedro.')">Aplicar Ajuste</button>
         </div>
       </div>
     </div>
@@ -4244,7 +4480,7 @@
   }
 
   // COBRANZA catalog
-  const cobPanelIds = ['cob-cuponeras','cob-cuotas','cob-recibos','cob-estado','cob-mora','cob-medios','cob-periodos'];
+  const cobPanelIds = ['cob-cuponeras','cob-cuotas','cob-recibos','cob-estado','cob-mora','cob-comisiones','cob-endosos','cob-medios','cob-periodos'];
   function showCobCatalog(panelId) {
     cobPanelIds.forEach(id => { const el = document.getElementById(id); if(el) el.style.display='none'; });
     document.querySelectorAll('#page-cobranza .rc-item').forEach(i => i.classList.remove('active'));
@@ -4257,10 +4493,18 @@
   function calcCuotas() {
     const sel = document.getElementById('cob-periodSelect');
     const monto = parseFloat(document.getElementById('cob-montoTotal').value) || 0;
+    const pct = parseFloat(document.getElementById('cob-pctComision') ? document.getElementById('cob-pctComision').value : '0') || 0;
     const cuotas = parseInt(sel ? sel.value : '12') || 1;
-    const valor = cuotas > 0 ? monto / cuotas : 0;
-    const el = document.getElementById('cob-valorCuota');
-    if (el) el.textContent = '$ ' + valor.toLocaleString('es-AR', {minimumFractionDigits:2, maximumFractionDigits:2});
+    const valorCuota = cuotas > 0 ? monto / cuotas : 0;
+    const comisionCuota = valorCuota * (pct / 100);
+    const comisionTotal = monto * (pct / 100);
+    const fmt = v => '$ ' + v.toLocaleString('es-AR', {minimumFractionDigits:2, maximumFractionDigits:2});
+    const elV = document.getElementById('cob-valorCuota');
+    const elCC = document.getElementById('cob-comisionCuota');
+    const elCT = document.getElementById('cob-comisionTotal');
+    if (elV) elV.textContent = fmt(valorCuota);
+    if (elCC) elCC.textContent = fmt(comisionCuota);
+    if (elCT) elCT.textContent = fmt(comisionTotal);
   }
 
   // TABS DE RAMO (legacy — kept for compatibility)
